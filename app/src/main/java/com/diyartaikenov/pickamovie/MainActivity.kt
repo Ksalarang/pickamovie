@@ -26,10 +26,4 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment)
         binding.bottomNavView.setupWithNavController(navController)
     }
-
-    override fun onBackPressed() {
-        Log.d(TAG, "onBackPressed: ")
-        super.moveTaskToBack(true)
-        finish()
-    }
 }
