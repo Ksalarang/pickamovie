@@ -1,11 +1,14 @@
 package com.diyartaikenov.pickamovie
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.diyartaikenov.pickamovie.databinding.ActivityMainBinding
+
+const val TAG = "myTag"
 
 /**
  * A Main activity that hosts all Fragments for this app and hosts the nav controller.
@@ -22,5 +25,11 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment)
         binding.bottomNavView.setupWithNavController(navController)
+    }
+
+    override fun onBackPressed() {
+        Log.d(TAG, "onBackPressed: ")
+        super.moveTaskToBack(true)
+        finish()
     }
 }
