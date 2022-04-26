@@ -3,31 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_movies">
+    app:startDestination="@id/nav_home">
 
     <fragment
-        android:id="@+id/nav_movies"
-        android:name="com.diyartaikenov.pickamovie.ui.MoviesFragment"
-        android:label="@string/title_movies"
-        tools:layout="@layout/fragment_movies">
+        android:id="@+id/nav_home"
+        android:name="com.diyartaikenov.pickamovie.ui.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
 
     </fragment>
 
     <fragment
-        android:id="@+id/nav_series"
-        android:name="com.diyartaikenov.pickamovie.ui.SeriesFragment"
-        android:label="@string/title_series"
-        tools:layout="@layout/fragment_series">
-
-        <action
-            android:id="@+id/action_nav_series_to_nav_blank_fragment"
-            app:destination="@id/nav_blank_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_blank_fragment"
-        android:name="com.diyartaikenov.pickamovie.ui.BlankFragment"
-        tools:layout="@layout/fragment_blank">
+        android:id="@+id/nav_my_lists"
+        android:name="com.diyartaikenov.pickamovie.ui.MyListsFragment"
+        android:label="@string/title_my_lists"
+        tools:layout="@layout/fragment_my_lists">
 
     </fragment>
 </navigation>
