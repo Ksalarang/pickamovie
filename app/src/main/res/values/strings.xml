@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_my_lists">My Lists</string>
     <string name="title_profile">Profile</string>
+
+    <!-- Content description -->
+    <string name="description_show_poster">Show poster</string>
 </resources>
