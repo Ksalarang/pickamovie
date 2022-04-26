@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.diyartaikenov.pickamovie.databinding.FragmentBlankBinding
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 
-class MoviesFragment : Fragment() {
-
-    private var _binding: FragmentMoviesBinding? = null
+class BlankFragment: Fragment() {
+    private var _binding: FragmentBlankBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -17,11 +17,7 @@ class MoviesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMoviesBinding.inflate(inflater, container, false)
+        _binding = FragmentBlankBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 }
