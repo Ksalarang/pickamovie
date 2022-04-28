@@ -15,7 +15,7 @@
             android:id="@+id/poster"
             android:layout_width="110dp"
             android:layout_height="match_parent"
-            android:contentDescription="@string/description_show_poster"
+            android:contentDescription="@string/description_movie_poster"
             android:src="@drawable/default_poster"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

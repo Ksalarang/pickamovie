@@ -1,5 +1,5 @@
 package com.diyartaikenov.pickamovie.model
 
-data class Show(
+data class Movie(
     val id: Long,
 )

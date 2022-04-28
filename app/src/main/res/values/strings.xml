@@ -5,5 +5,5 @@
     <string name="title_profile">Profile</string>
 
     <!-- Content description -->
-    <string name="description_show_poster">Show poster</string>
+    <string name="description_movie_poster">Movie poster</string>
 </resources>
