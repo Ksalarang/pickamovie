@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.diyartaikenov.pickamovie.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 const val TAG = "myTag"
 
 /**
  * A Main activity that hosts all Fragments for this app and hosts the nav controller.
  */
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

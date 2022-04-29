@@ -1,6 +1,5 @@
 package com.diyartaikenov.pickamovie.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,14 +10,16 @@ import com.diyartaikenov.pickamovie.network.PopularMovieContainer
 import com.diyartaikenov.pickamovie.network.asDomainModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MovieViewModel(private val context: Context): ViewModel() {
+@Singleton
+class MovieViewModel @Inject constructor(): ViewModel() {
 
     private var _popularMovies = MutableLiveData<List<Movie>>()
-
     val popularMovies: LiveData<List<Movie>> = _popularMovies
 
-    var error = MutableLiveData<String>()
+    val errorStatus = MutableLiveData<String>()
 
     init {
         viewModelScope.launch {
@@ -29,7 +30,7 @@ class MovieViewModel(private val context: Context): ViewModel() {
 
                 _popularMovies.value = container.asDomainModel()
             } catch (e: HttpException) {
-                error.value = e.response().toString()
+                errorStatus.value = e.response().toString()
             }
         }
     }

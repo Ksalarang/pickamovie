@@ -10,12 +10,15 @@ import androidx.fragment.app.Fragment
 import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.MovieViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 const val TAG = "myTag"
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private lateinit var viewModel: MovieViewModel
+    @Inject lateinit var viewModel: MovieViewModel
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -32,7 +35,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = MovieViewModel(requireContext())
         val adapter = MovieListAdapter()
         binding.recyclerView.adapter = adapter
 
@@ -40,7 +42,7 @@ class HomeFragment : Fragment() {
             adapter.submitList(movies)
         }
 
-        viewModel.error.observe(viewLifecycleOwner) { error ->
+        viewModel.errorStatus.observe(viewLifecycleOwner) { error ->
             Toast.makeText(context, error, Toast.LENGTH_LONG).show()
             Log.d(TAG, "onViewCreated: $error")
         }
