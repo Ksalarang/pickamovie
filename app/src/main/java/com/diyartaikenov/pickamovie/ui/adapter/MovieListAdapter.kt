@@ -31,7 +31,7 @@ class MovieListAdapter(): ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(D
         fun bind(movie: Movie) {
 
             binding.apply {
-                // todo: bind item
+                this.movie = movie
                 executePendingBindings()
             }
         }
@@ -40,9 +40,7 @@ class MovieListAdapter(): ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(D
     companion object DiffCallback: DiffUtil.ItemCallback<Movie>() {
 
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-//            return oldItem.id == newItem.id
-            // fixme
-            return true
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
