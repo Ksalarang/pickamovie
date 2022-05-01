@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.network.MovieDbNetwork
-import com.diyartaikenov.pickamovie.network.PopularMovieContainer
+import com.diyartaikenov.pickamovie.network.NetworkMovieContainer
 import com.diyartaikenov.pickamovie.network.asDomainModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -23,7 +23,7 @@ class MovieViewModel @Inject constructor(): ViewModel() {
 
     init {
         viewModelScope.launch {
-            var container: PopularMovieContainer? = null
+            var container: NetworkMovieContainer? = null
 
             try {
                 container = MovieDbNetwork.service.getPopularMovies(1)

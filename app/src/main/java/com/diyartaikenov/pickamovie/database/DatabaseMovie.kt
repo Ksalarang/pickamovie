@@ -1,38 +1,29 @@
 package com.diyartaikenov.pickamovie.database
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.diyartaikenov.pickamovie.model.Genre
-import com.squareup.moshi.Json
 
+@Entity(tableName = "movies")
 data class DatabaseMovie(
     @PrimaryKey
     val id: Long,
     val title: String,
-    val overview: String? = null,
-    val genres: List<Genre>,
-
-    @Json(name = "release_date")
+    val overview: String?,
+    @ColumnInfo(name = "release_date")
     val releaseDate: String,
+    @ColumnInfo(name = "genre_ids")
+    // fixme: how to store list of ints?
+    val genreIds: List<Int>,
 
-    /**
-     * Counted in minutes
-     */
-    val runtime: Int? = null,
-
-    @Json(name = "poster_path")
+    @ColumnInfo(name = "poster_path")
     val posterPath: String?,
-    @Json(name = "backdrop_path")
+    @ColumnInfo(name = "backdrop_path")
     val backdropPath: String?,
 
-    @Json(name = "imdb_id")
-    val imdbId: String?,
-
-    @Json(name = "original_language")
-    val originalLanguage: String,
-    @Json(name = "original_title")
-    val originalTitle: String,
-
     val popularity: Double,
-
-    val hasVideo: Boolean,
+    @ColumnInfo(name = "vote_average")
+    val voteAverage: Double,
+    @ColumnInfo(name = "vote_count")
+    val voteCount: Int,
 )
