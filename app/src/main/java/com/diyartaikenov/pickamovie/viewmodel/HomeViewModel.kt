@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MovieViewModel @Inject constructor(): ViewModel() {
+class HomeViewModel @Inject constructor(): ViewModel() {
 
     private var _popularMovies = MutableLiveData<List<Movie>>()
     val popularMovies: LiveData<List<Movie>> = _popularMovies
