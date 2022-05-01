@@ -17,7 +17,7 @@ class DatabaseModule {
 
     @Provides
     fun provideMovieDao(database: AppDatabase): MovieDao {
-        return database.movieDao()
+        return database.movieDao
     }
 
     @Provides
