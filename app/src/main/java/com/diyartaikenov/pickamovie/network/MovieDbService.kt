@@ -13,8 +13,11 @@ const val DEFAULT_LANGUAGE = "en-US"
 
 interface MovieDbService {
 
-    @GET("movie/popular?api_key=$API_KEY&language=$DEFAULT_LANGUAGE")
-    suspend fun getPopularMovies(@Query("page")page: Int = 1): NetworkMovieContainer
+    @GET("movie/popular?api_key=$API_KEY")
+    suspend fun getPopularMovies(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("page") page: Int = 1
+    ): NetworkMovieContainer
 }
 
 @Singleton
