@@ -25,5 +25,5 @@ class MovieDbNetwork @Inject constructor() {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
 
-    val service = retrofit.create(MovieDbService::class.java)
+    val service: MovieDbService = retrofit.create(MovieDbService::class.java)
 }

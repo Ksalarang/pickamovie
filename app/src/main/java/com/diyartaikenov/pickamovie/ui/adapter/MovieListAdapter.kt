@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.diyartaikenov.pickamovie.databinding.MovieItemBinding
 import com.diyartaikenov.pickamovie.model.Movie
+import javax.inject.Inject
 
-class MovieListAdapter(): ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(DiffCallback) {
+class MovieListAdapter @Inject constructor()
+    : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
