@@ -10,6 +10,11 @@ data class Movie(
     val title: String,
     val posterPath: String? = null,
     val backdropPath: String? = null,
+    // fixme: enable this field with DatabaseMovie's genreIds
+//    val genreIds: List<Int>,
+    val popularity: Double,
+    val voteAverage: Double,
+    val voteCount: Int,
 )
 
 /**

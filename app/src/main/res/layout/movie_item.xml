@@ -17,8 +17,10 @@
             android:id="@+id/poster"
             android:layout_width="110dp"
             android:layout_height="match_parent"
-            android:contentDescription="@string/description_movie_poster"
             android:src="@drawable/default_poster"
+            android:contentDescription="@string/description_movie_poster"
+            app:posterPath="@{movie.posterPath}"
+            app:backdropPath="@{movie.backdropPath}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,6 +34,6 @@
             android:layout_margin="6dp"
             app:layout_constraintStart_toEndOf="@id/poster"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Show name" />
+            tools:text="Movie title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

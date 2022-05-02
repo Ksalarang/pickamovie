@@ -7,18 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-const val TAG = "myTag"
-
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    @Inject lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModels()
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -38,13 +37,14 @@ class HomeFragment : Fragment() {
         val adapter = MovieListAdapter()
         binding.recyclerView.adapter = adapter
 
-        viewModel.popularMovies.observe(viewLifecycleOwner) { movies ->
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
             adapter.submitList(movies)
         }
 
-        viewModel.errorStatus.observe(viewLifecycleOwner) { error ->
-            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-            Log.d(TAG, "onViewCreated: $error")
+        viewModel.networkError.observe(viewLifecycleOwner) { error ->
+            if (error) {
+                Toast.makeText(context, "Network error", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

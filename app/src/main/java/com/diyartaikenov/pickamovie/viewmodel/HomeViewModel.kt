@@ -1,36 +1,41 @@
 package com.diyartaikenov.pickamovie.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.diyartaikenov.pickamovie.TAG
 import com.diyartaikenov.pickamovie.model.Movie
-import com.diyartaikenov.pickamovie.network.MovieDbNetwork
-import com.diyartaikenov.pickamovie.network.NetworkMovieContainer
-import com.diyartaikenov.pickamovie.network.asDomainModel
+import com.diyartaikenov.pickamovie.repository.MovieRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class HomeViewModel @Inject constructor(): ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val movieRepository: MovieRepository
+): ViewModel() {
 
-    private var _popularMovies = MutableLiveData<List<Movie>>()
-    val popularMovies: LiveData<List<Movie>> = _popularMovies
+    val movies: LiveData<List<Movie>> = movieRepository.movies
 
-    val errorStatus = MutableLiveData<String>()
+    private var _networkError = MutableLiveData<Boolean>()
+    val networkError: LiveData<Boolean> = _networkError
 
     init {
+        refreshDataFromRepository()
+    }
+
+    private fun refreshDataFromRepository() {
         viewModelScope.launch {
-            var container: NetworkMovieContainer? = null
-
             try {
-                container = MovieDbNetwork.service.getPopularMovies(1)
-
-                _popularMovies.value = container.asDomainModel()
-            } catch (e: HttpException) {
-                errorStatus.value = e.response().toString()
+                movieRepository.refreshMovies()
+                _networkError.value = false
+            } catch (networkError: IOException) {
+                Log.d(TAG, networkError.message, networkError.cause)
+                _networkError.value = true
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.diyartaikenov.pickamovie.network
 
+import com.diyartaikenov.pickamovie.database.DatabaseMovie
 import com.diyartaikenov.pickamovie.model.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -44,12 +45,18 @@ data class NetworkMovie(
 )
 
 // todo: remove
-fun NetworkMovieContainer.asDomainModel(): List<Movie> {
+fun NetworkMovieContainer.asDatabaseModel(): List<DatabaseMovie> {
     return movies.map {
-        Movie(
+        DatabaseMovie(
             id = it.id,
             title = it.title,
-            posterPath = it.posterPath
+            overview = it.overview,
+            releaseDate = it.releaseDate,
+            posterPath = it.posterPath,
+            backdropPath = it.backdropPath,
+            popularity = it.popularity,
+            voteAverage = it.voteAverage,
+            voteCount = it.voteCount,
         )
     }
 }

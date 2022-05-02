@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.diyartaikenov.pickamovie.databinding.FragmentMyListsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyListsFragment: Fragment() {
 
     private var _binding: FragmentMyListsBinding? = null

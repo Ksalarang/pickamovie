@@ -3,6 +3,7 @@ package com.diyartaikenov.pickamovie.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.diyartaikenov.pickamovie.model.Movie
 
 @Entity(tableName = "movies")
 data class DatabaseMovie(
@@ -12,9 +13,9 @@ data class DatabaseMovie(
     val overview: String?,
     @ColumnInfo(name = "release_date")
     val releaseDate: String,
-    @ColumnInfo(name = "genre_ids")
     // fixme: how to store list of ints?
-    val genreIds: List<Int>,
+//    @ColumnInfo(name = "genre_ids")
+//    val genreIds: List<Int>,
 
     @ColumnInfo(name = "poster_path")
     val posterPath: String?,
@@ -27,3 +28,17 @@ data class DatabaseMovie(
     @ColumnInfo(name = "vote_count")
     val voteCount: Int,
 )
+
+fun List<DatabaseMovie>.asDomainModel(): List<Movie> {
+    return map {
+        Movie(
+            id = it.id,
+            title = it.title,
+            posterPath = it.posterPath,
+            backdropPath = it.backdropPath,
+            popularity = it.popularity,
+            voteAverage = it.voteAverage,
+            voteCount = it.voteCount,
+        )
+    }
+}
