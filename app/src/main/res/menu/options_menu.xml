@@ -20,19 +20,4 @@
                 android:title="@string/sort_by_date_desc" />
         </group></menu>
     </item>
-
-    <group android:id="@+id/predefined_lists" android:checkableBehavior="single">
-        <item android:id="@+id/option_popular_movies"
-            android:title="@string/option_popular_movies"
-            app:showAsAction="never" />
-
-        <item android:id="@+id/option_top_rated_movies"
-            android:title="@string/option_top_rated_movies" />
-
-        <item android:id="@+id/option_latest_movies"
-            android:title="@string/option_latest_movies" />
-
-        <item android:id="@+id/option_upcoming_movies"
-            android:title="@string/option_upcoming_movies" />
-    </group>
 </menu>

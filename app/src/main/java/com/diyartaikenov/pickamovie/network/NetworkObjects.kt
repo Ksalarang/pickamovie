@@ -38,11 +38,3 @@ interface MoviesApi {
         @Query("sort_by") sortBy: String = SortBy.POPULARITY_DESC.value,
     ): NetworkMovieContainer
 }
-
-@Singleton
-class MoviesRemoteDataSource @Inject constructor(
-    private val moviesApi: MoviesApi
-) {
-
-
-}

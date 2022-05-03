@@ -50,7 +50,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.options_menu, menu)
-        menu.findItem(R.id.sort_by_popularity_desc).isChecked = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
