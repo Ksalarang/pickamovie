@@ -50,19 +50,12 @@ class HomeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.options_menu, menu)
+        menu.findItem(R.id.sort_by_popularity_desc).isChecked = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_popular_movies -> {
 
-            }
-            R.id.action_top_rated_movies -> {
-
-            }
-            R.id.action_upcoming_movies -> {
-
-            }
         }
 
         return super.onOptionsItemSelected(item)

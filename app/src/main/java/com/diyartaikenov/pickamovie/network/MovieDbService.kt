@@ -1,5 +1,6 @@
 package com.diyartaikenov.pickamovie.network
 
+import com.diyartaikenov.pickamovie.util.SortBy
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -17,6 +18,13 @@ interface MovieDbService {
     suspend fun getPopularMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
         @Query("page") page: Int = 1
+    ): NetworkMovieContainer
+
+    @GET("discover/movie?api_key=$API_KEY")
+    suspend fun getMoviesSortedAndFiltered(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("page") page: Int = 1,
+        @Query("sort_by") sortBy: String = SortBy.POPULARITY_DESC.value,
     ): NetworkMovieContainer
 }
 

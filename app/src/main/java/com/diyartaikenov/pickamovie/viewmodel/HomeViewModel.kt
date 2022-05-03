@@ -12,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
