@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
@@ -35,7 +36,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.adapter = adapter
+        binding.apply {
+            recyclerView.adapter = adapter
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            )
+        }
 
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             adapter.submitList(movies)
