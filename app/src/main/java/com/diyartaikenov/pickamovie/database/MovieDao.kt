@@ -2,7 +2,6 @@ package com.diyartaikenov.pickamovie.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.diyartaikenov.pickamovie.util.SortBy
 import com.diyartaikenov.pickamovie.util.SortOrder
 
 @Dao

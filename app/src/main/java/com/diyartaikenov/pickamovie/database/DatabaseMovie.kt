@@ -28,17 +28,3 @@ data class DatabaseMovie(
     @ColumnInfo(name = "vote_count")
     val voteCount: Int,
 )
-
-fun List<DatabaseMovie>.asDomainModel(): List<Movie> {
-    return map {
-        Movie(
-            id = it.id,
-            title = it.title,
-            posterPath = it.posterPath,
-            backdropPath = it.backdropPath,
-            popularity = it.popularity,
-            voteAverage = it.voteAverage,
-            voteCount = it.voteCount,
-        )
-    }
-}

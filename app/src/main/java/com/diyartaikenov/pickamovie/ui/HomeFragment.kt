@@ -10,6 +10,8 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
+import com.diyartaikenov.pickamovie.network.QueryParams
+import com.diyartaikenov.pickamovie.network.SortBy
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,16 +82,36 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sort_by_popularity_desc -> {
-                
+                viewModel.getMoviesWithQuery(
+                    QueryParams(
+                        SortBy.POPULARITY_DESC
+                    )
+                )
+                item.isChecked = true
             }
             R.id.sort_by_rating_desc -> {
-
+                viewModel.getMoviesWithQuery(
+                    QueryParams(
+                        SortBy.VOTE_AVERAGE_DESC,
+                    )
+                )
+                item.isChecked = true
             }
             R.id.sort_by_date_desc -> {
-
+                viewModel.getMoviesWithQuery(
+                    QueryParams(
+                        SortBy.RELEASE_DATE_DESC,
+                    )
+                )
+                item.isChecked = true
             }
             R.id.sort_by_date_asc -> {
-
+                viewModel.getMoviesWithQuery(
+                    QueryParams(
+                        SortBy.RELEASE_DATE_ASC
+                    )
+                )
+                item.isChecked = true
             }
         }
 

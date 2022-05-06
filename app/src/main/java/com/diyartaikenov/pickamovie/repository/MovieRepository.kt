@@ -1,13 +1,13 @@
 package com.diyartaikenov.pickamovie.repository
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.diyartaikenov.pickamovie.database.MovieDao
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.network.MoviesApi
+import com.diyartaikenov.pickamovie.network.QueryParams
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,14 +17,14 @@ class MovieRepository @Inject constructor(
     private val moviesApi: MoviesApi
 ) {
 
-    fun getMovies(): LiveData<PagingData<Movie>> {
+    fun getMovies(queryParams: QueryParams): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { MoviesPagingSource(moviesApi) }
-        ).liveData
+            pagingSourceFactory = { MoviesPagingSource(moviesApi, queryParams) }
+        ).flow
     }
 
     companion object {
