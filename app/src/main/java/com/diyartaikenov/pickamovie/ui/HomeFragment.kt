@@ -5,12 +5,14 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,13 +45,9 @@ class HomeFragment : Fragment() {
             )
         }
 
-        viewModel.movies.observe(viewLifecycleOwner) { movies ->
-            adapter.submitList(movies)
-        }
-
-        viewModel.networkError.observe(viewLifecycleOwner) { error ->
-            if (error) {
-                Toast.makeText(context, "Network error", Toast.LENGTH_LONG).show()
+        viewModel.moviesPagingData.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                adapter.submitData(it)
             }
         }
     }

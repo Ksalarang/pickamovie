@@ -32,9 +32,9 @@ interface MoviesApi {
     ): NetworkMovieContainer
 
     @GET("discover/movie?api_key=$API_KEY")
-    suspend fun getMoviesSortedAndFilteredWith(
+    suspend fun getMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
-        @Query("page") page: Int = 1,
+        @Query("page") page: Int,
         @Query("sort_by") sortBy: String = SortBy.POPULARITY_DESC.value,
     ): NetworkMovieContainer
 }

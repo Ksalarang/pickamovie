@@ -20,12 +20,10 @@ class HomeViewModel @Inject constructor(
 
     val movies: LiveData<List<Movie>> = movieRepository.movies
 
+    val moviesPagingData = movieRepository.getMoviesLiveData()
+
     private var _networkError = MutableLiveData<Boolean>()
     val networkError: LiveData<Boolean> = _networkError
-
-    init {
-        refreshDataFromRepository()
-    }
 
     private fun refreshDataFromRepository() {
         viewModelScope.launch {

@@ -2,15 +2,16 @@ package com.diyartaikenov.pickamovie.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.MovieItemBinding
 import com.diyartaikenov.pickamovie.model.Movie
 import javax.inject.Inject
 
 class MovieListAdapter @Inject constructor()
-    : ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(DiffCallback) {
+    : PagingDataAdapter<Movie, MovieListAdapter.MovieViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -21,20 +22,21 @@ class MovieListAdapter @Inject constructor()
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val show = getItem(position)
+        val movie = getItem(position)
 
-        holder.bind(show)
+        holder.bind(movie)
     }
 
     inner class MovieViewHolder(
         private val binding: MovieItemBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(movie: Movie) {
+        fun bind(movie: Movie?) {
 
-            binding.apply {
-                this.movie = movie
-                executePendingBindings()
+            if (movie == null) {
+                binding.name.text = itemView.resources.getString(R.string.loading)
+            } else {
+                binding.movie = movie
             }
         }
     }

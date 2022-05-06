@@ -60,3 +60,17 @@ fun NetworkMovieContainer.asDatabaseModel(): List<DatabaseMovie> {
         )
     }
 }
+
+fun NetworkMovieContainer.asDomainModel(): List<Movie> {
+    return movies.map {
+        Movie(
+            id = it.id,
+            title = it.title,
+            posterPath = it.posterPath,
+            backdropPath = it.backdropPath,
+            popularity = it.popularity,
+            voteAverage = it.voteAverage,
+            voteCount = it.voteCount
+        )
+    }
+}
