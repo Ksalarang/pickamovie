@@ -1,10 +1,9 @@
 package com.diyartaikenov.pickamovie.util
 
-import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.diyartaikenov.pickamovie.TAG
+import com.diyartaikenov.pickamovie.R
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p"
 private const val POSTER_SIZE = "/w342"
@@ -21,6 +20,8 @@ fun loadPoster(imageView: ImageView, posterPath: String?, backdropPath: String?)
         url = IMAGE_BASE_URL + BACKDROP_SIZE + backdropPath
     }
 
-    Log.d(TAG, "loadPoster: $posterPath, $backdropPath")
-    Glide.with(imageView.context).load(url).into(imageView)
+    Glide.with(imageView.context)
+        .load(url)
+        .placeholder(R.drawable.default_poster)
+        .into(imageView)
 }

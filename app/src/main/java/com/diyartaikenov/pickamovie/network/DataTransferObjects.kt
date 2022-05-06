@@ -1,6 +1,5 @@
 package com.diyartaikenov.pickamovie.network
 
-import com.diyartaikenov.pickamovie.database.DatabaseMovie
 import com.diyartaikenov.pickamovie.model.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -43,23 +42,6 @@ data class NetworkMovie(
     @Json(name = "vote_count")
     val voteCount: Int,
 )
-
-// todo: remove
-fun NetworkMovieContainer.asDatabaseModel(): List<DatabaseMovie> {
-    return movies.map {
-        DatabaseMovie(
-            id = it.id,
-            title = it.title,
-            overview = it.overview,
-            releaseDate = it.releaseDate,
-            posterPath = it.posterPath,
-            backdropPath = it.backdropPath,
-            popularity = it.popularity,
-            voteAverage = it.voteAverage,
-            voteCount = it.voteCount,
-        )
-    }
-}
 
 fun NetworkMovieContainer.asDomainModel(): List<Movie> {
     return movies.map {
