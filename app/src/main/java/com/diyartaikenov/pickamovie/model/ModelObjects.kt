@@ -10,8 +10,7 @@ data class Movie(
     val title: String,
     val posterPath: String? = null,
     val backdropPath: String? = null,
-    // fixme: enable this field with DatabaseMovie's genreIds
-//    val genreIds: List<Int>,
+    val genreIds: List<Int>,
     val popularity: Double,
     val voteAverage: Double,
     val voteCount: Int,
@@ -51,7 +50,7 @@ data class DetailedMovie(
 )
 
 data class MovieGenre(
-    val id: Long,
+    val id: Int,
     val name: String,
 )
 

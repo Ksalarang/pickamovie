@@ -50,6 +50,7 @@ fun NetworkMovieContainer.asDomainModel(): List<Movie> {
             title = it.title,
             posterPath = it.posterPath,
             backdropPath = it.backdropPath,
+            genreIds = it.genreIds,
             popularity = it.popularity,
             voteAverage = it.voteAverage,
             voteCount = it.voteCount
