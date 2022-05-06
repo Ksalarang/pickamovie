@@ -8,7 +8,8 @@
         app:iconTint="?attr/colorOnPrimary"
         app:showAsAction="ifRoom" >
 
-        <menu><group android:id="@+id/group_sort_movies" android:checkableBehavior="single">
+        <menu><group android:id="@+id/group_sort_movies"
+            android:checkableBehavior="single">
 
             <item android:id="@+id/sort_by_popularity_desc"
                 android:title="@string/sort_by_popularity_desc" />
@@ -18,6 +19,9 @@
 
             <item android:id="@+id/sort_by_date_desc"
                 android:title="@string/sort_by_date_desc" />
+
+            <item android:id="@+id/sort_by_date_asc"
+                android:title="@string/sort_by_date_asc" />
         </group></menu>
     </item>
 </menu>

@@ -13,12 +13,10 @@
     <string name="sort_by_rating_desc">Top rated</string>
     <string name="sort_by_date_desc">Latest</string>
 
-    <string name="option_popular_movies">Popular</string>
-    <string name="option_top_rated_movies">Top Rated</string>
-    <string name="option_latest_movies">Latest</string>
-    <string name="option_upcoming_movies">Upcoming</string>
+    <!-- Home Fragment views -->
     <string name="loading">Loading</string>
     <string name="no_results">No results</string>
     <string name="button_retry">Retry</string>
     <string name="no_internet">No Internet</string>
+    <string name="sort_by_date_asc">Oldest</string>
 </resources>

@@ -72,11 +72,25 @@ class HomeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.options_menu, menu)
+
+        // check default sort option
+        menu.findItem(R.id.sort_by_popularity_desc).isChecked = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.sort_by_popularity_desc -> {
+                
+            }
+            R.id.sort_by_rating_desc -> {
 
+            }
+            R.id.sort_by_date_desc -> {
+
+            }
+            R.id.sort_by_date_asc -> {
+
+            }
         }
 
         return super.onOptionsItemSelected(item)
