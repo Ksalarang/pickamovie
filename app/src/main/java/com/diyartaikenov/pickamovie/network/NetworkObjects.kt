@@ -11,7 +11,7 @@ import javax.inject.Singleton
 private const val BASE_URL = "https://api.themoviedb.org/3/"
 private const val API_KEY = "ae79897238ffe8dff6aae654a4a07455"
 private const val DEFAULT_LANGUAGE = "ru-KZ"
-private const val DEFAULT_REGION = "KZ"
+private const val DEFAULT_REGION = "US"
 
 @Singleton
 class MoviesNetwork @Inject constructor() {
@@ -35,6 +35,13 @@ interface MoviesApi {
         @Query("release_date.lte") releaseDateLte: String,
     ): NetworkMovieContainer
 
+    @GET("movie/popular?api_key=$API_KEY")
+    suspend fun getPopularMovies(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("region") region: String = DEFAULT_REGION,
+        @Query("page") page: Int,
+    ): NetworkMovieContainer
+
     @GET("movie/top_rated?api_key=$API_KEY")
     suspend fun getTopRatedMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
@@ -47,7 +54,7 @@ interface MoviesApi {
  * Query parameters for network queries.
  */
 class QueryParams(
-    val sortBy: SortBy = SortBy.POPULARITY_DESC,
+    val sortBy: SortBy = SortBy.POPULAR,
     /**
      * Filter and only include movies that have a release date
      * (looking at all release dates) that is less than or equal to the specified value.
@@ -65,5 +72,7 @@ enum class SortBy(val value: String) {
     VOTE_AVERAGE_DESC("vote_average.desc"),
     RELEASE_DATE_DESC("release_date.desc"),
     RELEASE_DATE_ASC("release_date.asc"),
+
+    POPULAR(""),
     TOP_RATED("")
 }

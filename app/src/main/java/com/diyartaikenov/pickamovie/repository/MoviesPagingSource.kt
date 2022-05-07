@@ -24,15 +24,20 @@ class MoviesPagingSource(
 
         return try {
             // Use the predefined query to get top rated movie list
-            val networkResponse = if (queryParams.sortBy == SortBy.TOP_RATED) {
-                moviesApi.getTopRatedMovies(page = pageKey)
-            } else {
-                // And use the custom query to apply your own sort and filter options
-                moviesApi.getMovies(
-                    page = pageKey,
-                    sortBy = queryParams.sortBy.value,
-                    releaseDateLte = queryParams.releaseDateLte.standardFormat
-                )
+            val networkResponse = when (queryParams.sortBy) {
+                SortBy.POPULAR -> {
+                    moviesApi.getPopularMovies(page = pageKey)
+                }
+                SortBy.TOP_RATED -> {
+                    moviesApi.getTopRatedMovies(page = pageKey)
+                }
+                else -> {
+                    moviesApi.getMovies(
+                        page = pageKey,
+                        sortBy = queryParams.sortBy.value,
+                        releaseDateLte = queryParams.releaseDateLte.standardFormat
+                    )
+                }
             }
 
             val prevKey = if (pageKey == STARTING_PAGE_INDEX) null else pageKey - 1

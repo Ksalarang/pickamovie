@@ -25,6 +25,10 @@
         </group></menu>
     </item>
 
+    <item android:id="@+id/option_show_popular"
+        android:title="@string/option_show_popular"
+        app:showAsAction="never" />
+
     <item android:id="@+id/option_show_top_rated"
         android:title="@string/option_show_top_rated"
         app:showAsAction="never" />

@@ -89,6 +89,7 @@ class HomeFragment : Fragment() {
             SortBy.VOTE_AVERAGE_DESC -> R.id.sort_by_rating_desc
             SortBy.RELEASE_DATE_DESC -> R.id.sort_by_date_desc
             SortBy.RELEASE_DATE_ASC -> R.id.sort_by_date_asc
+            SortBy.POPULAR -> R.id.option_show_popular
             SortBy.TOP_RATED -> R.id.option_show_top_rated
         }
         menu.findItem(itemId).isChecked = true
@@ -114,6 +115,9 @@ class HomeFragment : Fragment() {
                 item.isChecked = true
             }
 
+            R.id.option_show_popular -> {
+                viewModel.getMoviesWithQuery(QueryParams(SortBy.POPULAR))
+            }
             R.id.option_show_top_rated -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.TOP_RATED))
             }
