@@ -68,9 +68,8 @@ class HomeFragment : Fragment() {
         viewModel.movies.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 adapter.submitData(it)
-                adapter.addOnPagesUpdatedListener {
-                    binding.recyclerView.scrollToPosition(0)
-                }
+                // fixme: scroll is not working properly
+                binding.recyclerView.smoothScrollToPosition(0)
             }
         }
     }
