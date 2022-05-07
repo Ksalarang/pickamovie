@@ -25,6 +25,15 @@ class HomeViewModel @Inject constructor(
     var queryParams = QueryParams()
         private set
 
+    init {
+        viewModelScope.launch {
+            movieRepository.getMovies(queryParams)
+                .cachedIn(viewModelScope).collect {
+                    _movies.value = it
+                }
+        }
+    }
+
     fun getMoviesWithQuery(queryParams: QueryParams) {
         this.queryParams = queryParams
 

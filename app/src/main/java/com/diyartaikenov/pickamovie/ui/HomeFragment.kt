@@ -17,8 +17,6 @@ import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -92,8 +90,7 @@ class HomeFragment : Fragment() {
             SortBy.RELEASE_DATE_DESC -> R.id.sort_by_date_desc
             SortBy.RELEASE_DATE_ASC -> R.id.sort_by_date_asc
         }
-        val menuItem = menu.findItem(itemId)
-        onOptionsItemSelected(menuItem)
+        menu.findItem(itemId).isChecked = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
