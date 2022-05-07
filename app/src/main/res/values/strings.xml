@@ -9,14 +9,15 @@
 
     <!-- Options menu -->
     <string name="option_sort_by">Sort by</string>
-    <string name="sort_by_popularity_desc">Most popular</string>
-    <string name="sort_by_rating_desc">Top rated</string>
-    <string name="sort_by_date_desc">Latest</string>
+    <string name="sort_by_popularity_desc">Popularity</string>
+    <string name="sort_by_rating_desc">Rating</string>
+    <string name="sort_by_date_desc">Date (newest)</string>
+    <string name="sort_by_date_asc">Date (oldest)</string>
+    <string name="option_show_top_rated">Top Rated</string>
 
     <!-- Home Fragment views -->
     <string name="loading">Loading</string>
     <string name="no_results">No results</string>
     <string name="button_retry">Retry</string>
     <string name="no_internet">No Internet</string>
-    <string name="sort_by_date_asc">Oldest</string>
 </resources>

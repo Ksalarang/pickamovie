@@ -89,6 +89,7 @@ class HomeFragment : Fragment() {
             SortBy.VOTE_AVERAGE_DESC -> R.id.sort_by_rating_desc
             SortBy.RELEASE_DATE_DESC -> R.id.sort_by_date_desc
             SortBy.RELEASE_DATE_ASC -> R.id.sort_by_date_asc
+            SortBy.TOP_RATED -> R.id.option_show_top_rated
         }
         menu.findItem(itemId).isChecked = true
     }
@@ -96,36 +97,25 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sort_by_popularity_desc -> {
-                viewModel.getMoviesWithQuery(
-                    QueryParams(
-                        SortBy.POPULARITY_DESC
-                    )
-                )
+                viewModel.getMoviesWithQuery(QueryParams(SortBy.POPULARITY_DESC))
                 item.isChecked = true
             }
             R.id.sort_by_rating_desc -> {
-                viewModel.getMoviesWithQuery(
-                    QueryParams(
-                        SortBy.VOTE_AVERAGE_DESC,
-                    )
-                )
+                viewModel.getMoviesWithQuery(QueryParams(SortBy.VOTE_AVERAGE_DESC))
                 item.isChecked = true
             }
             R.id.sort_by_date_desc -> {
-                viewModel.getMoviesWithQuery(
-                    QueryParams(
-                        SortBy.RELEASE_DATE_DESC,
-                    )
+                viewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_DESC)
                 )
                 item.isChecked = true
             }
             R.id.sort_by_date_asc -> {
-                viewModel.getMoviesWithQuery(
-                    QueryParams(
-                        SortBy.RELEASE_DATE_ASC
-                    )
-                )
+                viewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_ASC))
                 item.isChecked = true
+            }
+
+            R.id.option_show_top_rated -> {
+                viewModel.getMoviesWithQuery(QueryParams(SortBy.TOP_RATED))
             }
         }
 

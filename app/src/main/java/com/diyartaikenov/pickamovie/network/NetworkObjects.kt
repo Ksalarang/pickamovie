@@ -29,10 +29,17 @@ interface MoviesApi {
     @GET("discover/movie?api_key=$API_KEY")
     suspend fun getMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
-        @Query("page") page: Int,
         @Query("region") region: String = DEFAULT_REGION,
+        @Query("page") page: Int,
         @Query("sort_by") sortBy: String,
         @Query("release_date.lte") releaseDateLte: String,
+    ): NetworkMovieContainer
+
+    @GET("movie/top_rated?api_key=$API_KEY")
+    suspend fun getTopRatedMovies(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("region") region: String = DEFAULT_REGION,
+        @Query("page") page: Int,
     ): NetworkMovieContainer
 }
 
@@ -58,4 +65,5 @@ enum class SortBy(val value: String) {
     VOTE_AVERAGE_DESC("vote_average.desc"),
     RELEASE_DATE_DESC("release_date.desc"),
     RELEASE_DATE_ASC("release_date.asc"),
+    TOP_RATED("")
 }
