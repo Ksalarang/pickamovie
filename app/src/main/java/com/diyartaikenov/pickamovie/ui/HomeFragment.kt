@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
 import com.diyartaikenov.pickamovie.network.QueryParams
@@ -16,6 +17,8 @@ import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,6 +44,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    binding.recyclerView.scrollToPosition(0)
+                }
+            }
+        })
 
         binding.apply {
             recyclerView.adapter = adapter
