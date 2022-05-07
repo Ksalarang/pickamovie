@@ -22,9 +22,12 @@ class HomeViewModel @Inject constructor(
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>> = _movies
 
+    var queryParams = QueryParams()
+        private set
+
     init {
         viewModelScope.launch {
-            movieRepository.getMovies(QueryParams())
+            movieRepository.getMovies(queryParams)
                 .cachedIn(viewModelScope).collect {
                 _movies.value = it
             }
@@ -32,6 +35,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getMoviesWithQuery(queryParams: QueryParams) {
+        this.queryParams = queryParams
+
         viewModelScope.launch {
             movieRepository.getMovies(queryParams)
                 .cachedIn(viewModelScope).collect {

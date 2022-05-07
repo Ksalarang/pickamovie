@@ -77,8 +77,14 @@ class HomeFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.options_menu, menu)
 
-        // check default sort option
-        menu.findItem(R.id.sort_by_popularity_desc).isChecked = true
+        val itemId = when (viewModel.queryParams.sortBy) {
+            SortBy.POPULARITY_DESC -> R.id.sort_by_popularity_desc
+            SortBy.VOTE_AVERAGE_DESC -> R.id.sort_by_rating_desc
+            SortBy.RELEASE_DATE_DESC -> R.id.sort_by_date_desc
+            SortBy.RELEASE_DATE_ASC -> R.id.sort_by_date_asc
+        }
+        val menuItem = menu.findItem(itemId)
+        onOptionsItemSelected(menuItem)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
