@@ -8,7 +8,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.network.QueryParams
-import com.diyartaikenov.pickamovie.network.SortBy
 import com.diyartaikenov.pickamovie.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect

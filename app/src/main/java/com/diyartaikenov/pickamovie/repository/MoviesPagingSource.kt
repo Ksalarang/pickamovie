@@ -7,6 +7,7 @@ import com.diyartaikenov.pickamovie.network.MoviesApi
 import com.diyartaikenov.pickamovie.network.QueryParams
 import com.diyartaikenov.pickamovie.network.asDomainModel
 import com.diyartaikenov.pickamovie.repository.MovieRepository.Companion.NETWORK_PAGE_SIZE
+import com.diyartaikenov.pickamovie.util.standardFormat
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -23,7 +24,8 @@ class MoviesPagingSource(
         return try {
             val networkResponse = moviesApi.getMovies(
                 page = pageKey,
-                sortBy = queryParams.sortBy.value
+                sortBy = queryParams.sortBy.value,
+                releaseDateLte = queryParams.releaseDateLte.standardFormat
             )
             val prevKey = if (pageKey == STARTING_PAGE_INDEX) null else pageKey - 1
 

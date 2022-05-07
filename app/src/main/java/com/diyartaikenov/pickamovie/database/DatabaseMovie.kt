@@ -3,7 +3,6 @@ package com.diyartaikenov.pickamovie.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.diyartaikenov.pickamovie.model.Movie
 
 @Entity(tableName = "movies")
 data class DatabaseMovie(
