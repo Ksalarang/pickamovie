@@ -68,6 +68,7 @@ class HomeFragment : Fragment() {
         viewModel.movies.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 adapter.submitData(it)
+                binding.recyclerView.smoothScrollToPosition(0)
             }
         }
     }
