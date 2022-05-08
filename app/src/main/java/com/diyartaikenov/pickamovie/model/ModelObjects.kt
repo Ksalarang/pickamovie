@@ -20,7 +20,7 @@ data class Movie(
  * Movie class used to get the details about a particular movie.
  */
 data class DetailedMovie(
-    val id: Long,
+    val id: Int,
     val title: String,
     val overview: String?,
     val genres: List<Genre>,
