@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.diyartaikenov.pickamovie.ui.HomeFragment"
+        android:name="com.diyartaikenov.pickamovie.ui.MoviesFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
 

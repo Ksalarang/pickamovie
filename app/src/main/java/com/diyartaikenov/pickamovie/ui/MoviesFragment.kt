@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class MoviesFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
