@@ -14,7 +14,7 @@ import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
 import com.diyartaikenov.pickamovie.network.QueryParams
 import com.diyartaikenov.pickamovie.network.SortBy
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
-import com.diyartaikenov.pickamovie.viewmodel.HomeViewModel
+import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: MoviesViewModel by viewModels()
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!

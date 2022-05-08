@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class MoviesViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ): ViewModel() {
 

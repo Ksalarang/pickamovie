@@ -1,10 +1,10 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.diyartaikenov.pickamovie.databinding.FragmentTvShowsBinding
 
 class TvShowsFragment : Fragment() {
@@ -17,7 +17,7 @@ class TvShowsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTvShowsBinding.inflate(inflater, container, false)
-
+        setHasOptionsMenu(false)
         return binding.root
     }
 }

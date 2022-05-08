@@ -1,14 +1,17 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentViewPagerHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
+/**
+ * Home fragment that hosts Movies & TV shows tabs.
+ */
 class HomeViewPagerFragment : Fragment() {
 
     private var _binding: FragmentViewPagerHomeBinding? = null
