@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Pick a Movie</string>
     <string name="title_home">Home</string>
+
     <string name="title_my_lists">My Lists</string>
     <string name="title_profile">Profile</string>
 
@@ -13,7 +14,7 @@
     <string name="button_retry">Retry</string>
     <string name="no_internet">No Internet</string>
 
-    <!-- Options menu -->
+    <!-- MoviesFragment options menu -->
     <string name="option_sort_by">Sort by</string>
     <string name="sort_by_popularity_desc">Popularity</string>
     <string name="sort_by_rating_desc">Rating</string>
@@ -21,4 +22,11 @@
     <string name="sort_by_date_asc">Date (oldest)</string>
     <string name="option_show_top_rated">Top Rated</string>
     <string name="option_show_popular">Popular</string>
+
+    <string name="blank_tv_shows">TV Shows</string>
+
+    <!-- Tabs -->
+    <string name="tab_label_movies">Movies</string>
+    <string name="tab_label_tv_shows">TV shows</string>
+    <string name="tab_label_new">New tab</string>
 </resources>

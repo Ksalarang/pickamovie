@@ -1,4 +1,4 @@
-package com.diyartaikenov.pickamovie.ui
+package com.diyartaikenov.pickamovie.ui.homeviewpager
 
 import android.os.Bundle
 import android.view.*
