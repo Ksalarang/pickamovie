@@ -23,7 +23,7 @@ data class NetworkMovieContainer(
  */
 @JsonClass(generateAdapter = true)
 data class NetworkMovie(
-    val id: Long,
+    val id: Int,
     val title: String,
     val overview: String,
     @Json(name = "release_date")

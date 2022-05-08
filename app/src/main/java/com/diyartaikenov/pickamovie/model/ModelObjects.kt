@@ -6,7 +6,7 @@ package com.diyartaikenov.pickamovie.model
  * Should be used to display lists of movies.
  */
 data class Movie(
-    val id: Long,
+    val id: Int,
     val title: String,
     val posterPath: String? = null,
     val backdropPath: String? = null,

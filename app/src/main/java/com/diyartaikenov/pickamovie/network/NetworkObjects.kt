@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 private const val BASE_URL = "https://api.themoviedb.org/3/"
 private const val API_KEY = "ae79897238ffe8dff6aae654a4a07455"
-private const val DEFAULT_LANGUAGE = "ru-KZ"
+private const val DEFAULT_LANGUAGE = "ru-RU"
 private const val DEFAULT_REGION = "US"
 
 @Singleton
