@@ -1,9 +1,10 @@
-package com.diyartaikenov.pickamovie
+package com.diyartaikenov.pickamovie.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
