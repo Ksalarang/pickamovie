@@ -23,7 +23,7 @@ data class DetailedMovie(
     val id: Long,
     val title: String,
     val overview: String?,
-    val genres: List<MovieGenre>,
+    val genres: List<Genre>,
     val releaseDate: String,
     /**
      * Counted in minutes
@@ -49,7 +49,7 @@ data class DetailedMovie(
     val originalTitle: String,
 )
 
-data class MovieGenre(
+data class Genre(
     val id: Int,
     val name: String,
 )
