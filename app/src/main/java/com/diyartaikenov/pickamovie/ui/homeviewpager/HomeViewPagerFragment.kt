@@ -29,7 +29,7 @@ class HomeViewPagerFragment : Fragment() {
         )
         val viewPagerAdapter = ViewPagerAdapter(
             fragments,
-            requireActivity().supportFragmentManager,
+            childFragmentManager,
             lifecycle
         )
         binding.viewPager.adapter = viewPagerAdapter

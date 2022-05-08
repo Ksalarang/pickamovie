@@ -1,6 +1,7 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 import com.diyartaikenov.pickamovie.network.QueryParams
 import com.diyartaikenov.pickamovie.network.SortBy
+import com.diyartaikenov.pickamovie.ui.TAG
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,29 +103,35 @@ class MoviesFragment : Fragment() {
             R.id.sort_by_popularity_desc -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.POPULARITY_DESC))
                 item.isChecked = true
+                return true
             }
             R.id.sort_by_rating_desc -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.VOTE_AVERAGE_DESC))
                 item.isChecked = true
+                return true
             }
             R.id.sort_by_date_desc -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_DESC)
                 )
                 item.isChecked = true
+                return true
             }
             R.id.sort_by_date_asc -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_ASC))
                 item.isChecked = true
+                return true
             }
 
             R.id.option_show_popular -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.POPULAR))
+                return true
             }
             R.id.option_show_top_rated -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.TOP_RATED))
+                return true
             }
         }
 
-        return super.onOptionsItemSelected(item)
+        return false
     }
 }
