@@ -6,11 +6,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.diyartaikenov.pickamovie.R
-import com.diyartaikenov.pickamovie.databinding.FragmentHomeBinding
+import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 import com.diyartaikenov.pickamovie.network.QueryParams
 import com.diyartaikenov.pickamovie.network.SortBy
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
@@ -25,7 +26,7 @@ class MoviesFragment : Fragment() {
 
     private val viewModel: MoviesViewModel by viewModels()
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!
 
     @Inject lateinit var adapter: MovieListAdapter
@@ -35,7 +36,7 @@ class MoviesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentMoviesBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
     }
