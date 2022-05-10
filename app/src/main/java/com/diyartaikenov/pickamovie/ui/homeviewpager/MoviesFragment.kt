@@ -56,9 +56,6 @@ class MoviesFragment : Fragment() {
 
         binding.apply {
             recyclerView.adapter = adapter
-            recyclerView.addItemDecoration(
-                DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-            )
             retryButton.setOnClickListener { adapter.retry() }
         }
 
