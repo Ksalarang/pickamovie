@@ -54,7 +54,7 @@ interface MoviesApi {
  * Query parameters for network queries.
  */
 class QueryParams(
-    val sortBy: SortBy = SortBy.POPULAR,
+    val sortBy: SortBy = SortBy.POPULARITY_DESC,
     /**
      * Filter and only include movies that have a release date
      * (looking at all release dates) that is less than or equal to the specified value.
