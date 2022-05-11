@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">#16232E</item>
         <item name="colorPrimaryVariant">#2F4861</item>
-        <item name="colorOnPrimary">#BFBFBF</item>
+        <item name="colorOnPrimary">#DCDCDC</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#D62763</item>
         <item name="colorSecondaryVariant">#983959</item>
@@ -15,7 +15,7 @@
         <item name="colorSurface">?attr/colorPrimary</item>
         <item name="colorOnSurface">?attr/colorOnPrimary</item>
         <!-- Status bar -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- General views -->
         <item name="android:textViewStyle">@style/Widget.PickAMovie.TextView</item>
         <item name="tabStyle">@style/Widget.PickAMovie.TabLayout</item>
@@ -24,6 +24,10 @@
     <style name="Widget.PickAMovie.TextView" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+    <style name="Widget.PickAMovie.TextView.Minor" parent="Widget.PickAMovie.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_minor_text</item>
     </style>
 
     <style name="Widget.PickAMovie.TabLayout" parent="Widget.MaterialComponents.TabLayout">
