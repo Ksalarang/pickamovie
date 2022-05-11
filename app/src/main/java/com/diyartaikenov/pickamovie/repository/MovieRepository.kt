@@ -3,6 +3,7 @@ package com.diyartaikenov.pickamovie.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.diyartaikenov.pickamovie.database.Genre
 import com.diyartaikenov.pickamovie.database.MovieDao
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.network.MoviesApi
@@ -25,6 +26,17 @@ class MovieRepository @Inject constructor(
             ),
             pagingSourceFactory = { MoviesPagingSource(moviesApi, queryParams) }
         ).flow
+    }
+
+    suspend fun getGenres(): Flow<List<Genre>> {
+        val genres = moviesApi.getGenres().genres
+        movieDao.insertGenres(genres)
+
+        return movieDao.getAllGenres()
+    }
+
+    fun getGenresById(ids: List<Int>): Flow<List<Genre>> {
+        return movieDao.getGenresById(ids)
     }
 
     companion object {

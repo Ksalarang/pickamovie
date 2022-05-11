@@ -8,9 +8,9 @@ import com.diyartaikenov.pickamovie.network.QueryParams
 import com.diyartaikenov.pickamovie.network.SortBy
 import com.diyartaikenov.pickamovie.network.asDomainModel
 import com.diyartaikenov.pickamovie.repository.MovieRepository.Companion.NETWORK_PAGE_SIZE
-import com.diyartaikenov.pickamovie.util.standardFormat
 import retrofit2.HttpException
 import java.io.IOException
+import java.time.format.DateTimeFormatter
 
 private const val STARTING_PAGE_INDEX = 1
 
@@ -35,7 +35,7 @@ class MoviesPagingSource(
                     moviesApi.getMovies(
                         page = pageKey,
                         sortBy = queryParams.sortBy.value,
-                        releaseDateLte = queryParams.releaseDateLte.standardFormat
+                        releaseDateLte = queryParams.releaseDateLte.format(DateTimeFormatter.ISO_DATE)
                     )
                 }
             }

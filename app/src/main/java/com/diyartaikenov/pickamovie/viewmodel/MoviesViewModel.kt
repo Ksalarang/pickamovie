@@ -6,24 +6,33 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.diyartaikenov.pickamovie.database.Genre
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val movieRepository: MovieRepository
+    val movieRepository: MovieRepository
 ): ViewModel() {
 
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>> = _movies
 
+    private var _genres = MutableLiveData<List<Genre>>()
+    val genres: LiveData<List<Genre>> = _genres
+
     var queryParams = QueryParams()
         private set
+
+    val scope: CoroutineScope
+        get() = viewModelScope
 
     init {
         viewModelScope.launch {
@@ -31,6 +40,10 @@ class MoviesViewModel @Inject constructor(
                 .cachedIn(viewModelScope).collect {
                     _movies.value = it
                 }
+
+            movieRepository.getGenres().collectLatest {
+                _genres.value = it
+            }
         }
     }
 

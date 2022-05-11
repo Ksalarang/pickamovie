@@ -1,5 +1,7 @@
 package com.diyartaikenov.pickamovie.model
 
+import java.time.LocalDate
+
 /**
  * Represents a preview of Movie objects.
  *
@@ -8,6 +10,7 @@ package com.diyartaikenov.pickamovie.model
 data class Movie(
     val id: Int,
     val title: String,
+    val releaseDate: LocalDate,
     val posterPath: String? = null,
     val backdropPath: String? = null,
     val genreIds: List<Int>,
@@ -23,7 +26,7 @@ data class DetailedMovie(
     val id: Int,
     val title: String,
     val overview: String?,
-    val genres: List<Genre>,
+//    val genres: List<Genre>,
     val releaseDate: String,
     /**
      * Counted in minutes
@@ -47,11 +50,6 @@ data class DetailedMovie(
     val productionCountries: List<ProductionCountry>,
     val originalLanguage: String,
     val originalTitle: String,
-)
-
-data class Genre(
-    val id: Int,
-    val name: String,
 )
 
 data class ProductionCountry(

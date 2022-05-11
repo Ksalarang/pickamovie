@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.util.*
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -48,6 +48,11 @@ interface MoviesApi {
         @Query("region") region: String = DEFAULT_REGION,
         @Query("page") page: Int,
     ): NetworkMovieContainer
+
+    @GET("genre/movie/list?api_key=$API_KEY")
+    suspend fun getGenres(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+    ): GenresNetworkResponse
 }
 
 /**
@@ -59,7 +64,7 @@ class QueryParams(
      * Filter and only include movies that have a release date
      * (looking at all release dates) that is less than or equal to the specified value.
      */
-    val releaseDateLte: Date = Date(),
+    val releaseDateLte: LocalDate = LocalDate.now(),
 )
 
 /**

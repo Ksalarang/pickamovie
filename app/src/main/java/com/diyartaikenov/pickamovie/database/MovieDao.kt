@@ -3,6 +3,7 @@ package com.diyartaikenov.pickamovie.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.diyartaikenov.pickamovie.util.SortOrder
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
@@ -34,4 +35,13 @@ interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(movies: List<DatabaseMovie>)
+
+    @Query("select * from genres")
+    fun getAllGenres(): Flow<List<Genre>>
+
+    @Query("select * from genres where id in (:ids)")
+    fun getGenresById(ids: List<Int>): Flow<List<Genre>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertGenres(genres: List<Genre>)
 }

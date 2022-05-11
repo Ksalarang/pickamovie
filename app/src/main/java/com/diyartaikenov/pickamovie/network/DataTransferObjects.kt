@@ -1,8 +1,10 @@
 package com.diyartaikenov.pickamovie.network
 
+import com.diyartaikenov.pickamovie.database.Genre
 import com.diyartaikenov.pickamovie.model.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.LocalDate
 
 /**
  * 200 code response returns this object that contains a list of movies.
@@ -48,6 +50,7 @@ fun NetworkMovieContainer.asDomainModel(): List<Movie> {
         Movie(
             id = it.id,
             title = it.title,
+            releaseDate = LocalDate.parse(it.releaseDate),
             posterPath = it.posterPath,
             backdropPath = it.backdropPath,
             genreIds = it.genreIds,
@@ -57,3 +60,8 @@ fun NetworkMovieContainer.asDomainModel(): List<Movie> {
         )
     }
 }
+
+@JsonClass(generateAdapter = true)
+data class GenresNetworkResponse(
+    val genres: List<Genre>
+)
