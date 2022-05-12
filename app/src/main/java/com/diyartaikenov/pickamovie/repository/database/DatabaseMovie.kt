@@ -1,4 +1,4 @@
-package com.diyartaikenov.pickamovie.database
+package com.diyartaikenov.pickamovie.repository.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

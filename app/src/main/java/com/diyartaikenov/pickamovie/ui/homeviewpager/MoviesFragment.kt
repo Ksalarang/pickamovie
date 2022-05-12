@@ -10,8 +10,8 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
-import com.diyartaikenov.pickamovie.network.QueryParams
-import com.diyartaikenov.pickamovie.network.SortBy
+import com.diyartaikenov.pickamovie.repository.network.QueryParams
+import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint

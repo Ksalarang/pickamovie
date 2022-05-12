@@ -2,8 +2,8 @@ package com.diyartaikenov.pickamovie.di
 
 import android.content.Context
 import androidx.room.Room
-import com.diyartaikenov.pickamovie.database.AppDatabase
-import com.diyartaikenov.pickamovie.database.MovieDao
+import com.diyartaikenov.pickamovie.repository.database.AppDatabase
+import com.diyartaikenov.pickamovie.repository.database.MovieDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

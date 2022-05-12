@@ -1,7 +1,7 @@
 package com.diyartaikenov.pickamovie.di
 
-import com.diyartaikenov.pickamovie.network.MoviesApi
-import com.diyartaikenov.pickamovie.network.MoviesNetwork
+import com.diyartaikenov.pickamovie.repository.network.MoviesApi
+import com.diyartaikenov.pickamovie.repository.network.MoviesNetwork
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

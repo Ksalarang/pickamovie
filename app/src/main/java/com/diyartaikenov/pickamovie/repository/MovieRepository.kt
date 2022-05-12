@@ -3,11 +3,11 @@ package com.diyartaikenov.pickamovie.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.diyartaikenov.pickamovie.database.Genre
-import com.diyartaikenov.pickamovie.database.MovieDao
+import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.repository.database.MovieDao
 import com.diyartaikenov.pickamovie.model.Movie
-import com.diyartaikenov.pickamovie.network.MoviesApi
-import com.diyartaikenov.pickamovie.network.QueryParams
+import com.diyartaikenov.pickamovie.repository.network.MoviesApi
+import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

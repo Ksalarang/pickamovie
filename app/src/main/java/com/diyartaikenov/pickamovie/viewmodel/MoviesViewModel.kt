@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.diyartaikenov.pickamovie.database.Genre
+import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.model.Movie
-import com.diyartaikenov.pickamovie.network.QueryParams
+import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

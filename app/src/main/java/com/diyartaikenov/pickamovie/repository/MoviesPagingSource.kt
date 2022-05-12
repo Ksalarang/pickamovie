@@ -3,10 +3,10 @@ package com.diyartaikenov.pickamovie.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.diyartaikenov.pickamovie.model.Movie
-import com.diyartaikenov.pickamovie.network.MoviesApi
-import com.diyartaikenov.pickamovie.network.QueryParams
-import com.diyartaikenov.pickamovie.network.SortBy
-import com.diyartaikenov.pickamovie.network.asDomainModel
+import com.diyartaikenov.pickamovie.repository.network.MoviesApi
+import com.diyartaikenov.pickamovie.repository.network.QueryParams
+import com.diyartaikenov.pickamovie.repository.network.SortBy
+import com.diyartaikenov.pickamovie.repository.network.asDomainModel
 import com.diyartaikenov.pickamovie.repository.MovieRepository.Companion.NETWORK_PAGE_SIZE
 import retrofit2.HttpException
 import java.io.IOException
