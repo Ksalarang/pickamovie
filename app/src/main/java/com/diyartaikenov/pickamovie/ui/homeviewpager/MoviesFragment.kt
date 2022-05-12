@@ -12,6 +12,7 @@ import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.SortBy
+import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -116,10 +117,16 @@ class MoviesFragment : Fragment() {
 
             R.id.option_show_popular -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.POPULAR))
+                (requireActivity() as MainActivity)
+                    .supportActionBar?.title = getString(R.string.option_show_popular)
+
                 return true
             }
             R.id.option_show_top_rated -> {
                 viewModel.getMoviesWithQuery(QueryParams(SortBy.TOP_RATED))
+                (requireActivity() as MainActivity)
+                    .supportActionBar?.title = getString(R.string.option_show_top_rated)
+
                 return true
             }
         }

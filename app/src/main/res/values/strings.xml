@@ -20,8 +20,8 @@
     <string name="sort_by_rating_desc">Rating</string>
     <string name="sort_by_date_desc">Date (newest)</string>
     <string name="sort_by_date_asc">Date (oldest)</string>
-    <string name="option_show_top_rated">Top Rated</string>
-    <string name="option_show_popular">Popular</string>
+    <string name="option_show_popular">Popular Movies</string>
+    <string name="option_show_top_rated">Top Rated Movies</string>
 
     <string name="blank_tv_shows">TV Shows</string>
 

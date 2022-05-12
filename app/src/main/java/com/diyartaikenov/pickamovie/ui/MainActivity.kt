@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d(TAG, "onCreate: ")
         setSupportActionBar(binding.toolbar)
 
         binding.bottomNavView.setupWithNavController(
