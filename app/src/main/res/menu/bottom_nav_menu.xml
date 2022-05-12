@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/nav_home"
-        android:title="@string/title_home" />
+        android:title="@string/title_home"
+        android:icon="@drawable/ic_home"
+        app:iconTint="?attr/colorSecondary" />
 
     <item android:id="@+id/nav_my_lists"
-        android:title="@string/title_my_lists" />
+        android:title="@string/title_my_lists"
+        android:icon="@drawable/ic_star"
+        app:iconTint="?attr/colorSecondary" />
 
     <item android:id="@+id/nav_profile"
-        android:title="@string/title_profile" />
+        android:title="@string/title_profile"
+        android:icon="@drawable/ic_person"
+        app:iconTint="?attr/colorSecondary" />
 </menu>
