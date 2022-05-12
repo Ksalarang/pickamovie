@@ -1,6 +1,6 @@
 package com.diyartaikenov.pickamovie.util
 
-import android.util.Log
+import android.graphics.Color
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -36,6 +36,24 @@ fun loadPoster(imageView: ImageView, posterPath: String?, backdropPath: String?)
         .into(imageView)
 }
 
+@BindingAdapter("voteAverage")
+/**
+ * Sets vote average and text color based on the movie's vote average.
+ */
+fun setVoteAverageAndColor(textView: TextView, voteAverage: Double) {
+    textView.text = String.format("%.1f", voteAverage)
+
+    if (voteAverage >= 8.5) {
+        textView.setTextColor(Color.CYAN)
+    } else if (voteAverage >= 7) {
+        textView.setTextColor(Color.GREEN)
+    } else if (voteAverage >= 5) {
+        textView.setTextColor(Color.YELLOW)
+    } else {
+        textView.setTextColor(Color.RED)
+    }
+}
+
 @BindingAdapter("year")
 fun setYear(textView: TextView, date: LocalDate) {
     textView.text = date.year.toString()
@@ -51,7 +69,7 @@ fun setGenres(
     viewModelScope.launch {
         repository.getGenresById(genres).collectLatest { genres ->
             val joiner = StringJoiner(", ")
-            genres.forEach { joiner.add(it.name) }
+            genres.take(3).forEach { joiner.add(it.name) }
             textView.text = joiner.toString()
         }
     }

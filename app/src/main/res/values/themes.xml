@@ -26,7 +26,7 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
     <style name="Widget.PickAMovie.TextView.Minor" parent="Widget.PickAMovie.TextView">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/color_minor_text</item>
     </style>
 

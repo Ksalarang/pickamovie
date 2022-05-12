@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="movie"
             type="com.diyartaikenov.pickamovie.model.Movie" />
@@ -15,59 +16,87 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="165dp">
+        android:layout_height="165dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp">
 
         <ImageView
             android:id="@+id/poster"
             android:layout_width="110dp"
             android:layout_height="match_parent"
-            android:src="@drawable/default_poster"
             android:contentDescription="@string/description_movie_poster"
             android:scaleType="centerCrop"
-            app:posterPath="@{movie.posterPath}"
+            android:src="@drawable/default_poster"
             app:backdropPath="@{movie.backdropPath}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:posterPath="@{movie.posterPath}" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:text="@{movie.title}"
-            android:maxLines="2"
+            android:layout_margin="12dp"
             android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{movie.title}"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/poster"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             tools:text="Movie title" />
 
         <TextView
-            android:id="@+id/release_year"
-            style="@style/Widget.PickAMovie.TextView.Minor"
+            android:id="@+id/vote_average"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            app:year="@{movie.releaseDate}"
+            android:layout_margin="12dp"
             app:layout_constraintStart_toEndOf="@id/poster"
             app:layout_constraintTop_toBottomOf="@id/name"
-            tools:text="2022" />
+            app:voteAverage="@{movie.voteAverage}"
+            tools:text="7.5" />
+
+        <TextView
+            android:id="@+id/vote_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:text='@{String.format("(%d)", movie.voteCount)}'
+            android:textColor="@color/color_minor_text"
+            app:layout_constraintStart_toEndOf="@id/vote_average"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="(3453)" />
 
         <TextView
             android:id="@+id/genres"
             style="@style/Widget.PickAMovie.TextView.Minor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:maxLines="1"
+            android:layout_margin="12dp"
             android:ellipsize="end"
+            android:maxLines="1"
             app:genres="@{movie.genreIds}"
-            app:scope="@{viewModel.scope}"
-            app:repository="@{viewModel.movieRepository}"
             app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintTop_toBottomOf="@id/vote_average"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/release_year"
-            tools:text="Adventure" />
+            app:repository="@{viewModel.movieRepository}"
+            app:scope="@{viewModel.scope}"
+            tools:text="adventure, fantasy, comedy" />
+
+        <TextView
+            android:id="@+id/release_year"
+            style="@style/Widget.PickAMovie.TextView.Minor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintTop_toBottomOf="@id/genres"
+            app:year="@{movie.releaseDate}"
+            tools:text="2022" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
