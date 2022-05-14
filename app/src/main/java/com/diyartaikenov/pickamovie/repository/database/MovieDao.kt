@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface MovieDao {
 
     @Query("select * from movies order by popularity desc")
-    fun getPopularMovies(): LiveData<List<DatabaseMovie>>
+    fun getPopularMovies(): LiveData<List<DbMovie>>
 
     @Query("select * from movies " +
             "order by " +
@@ -31,10 +31,10 @@ interface MovieDao {
     fun getMovies(
         sortBy: String,
         sortOrder: Int,
-    ): LiveData<List<DatabaseMovie>>
+    ): LiveData<List<DbMovie>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(movies: List<DatabaseMovie>)
+    fun insertAll(movies: List<DbMovie>)
 
     @Query("select * from genres")
     fun getAllGenres(): Flow<List<Genre>>
