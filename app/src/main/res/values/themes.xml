@@ -38,4 +38,9 @@
     <style name="Widget.PickAMovie.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
+
+    <!-- AppbarLayout in MovieDetailsFragment -->
+    <style name="ThemeOverlay.PickAMovie" parent="ThemeOverlay.MaterialComponents">
+        <item name="elevation">0dp</item>
+    </style>
 </resources>

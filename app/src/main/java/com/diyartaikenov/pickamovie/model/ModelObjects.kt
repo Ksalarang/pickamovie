@@ -1,5 +1,7 @@
 package com.diyartaikenov.pickamovie.model
 
+import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.repository.network.ProductionCountry
 import java.time.LocalDate
 
 /**
@@ -26,7 +28,7 @@ data class DetailedMovie(
     val id: Int,
     val title: String,
     val overview: String?,
-//    val genres: List<Genre>,
+    val genres: List<Genre>,
     val releaseDate: String,
     /**
      * Counted in minutes
@@ -52,20 +54,24 @@ data class DetailedMovie(
     val originalTitle: String,
 )
 
-data class ProductionCountry(
-    /**
-     * ISO-3166-1 two-letter country code.
-     */
-    val isoCode: String,
-    val name: String,
-)
+enum class MovieStatus(val value: String) {
+    RUMORED("Rumored"),
+    PLANNED("Planned"),
+    IN_PRODUCTION("In Production"),
+    POST_PRODUCTION("Post Production"),
+    RELEASED("Released"),
+    CANCELED("Canceled"),
+    UNKNOWN(""),
+}
 
-enum class MovieStatus {
-    RUMORED,
-    PLANNED,
-    IN_PRODUCTION,
-    POST_PRODUCTION,
-    RELEASED,
-    CANCELED,
-    UNKNOWN,
+fun String.asMovieStatus(): MovieStatus {
+    return when (this) {
+        MovieStatus.RUMORED.value -> MovieStatus.RUMORED
+        MovieStatus.PLANNED.value -> MovieStatus.PLANNED
+        MovieStatus.IN_PRODUCTION.value -> MovieStatus.IN_PRODUCTION
+        MovieStatus.POST_PRODUCTION.value -> MovieStatus.POST_PRODUCTION
+        MovieStatus.RELEASED.value -> MovieStatus.RELEASED
+        MovieStatus.CANCELED.value -> MovieStatus.CANCELED
+        else -> MovieStatus.UNKNOWN
+    }
 }

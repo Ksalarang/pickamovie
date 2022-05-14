@@ -1,7 +1,7 @@
 package com.diyartaikenov.pickamovie.repository.network
 
-import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.model.Movie
+import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.LocalDate

@@ -11,7 +11,8 @@ import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 
 class MovieListAdapter constructor(
-    private val viewModel: MoviesViewModel
+    private val viewModel: MoviesViewModel,
+    private val onItemClickListener: (Movie) -> Unit
 ): PagingDataAdapter<Movie, MovieListAdapter.MovieViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -25,20 +26,25 @@ class MovieListAdapter constructor(
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = getItem(position)
 
-        holder.bind(movie, viewModel)
+        holder.bind(movie, viewModel, onItemClickListener)
     }
 
     inner class MovieViewHolder(
         private val binding: MovieItemBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(movie: Movie?, viewModel: MoviesViewModel) {
+        fun bind(
+            movie: Movie?,
+            viewModel: MoviesViewModel,
+            onItemClickListener: (Movie) -> Unit
+        ) {
 
             if (movie == null) {
-                binding.name.text = itemView.resources.getString(R.string.loading)
+                binding.name.text = itemView.resources.getString(R.string.loading_error)
             } else {
                 binding.movie = movie
                 binding.viewModel = viewModel
+                itemView.setOnClickListener { onItemClickListener(movie) }
             }
         }
     }

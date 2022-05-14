@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.diyartaikenov.pickamovie.R
@@ -22,10 +23,10 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
 
-    private val viewModel: MoviesViewModel by viewModels()
-
     private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!
+
+    private val moviesViewModel: MoviesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +41,11 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MovieListAdapter(viewModel)
+        val adapter = MovieListAdapter(moviesViewModel) { movie ->
+            findNavController().navigate(
+                HomeViewPagerFragmentDirections.actionNavHomeToNavMovieDetails(movie.id)
+            )
+        }
 
         adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -70,7 +75,7 @@ class MoviesFragment : Fragment() {
             }
         }
 
-        viewModel.movies.observe(viewLifecycleOwner) {
+        moviesViewModel.movies.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 adapter.submitData(it)
             }
@@ -80,7 +85,7 @@ class MoviesFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.options_menu, menu)
 
-        val itemId = when (viewModel.queryParams.sortBy) {
+        val itemId = when (moviesViewModel.queryParams.sortBy) {
             SortBy.POPULARITY_DESC -> R.id.sort_by_popularity_desc
             SortBy.VOTE_AVERAGE_DESC -> R.id.sort_by_rating_desc
             SortBy.RELEASE_DATE_DESC -> R.id.sort_by_date_desc
@@ -94,36 +99,36 @@ class MoviesFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sort_by_popularity_desc -> {
-                viewModel.getMoviesWithQuery(QueryParams(SortBy.POPULARITY_DESC))
+                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.POPULARITY_DESC))
                 item.isChecked = true
                 return true
             }
             R.id.sort_by_rating_desc -> {
-                viewModel.getMoviesWithQuery(QueryParams(SortBy.VOTE_AVERAGE_DESC))
+                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.VOTE_AVERAGE_DESC))
                 item.isChecked = true
                 return true
             }
             R.id.sort_by_date_desc -> {
-                viewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_DESC)
+                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_DESC)
                 )
                 item.isChecked = true
                 return true
             }
             R.id.sort_by_date_asc -> {
-                viewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_ASC))
+                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_ASC))
                 item.isChecked = true
                 return true
             }
 
             R.id.option_show_popular -> {
-                viewModel.getMoviesWithQuery(QueryParams(SortBy.POPULAR))
+                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.POPULAR))
                 (requireActivity() as MainActivity)
                     .supportActionBar?.title = getString(R.string.option_show_popular)
 
                 return true
             }
             R.id.option_show_top_rated -> {
-                viewModel.getMoviesWithQuery(QueryParams(SortBy.TOP_RATED))
+                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.TOP_RATED))
                 (requireActivity() as MainActivity)
                     .supportActionBar?.title = getString(R.string.option_show_top_rated)
 

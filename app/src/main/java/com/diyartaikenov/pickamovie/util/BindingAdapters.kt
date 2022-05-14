@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.*
 
-private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p"
+const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p"
 private const val POSTER_SIZE = "/w342"
 private const val BACKDROP_SIZE = "/w300"
 

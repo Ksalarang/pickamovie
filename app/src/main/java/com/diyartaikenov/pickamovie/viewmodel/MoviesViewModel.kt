@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
-import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.MovieRepository
+import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
@@ -24,6 +25,9 @@ class MoviesViewModel @Inject constructor(
 
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>> = _movies
+
+    private var _detailedMovie = MutableLiveData<DetailedMovie>()
+    val detailedMovie: LiveData<DetailedMovie> = _detailedMovie
 
     private var _genres = MutableLiveData<List<Genre>>()
     val genres: LiveData<List<Genre>> = _genres
@@ -40,7 +44,8 @@ class MoviesViewModel @Inject constructor(
                 .cachedIn(viewModelScope).collect {
                     _movies.value = it
                 }
-
+        }
+        viewModelScope.launch {
             movieRepository.getGenres().collectLatest {
                 _genres.value = it
             }
@@ -55,6 +60,15 @@ class MoviesViewModel @Inject constructor(
                 .cachedIn(viewModelScope).collect {
                     _movies.value = it
                 }
+        }
+    }
+
+    /**
+     * Get [DetailedMovie] by id from the network and store it in the [detailedMovie] LiveData variable.
+     */
+    fun refreshMovieDetails(movieId: Int) {
+        viewModelScope.launch {
+            _detailedMovie.value = movieRepository.getMovieDetails(movieId)
         }
     }
 }

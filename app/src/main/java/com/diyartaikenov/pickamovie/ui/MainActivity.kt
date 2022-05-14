@@ -1,7 +1,7 @@
 package com.diyartaikenov.pickamovie.ui
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -29,5 +29,14 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setupWithNavController(
             findNavController(R.id.nav_host_fragment)
         )
+    }
+
+    /**
+     * Set the visibility state of [MainActivity]'s BottomNavigationView
+     *
+     * @param visibility One of [View.VISIBLE], [View.INVISIBLE] OR [View.GONE].
+     */
+    fun setBottomNavigationVisibility(visibility: Int) {
+        binding.bottomNavView.visibility = visibility
     }
 }

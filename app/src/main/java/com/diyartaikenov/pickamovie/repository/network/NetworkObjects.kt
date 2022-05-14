@@ -3,6 +3,7 @@ package com.diyartaikenov.pickamovie.repository.network
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.time.LocalDate
 import javax.inject.Inject
@@ -48,6 +49,12 @@ interface MoviesApi {
         @Query("region") region: String = DEFAULT_REGION,
         @Query("page") page: Int,
     ): NetworkMovieContainer
+
+    @GET("movie/{movie_id}?api_key=$API_KEY")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+    ): NetworkDetailedMovie
 
     @GET("genre/movie/list?api_key=$API_KEY")
     suspend fun getGenres(

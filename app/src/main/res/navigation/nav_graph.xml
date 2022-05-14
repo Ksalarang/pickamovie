@@ -11,6 +11,21 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_view_pager_home">
 
+        <action
+            android:id="@+id/action_nav_home_to_nav_movie_details"
+            app:destination="@id/nav_movie_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_movie_details"
+        android:name="com.diyartaikenov.pickamovie.ui.homeviewpager.MovieDetailsFragment"
+        android:label="Movie Details"
+        tools:layout="@layout/fragment_movie_details">
+
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
     <fragment
