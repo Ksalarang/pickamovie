@@ -6,7 +6,7 @@
     android:id="@+id/fragment_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.homeviewpager.MoviesFragment">
+    tools:context=".ui.homeviewpager.movies.MoviesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentViewPagerHomeBinding
+import com.diyartaikenov.pickamovie.ui.homeviewpager.movies.MoviesFragment
+import com.diyartaikenov.pickamovie.ui.homeviewpager.tvshows.TvShowsFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**

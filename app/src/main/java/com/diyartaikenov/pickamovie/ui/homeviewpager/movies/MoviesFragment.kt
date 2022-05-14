@@ -1,4 +1,4 @@
-package com.diyartaikenov.pickamovie.ui.homeviewpager
+package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.os.Bundle
 import android.view.*
@@ -15,6 +15,7 @@ import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
+import com.diyartaikenov.pickamovie.ui.homeviewpager.HomeViewPagerFragmentDirections
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

@@ -1,4 +1,4 @@
-package com.diyartaikenov.pickamovie.ui.homeviewpager
+package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.os.Bundle
 import android.view.LayoutInflater
