@@ -1,6 +1,7 @@
 package com.diyartaikenov.pickamovie.model
 
 import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.repository.network.MoviesApi
 import com.diyartaikenov.pickamovie.repository.network.ProductionCountry
 import java.time.LocalDate
 
@@ -12,10 +13,11 @@ import java.time.LocalDate
 data class Movie(
     val id: Int,
     val title: String,
+    val overview: String?,
     val releaseDate: LocalDate,
-    val posterPath: String? = null,
-    val backdropPath: String? = null,
     val genreIds: List<Int>,
+    val posterPath: String?,
+    val backdropPath: String?,
     val popularity: Double,
     val voteAverage: Double,
     val voteCount: Int,
@@ -54,6 +56,11 @@ data class DetailedMovie(
     val originalTitle: String,
 )
 
+/**
+ * Use the [value] to filter movies by their status when fetching data from the [MoviesApi].
+ *
+ * The [MovieStatus.UNKNOWN] is not supported by the [MoviesApi], it's used in-app only.
+ */
 enum class MovieStatus(val value: String) {
     RUMORED("Rumored"),
     PLANNED("Planned"),

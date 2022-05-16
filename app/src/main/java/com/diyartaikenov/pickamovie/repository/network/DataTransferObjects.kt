@@ -27,7 +27,7 @@ data class NetworkMovieContainer(
 data class NetworkMovie(
     val id: Int,
     val title: String,
-    val overview: String,
+    val overview: String?,
     @Json(name = "release_date")
     val releaseDate: String,
     @Json(name = "genre_ids")
@@ -50,10 +50,11 @@ fun NetworkMovieContainer.asDomainModel(): List<Movie> {
         Movie(
             id = it.id,
             title = it.title,
+            overview = it.overview,
             releaseDate = LocalDate.parse(it.releaseDate),
+            genreIds = it.genreIds,
             posterPath = it.posterPath,
             backdropPath = it.backdropPath,
-            genreIds = it.genreIds,
             popularity = it.popularity,
             voteAverage = it.voteAverage,
             voteCount = it.voteCount
