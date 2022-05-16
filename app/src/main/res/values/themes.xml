@@ -25,6 +25,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
+
     <style name="Widget.PickAMovie.TextView.Minor" parent="Widget.PickAMovie.TextView">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/color_minor_text</item>
@@ -42,5 +43,9 @@
     <!-- MovieDetailsFragment -->
     <style name="ThemeOverlay.PickAMovie" parent="ThemeOverlay.MaterialComponents">
         <item name="elevation">0dp</item>
+    </style>
+
+    <style name="TextAppearance.PickAMovie.CollapsingToolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>

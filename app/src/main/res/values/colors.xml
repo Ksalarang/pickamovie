@@ -7,5 +7,7 @@
     <color name="yellow_500">#FFEB3B</color>
     <color name="red_500">#F44336</color>
 
+    <color name="translucent_black_30">#4D000000</color>
+
     <color name="color_minor_text">#838383</color>
 </resources>

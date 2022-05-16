@@ -66,6 +66,7 @@ class MovieDetailsFragment : Fragment() {
     private fun bindMovie(movie: DetailedMovie) {
 
         binding.apply {
+            expandedToolbarBackground.visibility = View.VISIBLE
             toolbar.title = movie.title
             overview.text = movie.overview ?: getString(R.string.no_overview)
 
