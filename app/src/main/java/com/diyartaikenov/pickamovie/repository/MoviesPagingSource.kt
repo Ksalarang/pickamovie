@@ -8,9 +8,6 @@ import com.diyartaikenov.pickamovie.repository.network.MoviesApi
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.repository.network.asDomainModel
-import retrofit2.HttpException
-import java.io.IOException
-import java.time.format.DateTimeFormatter
 
 private const val STARTING_PAGE_INDEX = 1
 
@@ -23,7 +20,6 @@ class MoviesPagingSource(
         val pageKey = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            // Use the predefined query to get top rated movie list
             val networkResponse = when (queryParams.sortBy) {
                 SortBy.POPULAR -> {
                     moviesApi.getPopularMovies(page = pageKey)
@@ -35,7 +31,7 @@ class MoviesPagingSource(
                     moviesApi.getMovies(
                         page = pageKey,
                         sortBy = queryParams.sortBy.value,
-                        releaseDateLte = queryParams.releaseDateLte.format(DateTimeFormatter.ISO_DATE)
+                        releaseDateLte = queryParams.releaseDateLte.toString()
                     )
                 }
             }
@@ -51,9 +47,7 @@ class MoviesPagingSource(
                 prevKey = prevKey,
                 nextKey = nextKey
             )
-        } catch (e: IOException) {
-            LoadResult.Error(e)
-        } catch (e: HttpException) {
+        } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
