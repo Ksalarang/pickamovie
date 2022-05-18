@@ -23,6 +23,12 @@ class MoviesViewModel @Inject constructor(
     val movieRepository: MovieRepository
 ): ViewModel() {
 
+    var queryParams = QueryParams()
+        private set
+
+    val scope: CoroutineScope
+        get() = viewModelScope
+
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>> = _movies
 
@@ -32,11 +38,11 @@ class MoviesViewModel @Inject constructor(
     private var _genres = MutableLiveData<List<Genre>>()
     val genres: LiveData<List<Genre>> = _genres
 
-    var queryParams = QueryParams()
-        private set
+    private var _networkError = MutableLiveData(false)
+    val networkError: LiveData<Boolean> = _networkError
 
-    val scope: CoroutineScope
-        get() = viewModelScope
+    private var _isNetworkErrorShown = MutableLiveData(false)
+    val isNetworkErrorShown: LiveData<Boolean> = _isNetworkErrorShown
 
     init {
         viewModelScope.launch {
@@ -45,9 +51,18 @@ class MoviesViewModel @Inject constructor(
                     _movies.value = it
                 }
         }
+
+        // Get the updated list of all movie genres
         viewModelScope.launch {
-            movieRepository.getGenres().collectLatest {
-                _genres.value = it
+            val result = movieRepository.getGenres()
+            if (result.isSuccess) {
+                result.getOrNull()!!.collectLatest {
+                    _genres.value = it
+                }
+                _networkError.value = false
+                _isNetworkErrorShown.value = false
+            } else {
+                _networkError.value = true
             }
         }
     }
@@ -68,7 +83,18 @@ class MoviesViewModel @Inject constructor(
      */
     fun refreshMovieDetails(movieId: Int) {
         viewModelScope.launch {
-            _detailedMovie.value = movieRepository.getMovieDetails(movieId)
+            val result = movieRepository.getMovieDetails(movieId)
+            if (result.isSuccess) {
+                _detailedMovie.value = result.getOrNull()!!
+                _networkError.value = false
+                _isNetworkErrorShown.value = false
+            } else {
+                _networkError.value = true
+            }
         }
+    }
+
+    fun onNetworkErrorShown() {
+        _isNetworkErrorShown.value = true
     }
 }

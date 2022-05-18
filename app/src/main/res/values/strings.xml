@@ -26,6 +26,8 @@
 
     <string name="blank_tv_shows">TV Shows</string>
 
+    <string name="network_error">Network error</string>
+
     <!-- Tabs -->
     <string name="tab_label_movies">Movies</string>
     <string name="tab_label_tv_shows">TV shows</string>

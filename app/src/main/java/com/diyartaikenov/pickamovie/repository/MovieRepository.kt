@@ -30,15 +30,23 @@ class MovieRepository @Inject constructor(
         ).flow
     }
 
-    suspend fun getMovieDetails(movieId: Int): DetailedMovie {
-        return moviesApi.getMovieDetails(movieId = movieId).asDomainModel()
+    suspend fun getMovieDetails(movieId: Int): Result<DetailedMovie> {
+        return try {
+            val movie = moviesApi.getMovieDetails(movieId = movieId).asDomainModel()
+            Result.success(movie)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
-    suspend fun getGenres(): Flow<List<Genre>> {
-        val genres = moviesApi.getGenres().genres
-        movieDao.insertGenres(genres)
-
-        return movieDao.getAllGenres()
+    suspend fun getGenres(): Result<Flow<List<Genre>>> {
+        return try {
+            val genres = moviesApi.getGenres().genres
+            movieDao.insertGenres(genres)
+            Result.success(movieDao.getAllGenres())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     fun getGenresById(ids: List<Int>): Flow<List<Genre>> {

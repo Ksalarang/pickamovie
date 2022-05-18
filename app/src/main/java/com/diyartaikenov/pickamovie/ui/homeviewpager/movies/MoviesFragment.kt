@@ -2,6 +2,7 @@ package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -79,6 +80,14 @@ class MoviesFragment : Fragment() {
         moviesViewModel.movies.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
                 adapter.submitData(it)
+            }
+        }
+
+        // Show a message when a network error occurs.
+        moviesViewModel.networkError.observe(viewLifecycleOwner) { isError ->
+            if (isError && !moviesViewModel.isNetworkErrorShown.value!!) {
+                Toast.makeText(context, getString(R.string.network_error), Toast.LENGTH_SHORT).show()
+                moviesViewModel.onNetworkErrorShown()
             }
         }
     }
