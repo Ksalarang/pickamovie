@@ -1,6 +1,7 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMovieDetailsBinding
 import com.diyartaikenov.pickamovie.model.DetailedMovie
+import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.util.IMAGE_BASE_URL
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
@@ -41,8 +43,12 @@ class MovieDetailsFragment : Fragment() {
 
         moviesViewModel.refreshMovieDetails(navArgs.movieId)
 
-        moviesViewModel.detailedMovie.observe(viewLifecycleOwner) { movie ->
+        moviesViewModel.movie.observe(viewLifecycleOwner) { movie ->
             bindMovie(movie)
+        }
+
+        moviesViewModel.detailedMovie.observe(viewLifecycleOwner) { movie ->
+            bindDetailedMovie(movie)
         }
 
         moviesViewModel.networkError.observe(viewLifecycleOwner) { isError ->
@@ -71,8 +77,20 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
-    private fun bindMovie(movie: DetailedMovie) {
+    private fun bindMovie(movie: Movie) {
+        binding.apply {
+            expandedToolbarBackground.visibility = View.VISIBLE
+            toolbar.title = movie.title
+            overview.text = movie.overview ?: getString(R.string.no_overview)
 
+            Glide
+                .with(backdrop.context)
+                .load(IMAGE_BASE_URL + BACKDROP_SIZE + movie.backdropPath)
+                .into(backdrop)
+        }
+    }
+
+    private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
             expandedToolbarBackground.visibility = View.VISIBLE
             toolbar.title = movie.title

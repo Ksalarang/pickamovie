@@ -1,5 +1,6 @@
 package com.diyartaikenov.pickamovie.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import androidx.paging.cachedIn
 import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.repository.MovieRepository
+import com.diyartaikenov.pickamovie.repository.database.DbMovie
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +37,9 @@ class MoviesViewModel @Inject constructor(
     private var _detailedMovie = MutableLiveData<DetailedMovie>()
     val detailedMovie: LiveData<DetailedMovie> = _detailedMovie
 
+    private var _movie = MutableLiveData<Movie>()
+    val movie: LiveData<Movie> = _movie
+
     private var _genres = MutableLiveData<List<Genre>>()
     val genres: LiveData<List<Genre>> = _genres
 
@@ -51,7 +56,6 @@ class MoviesViewModel @Inject constructor(
                     _movies.value = it
                 }
         }
-
         // Get the updated list of all movie genres
         viewModelScope.launch {
             val result = movieRepository.getGenres()
@@ -79,11 +83,24 @@ class MoviesViewModel @Inject constructor(
     }
 
     /**
-     * Get [DetailedMovie] by id from the network and store it in the [detailedMovie] LiveData variable.
+     * First get previously saved [DbMovie] as [Movie] and update the corresponding [movie] LiveData.
+     * Then get [DetailedMovie] from the network and update the [detailedMovie] LiveData.
+     * Listen to both LiveData variables and update the UI.
+     *
+     * This way part of a [Movie] object data is loaded instantly, reducing waiting time.
      */
     fun refreshMovieDetails(movieId: Int) {
         viewModelScope.launch {
-            val result = movieRepository.getMovieDetails(movieId)
+            val result = movieRepository.getMovieById(movieId)
+            if (result.isSuccess) {
+                _movie.value = result.getOrNull()!!
+            } else {
+                Log.d("myTag", "refreshMovieDetails: " +
+                        "${result.exceptionOrNull()!!.message}")
+            }
+        }
+        viewModelScope.launch {
+            val result = movieRepository.getMovieDetailsById(movieId)
             if (result.isSuccess) {
                 _detailedMovie.value = result.getOrNull()!!
                 _networkError.value = false
@@ -96,12 +113,5 @@ class MoviesViewModel @Inject constructor(
 
     fun onNetworkErrorShown() {
         _isNetworkErrorShown.value = true
-    }
-
-    override fun onCleared() {
-        val job = viewModelScope.launch {
-            movieRepository.clearMoviesTable()
-        }
-        job.invokeOnCompletion { super.onCleared() }
     }
 }

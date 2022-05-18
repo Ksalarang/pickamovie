@@ -8,6 +8,7 @@ import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.repository.database.MovieDao
+import com.diyartaikenov.pickamovie.repository.database.asDomainModel
 import com.diyartaikenov.pickamovie.repository.network.MoviesApi
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.asDomainModel
@@ -31,9 +32,9 @@ class MovieRepository @Inject constructor(
         ).flow
     }
 
-    suspend fun getMovieDetails(movieId: Int): Result<DetailedMovie> {
+    suspend fun getMovieDetailsById(id: Int): Result<DetailedMovie> {
         return try {
-            val movie = moviesApi.getMovieDetails(movieId = movieId).asDomainModel()
+            val movie = moviesApi.getMovieDetails(movieId = id).asDomainModel()
             Result.success(movie)
         } catch (e: Exception) {
             Log.d("myTag", "getMovieDetails: ${e.message}")
@@ -41,8 +42,13 @@ class MovieRepository @Inject constructor(
         }
     }
 
-    suspend fun clearMoviesTable() {
-        movieDao.deleteAllMovies()
+    suspend fun getMovieById(id: Int): Result<Movie> {
+        return try {
+            val movie = movieDao.getMovieById(id).asDomainModel()
+            Result.success(movie)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     suspend fun getGenres(): Result<Flow<List<Genre>>> {

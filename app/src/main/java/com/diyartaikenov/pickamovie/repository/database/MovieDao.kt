@@ -30,6 +30,9 @@ interface MovieDao {
         sortOrder: Int,
     ): LiveData<List<DbMovie>>
 
+    @Query("select * from movies where id = :id")
+    suspend fun getMovieById(id: Int): DbMovie
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(movies: List<DbMovie>)
 

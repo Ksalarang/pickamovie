@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.diyartaikenov.pickamovie.model.Movie
+import java.time.LocalDate
 
 @Entity(tableName = "movies")
 @TypeConverters(GenreIdsConverter::class)
@@ -28,3 +30,18 @@ data class DbMovie(
     @ColumnInfo(name = "vote_count")
     val voteCount: Int,
 )
+
+fun DbMovie.asDomainModel(): Movie {
+    return Movie(
+        id = this.id,
+        title = this.title,
+        overview = this.overview,
+        releaseDate = LocalDate.parse(this.releaseDate),
+        genreIds = this.genreIds,
+        posterPath = this.posterPath,
+        backdropPath = this.backdropPath,
+        popularity = this.popularity,
+        voteAverage = this.voteAverage,
+        voteCount = this.voteCount
+    )
+}
