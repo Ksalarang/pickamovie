@@ -13,8 +13,13 @@ class GenreIdsConverter {
         return joiner.toString()
     }
 
+    // todo: toInt() can throw a NumberFormatException
     @TypeConverter
     fun stringToList(value: String): List<Int> {
-        return value.split(",").map { it.toInt() }
+        return if (value.isNotEmpty()) {
+            value.split(",").map { it.toInt() }
+        } else {
+            listOf()
+        }
     }
 }

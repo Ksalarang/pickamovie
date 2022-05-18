@@ -1,5 +1,6 @@
 package com.diyartaikenov.pickamovie.repository
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -26,7 +27,7 @@ class MovieRepository @Inject constructor(
                 pageSize = NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { MoviesPagingSource(moviesApi, queryParams) }
+            pagingSourceFactory = { MoviesPagingSource(moviesApi, queryParams, movieDao) }
         ).flow
     }
 
@@ -35,8 +36,13 @@ class MovieRepository @Inject constructor(
             val movie = moviesApi.getMovieDetails(movieId = movieId).asDomainModel()
             Result.success(movie)
         } catch (e: Exception) {
+            Log.d("myTag", "getMovieDetails: ${e.message}")
             Result.failure(e)
         }
+    }
+
+    suspend fun clearMoviesTable() {
+        movieDao.deleteAllMovies()
     }
 
     suspend fun getGenres(): Result<Flow<List<Genre>>> {
@@ -45,6 +51,7 @@ class MovieRepository @Inject constructor(
             movieDao.insertGenres(genres)
             Result.success(movieDao.getAllGenres())
         } catch (e: Exception) {
+            Log.d("myTag", "getGenres: ${e.message}")
             Result.failure(e)
         }
     }

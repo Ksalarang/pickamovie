@@ -97,4 +97,11 @@ class MoviesViewModel @Inject constructor(
     fun onNetworkErrorShown() {
         _isNetworkErrorShown.value = true
     }
+
+    override fun onCleared() {
+        val job = viewModelScope.launch {
+            movieRepository.clearMoviesTable()
+        }
+        job.invokeOnCompletion { super.onCleared() }
+    }
 }

@@ -8,9 +8,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDao {
 
-    @Query("select * from movies order by popularity desc")
-    fun getPopularMovies(): LiveData<List<DbMovie>>
-
     @Query("select * from movies " +
             "order by " +
             "case when :sortOrder = 0 then " +
@@ -34,7 +31,12 @@ interface MovieDao {
     ): LiveData<List<DbMovie>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(movies: List<DbMovie>)
+    suspend fun insertAll(movies: List<DbMovie>)
+
+    @Query("delete from movies ")
+    suspend fun deleteAllMovies()
+
+    //region Genres
 
     @Query("select * from genres")
     fun getAllGenres(): Flow<List<Genre>>
@@ -44,4 +46,6 @@ interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertGenres(genres: List<Genre>)
+
+    //endregion
 }

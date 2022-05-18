@@ -1,6 +1,7 @@
 package com.diyartaikenov.pickamovie.repository.network
 
 import com.diyartaikenov.pickamovie.model.Movie
+import com.diyartaikenov.pickamovie.repository.database.DbMovie
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -52,6 +53,23 @@ fun NetworkMovieContainer.asDomainModel(): List<Movie> {
             title = it.title,
             overview = it.overview,
             releaseDate = LocalDate.parse(it.releaseDate),
+            genreIds = it.genreIds,
+            posterPath = it.posterPath,
+            backdropPath = it.backdropPath,
+            popularity = it.popularity,
+            voteAverage = it.voteAverage,
+            voteCount = it.voteCount
+        )
+    }
+}
+
+fun NetworkMovieContainer.asDatabaseModel(): List<DbMovie> {
+    return movies.map {
+        DbMovie(
+            id = it.id,
+            title = it.title,
+            overview = it.overview,
+            releaseDate = it.releaseDate,
             genreIds = it.genreIds,
             posterPath = it.posterPath,
             backdropPath = it.backdropPath,

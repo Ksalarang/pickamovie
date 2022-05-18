@@ -1,19 +1,19 @@
 package com.diyartaikenov.pickamovie.repository
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.repository.MovieRepository.Companion.NETWORK_PAGE_SIZE
-import com.diyartaikenov.pickamovie.repository.network.MoviesApi
-import com.diyartaikenov.pickamovie.repository.network.QueryParams
-import com.diyartaikenov.pickamovie.repository.network.SortBy
-import com.diyartaikenov.pickamovie.repository.network.asDomainModel
+import com.diyartaikenov.pickamovie.repository.database.MovieDao
+import com.diyartaikenov.pickamovie.repository.network.*
 
 private const val STARTING_PAGE_INDEX = 1
 
 class MoviesPagingSource(
     private val moviesApi: MoviesApi,
-    private val queryParams: QueryParams
+    private val queryParams: QueryParams,
+    private val moviesDao: MovieDao,
 ): PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
@@ -36,6 +36,8 @@ class MoviesPagingSource(
                 }
             }
 
+            moviesDao.insertAll(networkResponse.asDatabaseModel())
+
             val prevKey = if (pageKey == STARTING_PAGE_INDEX) null else pageKey - 1
 
             val nextKey = if (networkResponse.movies.isEmpty()) null else {
@@ -48,6 +50,7 @@ class MoviesPagingSource(
                 nextKey = nextKey
             )
         } catch (e: Exception) {
+            Log.d("myTag", "load: ${e.message}")
             LoadResult.Error(e)
         }
     }
