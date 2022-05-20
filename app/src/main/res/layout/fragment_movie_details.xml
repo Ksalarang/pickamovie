@@ -41,9 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignBottom="@+id/image"
-                android:visibility="invisible"
                 android:layout_gravity="bottom"
-                android:background="@drawable/scrim_bottom" />
+                android:background="@drawable/scrim_bottom"
+                android:visibility="invisible" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -61,11 +61,121 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/overview"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="4dp"
-            android:padding="12dp" />
+            android:layout_height="match_parent"
+            android:padding="@dimen/default_margin">
+
+            <TextView
+                android:id="@+id/genres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/grey_170"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Action, comedy, phantasy" />
+
+            <ImageView
+                android:id="@+id/tmdb_logo"
+                android:layout_width="40dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:contentDescription="@string/the_movie_db_logo_description"
+                android:src="@drawable/tmdb_logo_short"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/genres" />
+
+            <TextView
+                android:id="@+id/vote_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:textColor="@color/grey_170"
+                app:layout_constraintStart_toEndOf="@id/tmdb_logo"
+                app:layout_constraintTop_toBottomOf="@id/genres"
+                tools:text="7.4" />
+
+            <TextView
+                android:id="@+id/vote_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
+                android:textColor="@color/grey_170"
+                app:layout_constraintStart_toEndOf="@id/vote_average"
+                app:layout_constraintTop_toBottomOf="@id/genres"
+                tools:text="(5343)" />
+
+            <TextView
+                android:id="@+id/separator2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:text="@string/bullet_separator"
+                android:textColor="@color/grey_170"
+                app:layout_constraintStart_toEndOf="@id/vote_count"
+                app:layout_constraintTop_toBottomOf="@id/genres"
+                />
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:textColor="@color/grey_170"
+                app:layout_constraintStart_toEndOf="@id/separator2"
+                app:layout_constraintTop_toBottomOf="@id/genres"
+                tools:text="19.05.2022" />
+
+            <TextView
+                android:id="@+id/separator1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/bullet_separator"
+                android:textColor="@color/grey_170"
+                android:visibility="invisible"
+                app:layout_constraintStart_toEndOf="@id/release_date"
+                app:layout_constraintTop_toBottomOf="@id/genres" />
+
+            <TextView
+                android:id="@+id/runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
+                android:textColor="@color/grey_170"
+                app:layout_constraintStart_toEndOf="@id/separator1"
+                app:layout_constraintTop_toBottomOf="@id/genres"
+                tools:text="125 min" />
+
+            <TextView
+                android:id="@+id/about_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/about_label"
+                android:textColor="@color/grey_170"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tmdb_logo" />
+
+            <TextView
+                android:id="@+id/overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:lineSpacingExtra="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/about_label" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

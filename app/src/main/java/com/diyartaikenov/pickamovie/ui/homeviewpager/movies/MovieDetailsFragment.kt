@@ -1,7 +1,6 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,16 @@ import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMovieDetailsBinding
 import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
+import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.util.IMAGE_BASE_URL
+import com.diyartaikenov.pickamovie.util.setVoteAverageAndColor
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 private const val BACKDROP_SIZE = "/w780"
 
@@ -81,7 +86,15 @@ class MovieDetailsFragment : Fragment() {
         binding.apply {
             expandedToolbarBackground.visibility = View.VISIBLE
             toolbar.title = movie.title
-            overview.text = movie.overview ?: getString(R.string.no_overview)
+            overview.text = if (movie.overview.isNullOrBlank()) {
+                getString(R.string.movie_has_no_overview)
+            } else { movie.overview }
+
+            releaseDate.text = movie.releaseDate
+                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+
+            setVoteAverageAndColor(voteAverage, movie.voteAverage)
+            voteCount.text = String.format("(%d)", movie.voteCount)
 
             Glide
                 .with(backdrop.context)
@@ -92,14 +105,33 @@ class MovieDetailsFragment : Fragment() {
 
     private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
-            expandedToolbarBackground.visibility = View.VISIBLE
-            toolbar.title = movie.title
-            overview.text = movie.overview ?: getString(R.string.no_overview)
+            genres.text = movie.genres.asDecoratedString()
+
+            movie.runtime?.let {
+                separator1.visibility = View.VISIBLE
+                runtime.text = getString(R.string.runtime_mins, it)
+            }
 
             Glide
                 .with(backdrop.context)
                 .load(IMAGE_BASE_URL + BACKDROP_SIZE + movie.backdropPath)
                 .into(backdrop)
         }
+    }
+
+    /**
+     * Take first 4 genres and separate them with a comma.
+     * Capitalize the first letter of the resulting string.
+     */
+    private fun List<Genre>.asDecoratedString(): String {
+        val joiner = StringJoiner(", ")
+        this.take(4).forEach { joiner.add(it.name) }
+
+        var genres = joiner.toString()
+        if (genres.isNotEmpty()) {
+            genres = genres.substring(0, 1).uppercase() +
+                    genres.substring(1).lowercase()
+        }
+        return genres
     }
 }

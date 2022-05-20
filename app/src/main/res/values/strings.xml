@@ -33,9 +33,6 @@
     <string name="tab_label_tv_shows">TV shows</string>
     <string name="tab_label_new">New tab</string>
 
-    <!-- MovieDetailsFragment -->
-    <string name="no_overview">This movie has no overview</string>
-
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
         exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
@@ -48,4 +45,11 @@
         in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
         anim id est laborum.</string>
+
+    <!-- MovieDetailsFragment -->
+    <string name="movie_has_no_overview">This movie has no overview</string>
+    <string name="bullet_separator" translatable="false">•</string>
+    <string name="runtime_mins">%d min</string>
+    <string name="about_label">About</string>
+    <string name="the_movie_db_logo_description">The Movie Db logo</string>
 </resources>

@@ -8,6 +8,9 @@
     <color name="red_500">#F44336</color>
 
     <color name="translucent_black_30">#4D000000</color>
+    <color name="translucent_black_35">#59000000</color>
+    <color name="translucent_black_40">#66000000</color>
 
     <color name="color_minor_text">#838383</color>
+    <color name="grey_170">#AAAAAA</color>
 </resources>

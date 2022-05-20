@@ -2,4 +2,7 @@
 <resources>
     <!-- Approximate status bar height -->
     <dimen name="statusBarHeight">34dp</dimen>
+
+    <dimen name="default_margin">12dp</dimen>
+    <dimen name="default_margin_half">6dp</dimen>
 </resources>

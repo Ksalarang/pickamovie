@@ -31,6 +31,7 @@ data class DetailedMovie(
     val title: String,
     val overview: String?,
     val genres: List<Genre>,
+    // fixme: should be LocalDate
     val releaseDate: String,
     /**
      * Counted in minutes

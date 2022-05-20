@@ -46,6 +46,6 @@
     </style>
 
     <style name="TextAppearance.PickAMovie.CollapsingToolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

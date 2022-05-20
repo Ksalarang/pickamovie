@@ -54,23 +54,24 @@ fun setVoteAverageAndColor(textView: TextView, voteAverage: Double) {
     }
 }
 
-@BindingAdapter("year")
-fun setYear(textView: TextView, date: LocalDate) {
-    textView.text = date.year.toString()
-}
-
-@BindingAdapter("genres", "scope", "repository")
+@BindingAdapter("genreIds", "scope", "repository")
 fun setGenres(
     textView: TextView,
-    genres: List<Int>,
+    genreIds: List<Int>,
     viewModelScope: CoroutineScope,
     repository: MovieRepository
 ) {
     viewModelScope.launch {
-        repository.getGenresById(genres).collectLatest { genres ->
+        repository.getGenresById(genreIds).collectLatest { genreList ->
             val joiner = StringJoiner(", ")
-            genres.take(3).forEach { joiner.add(it.name) }
-            textView.text = joiner.toString()
+            genreList.take(3).forEach { joiner.add(it.name) }
+            var genres = joiner.toString()
+            // Capitalize the first letter
+            if (genres.isNotEmpty()) {
+                genres = genres.substring(0, 1).uppercase() +
+                        genres.substring(1).lowercase()
+            }
+            textView.text = genres
         }
     }
 }
