@@ -66,6 +66,7 @@
             android:layout_height="match_parent"
             android:padding="@dimen/default_margin">
 
+            <!-- Genres -->
             <TextView
                 android:id="@+id/genres"
                 android:layout_width="match_parent"
@@ -78,6 +79,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Action, comedy, phantasy" />
 
+            <!-- Logo, votes, date, runtime -->
             <ImageView
                 android:id="@+id/tmdb_logo"
                 android:layout_width="40dp"
@@ -111,30 +113,29 @@
                 tools:text="(5343)" />
 
             <TextView
-                android:id="@+id/separator2"
+                android:id="@+id/separator1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/bullet_separator"
                 android:textColor="@color/grey_170"
                 app:layout_constraintStart_toEndOf="@id/vote_count"
-                app:layout_constraintTop_toBottomOf="@id/genres"
-                />
+                app:layout_constraintTop_toBottomOf="@id/genres" />
 
             <TextView
                 android:id="@+id/release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
                 android:textColor="@color/grey_170"
-                app:layout_constraintStart_toEndOf="@id/separator2"
+                app:layout_constraintStart_toEndOf="@id/separator1"
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="19.05.2022" />
 
             <TextView
-                android:id="@+id/separator1"
+                android:id="@+id/separator2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin_half"
@@ -152,10 +153,31 @@
                 android:layout_marginStart="@dimen/default_margin_half"
                 android:layout_marginTop="@dimen/default_margin"
                 android:textColor="@color/grey_170"
-                app:layout_constraintStart_toEndOf="@id/separator1"
+                app:layout_constraintStart_toEndOf="@id/separator2"
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="125 min" />
 
+            <TextView
+                android:id="@+id/status_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/status_label"
+                android:textColor="@color/grey_170"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tmdb_logo" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintStart_toEndOf="@id/status_label"
+                app:layout_constraintTop_toBottomOf="@id/tmdb_logo"
+                tools:text="Released" />
+
+            <!-- About -->
             <TextView
                 android:id="@+id/about_label"
                 android:layout_width="wrap_content"
@@ -165,7 +187,7 @@
                 android:textColor="@color/grey_170"
                 android:textSize="22sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tmdb_logo" />
+                app:layout_constraintTop_toBottomOf="@id/status_label" />
 
             <TextView
                 android:id="@+id/overview"

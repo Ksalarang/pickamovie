@@ -106,11 +106,11 @@ class MovieDetailsFragment : Fragment() {
     private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
             genres.text = movie.genres.asDecoratedString()
-
             movie.runtime?.let {
                 separator1.visibility = View.VISIBLE
                 runtime.text = getString(R.string.runtime_mins, it)
             }
+            status.text = resources.getStringArray(R.array.movie_statuses)[movie.status.ordinal]
 
             Glide
                 .with(backdrop.context)

@@ -8,6 +8,7 @@
     <!-- Content description -->
     <string name="description_movie_poster">Movie poster</string>
     <string name="description_movie_backdrop">Movie backdrop</string>
+    <string name="the_movie_db_logo_description">The Movie Db logo</string>
 
     <!-- Home Fragment views -->
     <string name="loading_error">Loading error</string>
@@ -46,10 +47,21 @@
         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
         anim id est laborum.</string>
 
+    <string-array name="movie_statuses">
+        <item>Rumored</item>
+        <item>Planned</item>
+        <item>In production</item>
+        <item>Post production</item>
+        <item>Released</item>
+        <item>Canceled</item>
+        <item>Unknown</item>
+    </string-array>
+
     <!-- MovieDetailsFragment -->
     <string name="movie_has_no_overview">This movie has no overview</string>
     <string name="bullet_separator" translatable="false">•</string>
     <string name="runtime_mins">%d min</string>
     <string name="about_label">About</string>
-    <string name="the_movie_db_logo_description">The Movie Db logo</string>
+    <string name="status_label">Status:</string>
+
 </resources>
