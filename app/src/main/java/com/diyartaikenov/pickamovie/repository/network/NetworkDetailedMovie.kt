@@ -5,6 +5,7 @@ import com.diyartaikenov.pickamovie.model.asMovieStatus
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.LocalDate
 
 @JsonClass(generateAdapter = true)
 /**
@@ -66,7 +67,7 @@ fun NetworkDetailedMovie.asDomainModel(): DetailedMovie {
         title = title,
         overview = overview,
         genres = genres,
-        releaseDate = releaseDate,
+        releaseDate = LocalDate.parse(releaseDate),
         runtime = runtime,
         imdbId = imdbId,
         posterPath = posterPath,
