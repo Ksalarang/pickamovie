@@ -19,12 +19,12 @@ import com.diyartaikenov.pickamovie.util.IMAGE_BASE_URL
 import com.diyartaikenov.pickamovie.util.setVoteAverageAndColor
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 
 private const val BACKDROP_SIZE = "/w780"
+private const val SHORT_OVERVIEW_MAX_LINES = 5
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
@@ -90,6 +90,21 @@ class MovieDetailsFragment : Fragment() {
                 getString(R.string.movie_has_no_overview)
             } else { movie.overview }
 
+            // Wait for the TextView to draw the text,
+            // then perform line count related operations.
+            overview.post {
+                // Show a button to expand the overview when there are too many lines of text.
+                if (overview.lineCount > SHORT_OVERVIEW_MAX_LINES) {
+                    buttonShowMore.visibility = View.VISIBLE
+                    buttonShowMore.setOnClickListener {
+                        overview.maxLines = Integer.MAX_VALUE
+                        buttonShowMore.visibility = View.GONE
+                    }
+                } else {
+                    buttonShowMore.visibility = View.GONE
+                }
+            }
+
             releaseDate.text = movie.releaseDate
                 .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 
@@ -107,7 +122,7 @@ class MovieDetailsFragment : Fragment() {
         binding.apply {
             genres.text = movie.genres.asDecoratedString()
             movie.runtime?.let {
-                separator1.visibility = View.VISIBLE
+                separator2.visibility = View.VISIBLE
                 runtime.text = getString(R.string.runtime_mins, it)
             }
             status.text = resources.getStringArray(R.array.movie_statuses)[movie.status.ordinal]
