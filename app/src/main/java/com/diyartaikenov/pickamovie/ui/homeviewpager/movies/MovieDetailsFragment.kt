@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -48,20 +49,9 @@ class MovieDetailsFragment : Fragment() {
 
         moviesViewModel.refreshMovieDetails(navArgs.movieId)
 
-        moviesViewModel.movie.observe(viewLifecycleOwner) { movie ->
-            bindMovie(movie)
-        }
+        setupShowMoreButton()
 
-        moviesViewModel.detailedMovie.observe(viewLifecycleOwner) { movie ->
-            bindDetailedMovie(movie)
-        }
-
-        moviesViewModel.networkError.observe(viewLifecycleOwner) { isError ->
-            if (isError && !moviesViewModel.isNetworkErrorShown.value!!) {
-                Toast.makeText(context, getString(R.string.network_error), Toast.LENGTH_SHORT).show()
-                moviesViewModel.onNetworkErrorShown()
-            }
-        }
+        moviesViewModel.addObservers()
     }
 
     override fun onStart() {
@@ -82,6 +72,27 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    private fun MoviesViewModel.addObservers() {
+        movie.observe(viewLifecycleOwner) { movie ->
+            bindMovie(movie)
+        }
+
+        detailedMovie.observe(viewLifecycleOwner) { movie ->
+            bindDetailedMovie(movie)
+        }
+
+        networkError.observe(viewLifecycleOwner) { isError ->
+            if (isError && !isNetworkErrorShown.value!!) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.network_error),
+                    Toast.LENGTH_SHORT
+                ).show()
+                onNetworkErrorShown()
+            }
+        }
+    }
+
     private fun bindMovie(movie: Movie) {
         binding.apply {
             expandedToolbarBackground.visibility = View.VISIBLE
@@ -89,21 +100,6 @@ class MovieDetailsFragment : Fragment() {
             overview.text = if (movie.overview.isNullOrBlank()) {
                 getString(R.string.movie_has_no_overview)
             } else { movie.overview }
-
-            // Wait for the TextView to draw the text,
-            // then perform line count related operations.
-            overview.post {
-                // Show a button to expand the overview when there are too many lines of text.
-                if (overview.lineCount > SHORT_OVERVIEW_MAX_LINES) {
-                    buttonShowMore.visibility = View.VISIBLE
-                    buttonShowMore.setOnClickListener {
-                        overview.maxLines = Integer.MAX_VALUE
-                        buttonShowMore.visibility = View.GONE
-                    }
-                } else {
-                    buttonShowMore.visibility = View.GONE
-                }
-            }
 
             releaseDate.text = movie.releaseDate
                 .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
@@ -148,5 +144,29 @@ class MovieDetailsFragment : Fragment() {
                     genres.substring(1).lowercase()
         }
         return genres
+    }
+
+    /**
+     * Add after text changed listener to the overview text view
+     * to show the "Show more" button which expands the overview text
+     * when there are too many lines of it.
+     */
+    private fun setupShowMoreButton() {
+        binding.overview.addTextChangedListener {
+            binding.apply {
+                // Wait for the TextView to draw the text,
+                // then perform the line count related operations.
+                overview.post {
+                    if (overview.lineCount > SHORT_OVERVIEW_MAX_LINES) {
+                        buttonShowMore.visibility = View.VISIBLE
+
+                        buttonShowMore.setOnClickListener {
+                            overview.maxLines = Integer.MAX_VALUE
+                            buttonShowMore.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
     }
 }
