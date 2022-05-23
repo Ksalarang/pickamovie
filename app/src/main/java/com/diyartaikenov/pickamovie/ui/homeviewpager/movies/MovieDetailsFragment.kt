@@ -58,8 +58,9 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         moviesViewModel.refreshMovieDetails(navArgs.movieId)
-        setupShowMoreButton()
         moviesViewModel.addObservers()
+
+        setupShowMoreButton()
     }
 
     override fun onStart() {
@@ -109,9 +110,6 @@ class MovieDetailsFragment : Fragment() {
                 getString(R.string.movie_has_no_overview)
             } else { movie.overview }
 
-            releaseDate.text = movie.releaseDate
-                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-
             setVoteAverageAndColor(voteAverage, movie.voteAverage)
             voteCount.text = String.format("(%d)", movie.voteCount)
 
@@ -124,6 +122,9 @@ class MovieDetailsFragment : Fragment() {
     private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
             genres.text = movie.genres.asDecoratedString()
+            releaseDate.text = movie.releaseDate
+                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+            
             movie.runtime?.let {
                 separatorForRuntime.visibility = View.VISIBLE
                 runtime.text = getString(R.string.runtime_mins, it)
