@@ -117,8 +117,7 @@ class MovieDetailsFragment : Fragment() {
             setVoteAverageAndColor(voteAverage, movie.voteAverage)
             voteCount.text = String.format("(%d)", movie.voteCount)
 
-            Glide
-                .with(backdrop.context)
+            Glide.with(this@MovieDetailsFragment)
                 .load(IMAGE_BASE_URL + BACKDROP_SIZE + movie.backdropPath)
                 .into(backdrop)
         }
@@ -192,8 +191,6 @@ class MovieDetailsFragment : Fragment() {
         videos.forEach { video ->
             val imageView = ImageView(context)
             imageView.layoutParams = layoutParams
-            // todo: load video thumbnail
-            imageView.setBackgroundColor(Color.WHITE)
 
             imageView.setOnClickListener {
                 // Open the video via third-party apps
@@ -211,6 +208,11 @@ class MovieDetailsFragment : Fragment() {
             binding.videosLinearLayout.post {
                 binding.videosLinearLayout.addView(imageView)
             }
+
+            // Load a thumbnail for a video
+            Glide.with(this)
+                .load("https://i.ytimg.com/vi/${video.key}/mqdefault.jpg")
+                .into(imageView)
         }
     }
 }
