@@ -15,6 +15,9 @@ private const val DEFAULT_LANGUAGE = "ru"
 private const val DEFAULT_REGION = "US"
 
 @Singleton
+/**
+ * A class that holds a reference to an instance of [MoviesApi].
+ */
 class MoviesNetwork @Inject constructor() {
 
     private val retrofit = Retrofit.Builder()
@@ -25,8 +28,14 @@ class MoviesNetwork @Inject constructor() {
     val moviesApi: MoviesApi = retrofit.create(MoviesApi::class.java)
 }
 
+/**
+ * A network API that queries *The Movie Db* to get movies related data.
+ */
 interface MoviesApi {
 
+    /**
+     * Get a list of sorted and filtered movies.
+     */
     @GET("discover/movie?api_key=$API_KEY")
     suspend fun getMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
@@ -36,6 +45,9 @@ interface MoviesApi {
         @Query("release_date.lte") releaseDateLte: String,
     ): NetworkMovieContainer
 
+    /**
+     * Get a predefined list of movies that are popular now.
+     */
     @GET("movie/popular?api_key=$API_KEY")
     suspend fun getPopularMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
@@ -43,6 +55,9 @@ interface MoviesApi {
         @Query("page") page: Int,
     ): NetworkMovieContainer
 
+    /**
+     * Get a predefined list of top rated movies.
+     */
     @GET("movie/top_rated?api_key=$API_KEY")
     suspend fun getTopRatedMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
@@ -50,19 +65,28 @@ interface MoviesApi {
         @Query("page") page: Int,
     ): NetworkMovieContainer
 
+    /**
+     * Get movie details by id.
+     */
     @GET("movie/{movie_id}?api_key=$API_KEY")
     suspend fun getDetailedMovie(
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = DEFAULT_LANGUAGE,
     ): NetworkDetailedMovie
 
-    // TODO: include video languages
+    /**
+     * Get movie details with videos included.
+     */
     @GET("movie/{movie_id}?api_key=$API_KEY&append_to_response=videos")
     suspend fun getDetailedMovieWithVideos(
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("include_video_language") videoLanguages: String = "$DEFAULT_LANGUAGE,en"
     ): NetworkDetailedMovie
 
+    /**
+     * Get a list of all movie genres.
+     */
     @GET("genre/movie/list?api_key=$API_KEY")
     suspend fun getGenres(
         @Query("language") language: String = DEFAULT_LANGUAGE,
