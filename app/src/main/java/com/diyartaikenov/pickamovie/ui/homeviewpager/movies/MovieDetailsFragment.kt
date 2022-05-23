@@ -1,7 +1,11 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -185,13 +189,24 @@ class MovieDetailsFragment : Fragment() {
         )
         layoutParams.setMargins(convertDpToPixels(4, requireContext()))
 
-        videos.forEach {
+        videos.forEach { video ->
             val imageView = ImageView(context)
             imageView.layoutParams = layoutParams
             // todo: load video thumbnail
             imageView.setBackgroundColor(Color.WHITE)
 
-            // TODO: add click listener to open the link
+            imageView.setOnClickListener {
+                // Open the video via third-party apps
+                val webIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.youtube.com/watch?v=${video.key}")
+                )
+                try {
+                    startActivity(webIntent)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(context, getString(R.string.no_app_can_open_url), Toast.LENGTH_SHORT).show()
+                }
+            }
 
             binding.videosLinearLayout.post {
                 binding.videosLinearLayout.addView(imageView)
