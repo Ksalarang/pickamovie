@@ -58,9 +58,7 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         moviesViewModel.refreshMovieDetails(navArgs.movieId)
-
         setupShowMoreButton()
-
         moviesViewModel.addObservers()
     }
 
@@ -168,7 +166,7 @@ class MovieDetailsFragment : Fragment() {
 
                         buttonShowMore.setOnClickListener {
                             overview.maxLines = Integer.MAX_VALUE
-                            buttonShowMore.visibility = View.GONE
+                            buttonShowMore.visibility = View.INVISIBLE
                         }
                     }
                 }
@@ -186,7 +184,7 @@ class MovieDetailsFragment : Fragment() {
             convertDpToPixels(160, requireContext()),
             LinearLayout.LayoutParams.MATCH_PARENT
         )
-        layoutParams.setMargins(convertDpToPixels(4, requireContext()))
+        layoutParams.setMargins(convertDpToPixels(6, requireContext()))
 
         videos.forEach { video ->
             val imageView = ImageView(context)
