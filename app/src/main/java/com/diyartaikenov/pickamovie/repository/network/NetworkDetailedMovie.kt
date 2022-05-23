@@ -1,6 +1,7 @@
 package com.diyartaikenov.pickamovie.repository.network
 
 import com.diyartaikenov.pickamovie.model.DetailedMovie
+import com.diyartaikenov.pickamovie.model.MovieVideo
 import com.diyartaikenov.pickamovie.model.asMovieStatus
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.squareup.moshi.Json
@@ -49,6 +50,8 @@ data class NetworkDetailedMovie(
     val originalLanguage: String,
     @Json(name = "original_title")
     val originalTitle: String,
+    @Json(name = "videos")
+    val videosResponse: NetworkMovieVideosResponse,
 )
 
 @JsonClass(generateAdapter = true)
@@ -59,6 +62,35 @@ data class ProductionCountry(
      */
     val isoCode: String,
     val name: String,
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkMovieVideosResponse(
+    @Json(name = "results")
+    val videos: List<NetworkMovieVideo>
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkMovieVideo(
+    @Json(name = "iso_639_1")
+    /**
+     * ISO-639-1 2-letter language code. Example: 'en' for English
+     */
+    val language: String,
+    @Json(name = "iso_3166_1")
+    /**
+     * ISO-3166-1 2-letter region code. Example: 'US' for USA
+     */
+    val region: String,
+    val name: String,
+    val key: String,
+    val site: String,
+    val size: Int,
+    val type: String,
+    val official: Boolean,
+    @Json(name = "published_at")
+    val publishedAt: String,
+    val id: String,
 )
 
 fun NetworkDetailedMovie.asDomainModel(): DetailedMovie {
@@ -79,6 +111,24 @@ fun NetworkDetailedMovie.asDomainModel(): DetailedMovie {
         status = status.asMovieStatus(),
         productionCountries = productionCountries,
         originalLanguage = originalLanguage,
-        originalTitle = originalTitle
+        originalTitle = originalTitle,
+        videos = videosResponse.videos.asDomainModel(),
     )
+}
+
+fun List<NetworkMovieVideo>.asDomainModel(): List<MovieVideo> {
+    return this.map {
+        MovieVideo(
+            language = it.language,
+            region = it.region,
+            name = it.name,
+            key = it.key,
+            site = it.site,
+            size = it.size,
+            type = it.type,
+            official = it.official,
+            publishedAt = it.publishedAt,
+            id = it.id,
+        )
+    }
 }

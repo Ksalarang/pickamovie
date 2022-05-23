@@ -54,6 +54,26 @@ data class DetailedMovie(
     val productionCountries: List<ProductionCountry>,
     val originalLanguage: String,
     val originalTitle: String,
+    val videos: List<MovieVideo>,
+)
+
+data class MovieVideo(
+    /**
+     * ISO-639-1 2-letter language code. Example: 'en' for English
+     */
+    val language: String,
+    /**
+     * ISO-3166-1 2-letter region code. Example: 'US' for USA
+     */
+    val region: String,
+    val name: String,
+    val key: String,
+    val site: String,
+    val size: Int,
+    val type: String,
+    val official: Boolean,
+    val publishedAt: String,
+    val id: String,
 )
 
 /**

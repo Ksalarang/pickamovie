@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
+import com.diyartaikenov.pickamovie.model.MovieVideo
 import com.diyartaikenov.pickamovie.repository.MovieRepository
 import com.diyartaikenov.pickamovie.repository.database.DbMovie
 import com.diyartaikenov.pickamovie.repository.database.Genre
@@ -25,6 +26,7 @@ class MoviesViewModel @Inject constructor(
     val movieRepository: MovieRepository
 ): ViewModel() {
 
+    // FIXME: add docs to fields and methods
     var queryParams = QueryParams()
         private set
 
@@ -100,7 +102,7 @@ class MoviesViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val result = movieRepository.getMovieDetailsById(movieId)
+            val result = movieRepository.getDetailedMovieById(movieId)
             if (result.isSuccess) {
                 _detailedMovie.value = result.getOrNull()!!
                 _networkError.value = false
@@ -113,5 +115,14 @@ class MoviesViewModel @Inject constructor(
 
     fun onNetworkErrorShown() {
         _isNetworkErrorShown.value = true
+    }
+
+    /**
+     * Return only official YouTube trailers.
+     */
+    fun filterVideos(videos: List<MovieVideo>): List<MovieVideo> {
+        return videos.filter {
+            it.official && it.site == "YouTube" && it.type == "Trailer"
+        }
     }
 }

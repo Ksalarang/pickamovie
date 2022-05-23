@@ -51,7 +51,14 @@ interface MoviesApi {
     ): NetworkMovieContainer
 
     @GET("movie/{movie_id}?api_key=$API_KEY")
-    suspend fun getMovieDetails(
+    suspend fun getDetailedMovie(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+    ): NetworkDetailedMovie
+
+    // TODO: include video languages
+    @GET("movie/{movie_id}?api_key=$API_KEY&append_to_response=videos")
+    suspend fun getDetailedMovieWithVideos(
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = DEFAULT_LANGUAGE,
     ): NetworkDetailedMovie

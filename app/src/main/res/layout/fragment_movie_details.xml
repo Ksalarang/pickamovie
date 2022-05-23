@@ -112,6 +112,7 @@
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="(5343)" />
 
+            <!-- todo: rename the id -->
             <TextView
                 android:id="@+id/separator1"
                 android:layout_width="wrap_content"
@@ -134,6 +135,8 @@
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="19.05.2022" />
 
+            <!-- todo: give id that makes sense to surrounding views -->
+            <!-- todo: don't forget to rename the id in the fragment too -->
             <TextView
                 android:id="@+id/separator2"
                 android:layout_width="wrap_content"
@@ -196,8 +199,8 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:lineSpacingExtra="4dp"
                 android:maxLines="5"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/about_label" />
 
             <TextView
@@ -211,6 +214,20 @@
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/overview" />
+
+            <HorizontalScrollView
+                android:id="@+id/videos_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_show_more">
+
+                <LinearLayout
+                    android:id="@+id/videos_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

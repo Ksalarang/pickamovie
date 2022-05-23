@@ -32,9 +32,9 @@ class MovieRepository @Inject constructor(
         ).flow
     }
 
-    suspend fun getMovieDetailsById(id: Int): Result<DetailedMovie> {
+    suspend fun getDetailedMovieById(id: Int): Result<DetailedMovie> {
         return try {
-            val movie = moviesApi.getMovieDetails(movieId = id).asDomainModel()
+            val movie = moviesApi.getDetailedMovieWithVideos(movieId = id).asDomainModel()
             Result.success(movie)
         } catch (e: Exception) {
             Log.d("myTag", "getMovieDetails: ${e.message}")

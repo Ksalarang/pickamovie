@@ -1,10 +1,14 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.view.setMargins
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,9 +18,11 @@ import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMovieDetailsBinding
 import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
+import com.diyartaikenov.pickamovie.model.MovieVideo
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.util.IMAGE_BASE_URL
+import com.diyartaikenov.pickamovie.util.convertDpToPixels
 import com.diyartaikenov.pickamovie.util.setVoteAverageAndColor
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -123,10 +129,7 @@ class MovieDetailsFragment : Fragment() {
             }
             status.text = resources.getStringArray(R.array.movie_statuses)[movie.status.ordinal]
 
-            Glide
-                .with(backdrop.context)
-                .load(IMAGE_BASE_URL + BACKDROP_SIZE + movie.backdropPath)
-                .into(backdrop)
+            addVideoViews(moviesViewModel.filterVideos(movie.videos))
         }
     }
 
@@ -166,6 +169,32 @@ class MovieDetailsFragment : Fragment() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Add videos as [ImageView]s to the [binding]'s **videosLinearLayout**.
+     * Each view display a video thumbnail. Tapping a view will open the link to the video.
+     */
+    private fun addVideoViews(videos: List<MovieVideo>) {
+        // Layout params for image views for each movie trailer
+        val layoutParams = LinearLayout.LayoutParams(
+            convertDpToPixels(160, requireContext()),
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+        layoutParams.setMargins(convertDpToPixels(4, requireContext()))
+
+        videos.forEach {
+            val imageView = ImageView(context)
+            imageView.layoutParams = layoutParams
+            // todo: load video thumbnail
+            imageView.setBackgroundColor(Color.WHITE)
+
+            // TODO: add click listener to open the link
+
+            binding.videosLinearLayout.post {
+                binding.videosLinearLayout.addView(imageView)
             }
         }
     }
