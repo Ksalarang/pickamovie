@@ -112,9 +112,8 @@
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="(5343)" />
 
-            <!-- todo: rename the id -->
             <TextView
-                android:id="@+id/separator1"
+                android:id="@+id/separator_for_release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin_half"
@@ -131,14 +130,12 @@
                 android:layout_marginStart="@dimen/default_margin_half"
                 android:layout_marginTop="@dimen/default_margin"
                 android:textColor="@color/grey_170"
-                app:layout_constraintStart_toEndOf="@id/separator1"
+                app:layout_constraintStart_toEndOf="@id/separator_for_release_date"
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="19.05.2022" />
 
-            <!-- todo: give id that makes sense to surrounding views -->
-            <!-- todo: don't forget to rename the id in the fragment too -->
             <TextView
-                android:id="@+id/separator2"
+                android:id="@+id/separator_for_runtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin_half"
@@ -156,7 +153,7 @@
                 android:layout_marginStart="@dimen/default_margin_half"
                 android:layout_marginTop="@dimen/default_margin"
                 android:textColor="@color/grey_170"
-                app:layout_constraintStart_toEndOf="@id/separator2"
+                app:layout_constraintStart_toEndOf="@id/separator_for_runtime"
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="125 min" />
 
