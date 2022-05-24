@@ -67,4 +67,5 @@
     <string name="show_less">Show less</string>
     <string name="no_app_can_open_url">No app can open this link</string>
     <string name="trailers_label">Trailers</string>
+    <string name="countries_label">Production countries:</string>
 </resources>

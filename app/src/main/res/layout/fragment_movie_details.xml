@@ -157,6 +157,7 @@
                 app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="125 min" />
 
+            <!-- Movie status -->
             <TextView
                 android:id="@+id/status_label"
                 android:layout_width="wrap_content"
@@ -177,6 +178,33 @@
                 app:layout_constraintTop_toBottomOf="@id/tmdb_logo"
                 tools:text="Released" />
 
+            <!-- Production countries -->
+            <TextView
+                android:id="@+id/countries_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/countries_label"
+                android:textColor="@color/grey_170"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/status_label" />
+
+            <TextView
+                android:id="@+id/countries"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:layout_marginTop="@dimen/default_margin"
+                android:maxLines="2"
+                android:ellipsize="end"
+                app:layout_constraintStart_toEndOf="@id/countries_label"
+                app:layout_constraintTop_toBottomOf="@id/status_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="The United States of America, Italy" />
+
+            <!-- Warning: constrain all the below views to the 'countries' TextView,
+             not 'countries_label', as 'countries' TextView' maxLines is 2. -->
+
             <!-- About -->
             <TextView
                 android:id="@+id/about_label"
@@ -187,7 +215,7 @@
                 android:textColor="@color/grey_170"
                 android:textSize="22sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/status_label" />
+                app:layout_constraintTop_toBottomOf="@id/countries" />
 
             <TextView
                 android:id="@+id/overview"
