@@ -2,10 +2,8 @@ package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,16 +21,15 @@ import com.diyartaikenov.pickamovie.databinding.FragmentMovieDetailsBinding
 import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.model.MovieVideo
-import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.util.IMAGE_BASE_URL
 import com.diyartaikenov.pickamovie.util.convertDpToPixels
+import com.diyartaikenov.pickamovie.util.join
 import com.diyartaikenov.pickamovie.util.setVoteAverageAndColor
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.util.*
 
 private const val BACKDROP_SIZE = "/w780"
 private const val SHORT_OVERVIEW_MAX_LINES = 5
@@ -105,7 +102,7 @@ class MovieDetailsFragment : Fragment() {
     private fun bindMovie(movie: Movie) {
         binding.apply {
             expandedToolbarBackground.visibility = View.VISIBLE
-            toolbar.title = movie.title
+            toolbar.title = movie.title.ifEmpty { "-" }
             overview.text = if (movie.overview.isNullOrBlank()) {
                 getString(R.string.movie_has_no_overview)
             } else { movie.overview }
@@ -121,9 +118,10 @@ class MovieDetailsFragment : Fragment() {
 
     private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
-            genres.text = movie.genres.asDecoratedString()
+            genres.text = movie.genres.map { it.name }
+                .join(4, true, "-")
             releaseDate.text = movie.releaseDate
-                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)).ifEmpty { "-" }
             
             movie.runtime?.let {
                 separatorForRuntime.visibility = View.VISIBLE
@@ -131,29 +129,16 @@ class MovieDetailsFragment : Fragment() {
             }
             status.text = resources.getStringArray(R.array.movie_statuses)[movie.status.ordinal]
 
+            countries.text = movie.productionCountries.map { it.name }
+                .join(n = 3, defaultReturnValue = "-")
+
             addVideoViews(moviesViewModel.filterVideos(movie.videos))
         }
     }
 
     /**
-     * Take first 4 genres and separate them with a comma.
-     * Capitalize the first letter of the resulting string.
-     */
-    private fun List<Genre>.asDecoratedString(): String {
-        val joiner = StringJoiner(", ")
-        this.take(4).forEach { joiner.add(it.name) }
-
-        var genres = joiner.toString()
-        if (genres.isNotEmpty()) {
-            genres = genres.substring(0, 1).uppercase() +
-                    genres.substring(1).lowercase()
-        }
-        return genres
-    }
-
-    /**
      * Add after text changed listener to the overview text view
-     * to show the "Show more" button which expands the overview text
+     * to show the "Show more" button. The button expands the overview text
      * when there are too many lines of it.
      */
     private fun setupShowMoreButton() {
