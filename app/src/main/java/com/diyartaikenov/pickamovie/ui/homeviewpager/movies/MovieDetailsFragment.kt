@@ -131,7 +131,8 @@ class MovieDetailsFragment : Fragment() {
             genres.text = movie.genres.map { it.name }
                 .join(4, true, BLANK_SIGN)
             releaseDate.text = movie.releaseDate
-                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)).ifEmpty { BLANK_SIGN }
+                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+                .ifEmpty { BLANK_SIGN }
             
             movie.runtime?.let {
                 separatorForRuntime.visibility = View.VISIBLE
