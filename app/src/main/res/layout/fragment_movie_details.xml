@@ -66,17 +66,32 @@
             android:layout_height="match_parent"
             android:padding="@dimen/default_margin">
 
+            <!-- Original title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/original_title"
+                android:textColor="@color/grey_170"
+                android:textSize="18sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Original title"
+                />
+
             <!-- Genres -->
             <TextView
                 android:id="@+id/genres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/grey_170"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/original_title"
                 tools:text="Action, comedy, phantasy" />
 
             <!-- Logo, votes, date, runtime -->

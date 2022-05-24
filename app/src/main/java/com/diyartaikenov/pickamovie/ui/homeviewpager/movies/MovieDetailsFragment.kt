@@ -33,6 +33,7 @@ import java.time.format.FormatStyle
 
 private const val BACKDROP_SIZE = "/w780"
 private const val SHORT_OVERVIEW_MAX_LINES = 5
+private const val BLANK_SIGN = "-"
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
@@ -102,7 +103,7 @@ class MovieDetailsFragment : Fragment() {
     private fun bindMovie(movie: Movie) {
         binding.apply {
             expandedToolbarBackground.visibility = View.VISIBLE
-            toolbar.title = movie.title.ifEmpty { "-" }
+            toolbar.title = movie.title.ifEmpty { BLANK_SIGN }
             overview.text = if (movie.overview.isNullOrBlank()) {
                 getString(R.string.movie_has_no_overview)
             } else { movie.overview }
@@ -118,10 +119,11 @@ class MovieDetailsFragment : Fragment() {
 
     private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
+            originalTitle.text = movie.originalTitle.ifEmpty { BLANK_SIGN }
             genres.text = movie.genres.map { it.name }
-                .join(4, true, "-")
+                .join(4, true, BLANK_SIGN)
             releaseDate.text = movie.releaseDate
-                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)).ifEmpty { "-" }
+                .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)).ifEmpty { BLANK_SIGN }
             
             movie.runtime?.let {
                 separatorForRuntime.visibility = View.VISIBLE
@@ -130,7 +132,7 @@ class MovieDetailsFragment : Fragment() {
             status.text = resources.getStringArray(R.array.movie_statuses)[movie.status.ordinal]
 
             countries.text = movie.productionCountries.map { it.name }
-                .join(n = 3, defaultReturnValue = "-")
+                .join(n = 3, defaultReturnValue = BLANK_SIGN)
 
             addVideoViews(moviesViewModel.filterVideos(movie.videos))
         }
