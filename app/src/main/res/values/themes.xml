@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+    <!-- TODO: COPY CHANGES TO NIGHT/THEMES.XML! -->
     <style name="Theme.PickAMovie" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#16232E</item>
@@ -19,6 +20,8 @@
         <!-- General views -->
         <item name="android:textViewStyle">@style/Widget.PickAMovie.TextView</item>
         <item name="tabStyle">@style/Widget.PickAMovie.TabLayout</item>
+
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="Widget.PickAMovie.TextView" parent="Widget.AppCompat.TextView">
