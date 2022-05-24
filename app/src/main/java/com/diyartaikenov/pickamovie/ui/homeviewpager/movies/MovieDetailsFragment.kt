@@ -104,6 +104,11 @@ class MovieDetailsFragment : Fragment() {
         binding.apply {
             expandedToolbarBackground.visibility = View.VISIBLE
             toolbar.title = movie.title.ifEmpty { BLANK_SIGN }
+            expandedToolbarBackground.setOnClickListener {
+                // Search in google "watch <movie's title>"
+                val query = "${getString(R.string.watch)} ${movie.title}"
+                viewUri("https://www.google.com/search?q=$query")
+            }
             overview.text = if (movie.overview.isNullOrBlank()) {
                 getString(R.string.movie_has_no_overview)
             } else { movie.overview }
@@ -119,7 +124,10 @@ class MovieDetailsFragment : Fragment() {
 
     private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
-            originalTitle.text = movie.originalTitle.ifEmpty { BLANK_SIGN }
+            if (movie.title != movie.originalTitle) {
+                originalTitle.visibility = View.VISIBLE
+                originalTitle.text = movie.originalTitle.ifEmpty { BLANK_SIGN }
+            }
             genres.text = movie.genres.map { it.name }
                 .join(4, true, BLANK_SIGN)
             releaseDate.text = movie.releaseDate
@@ -192,15 +200,7 @@ class MovieDetailsFragment : Fragment() {
 
             imageView.setOnClickListener {
                 // Open the video via third-party apps
-                val webIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.youtube.com/watch?v=${video.key}")
-                )
-                try {
-                    startActivity(webIntent)
-                } catch (e: ActivityNotFoundException) {
-                    Toast.makeText(context, getString(R.string.no_app_can_open_url), Toast.LENGTH_SHORT).show()
-                }
+                viewUri("https://www.youtube.com/watch?v=${video.key}")
             }
 
             binding.videosLinearLayout.post {
@@ -211,6 +211,18 @@ class MovieDetailsFragment : Fragment() {
             Glide.with(this)
                 .load("https://i.ytimg.com/vi/${video.key}/mqdefault.jpg")
                 .into(imageView)
+        }
+    }
+
+    private fun viewUri(uri: String) {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(uri)
+        )
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, getString(R.string.no_app_can_open_uri), Toast.LENGTH_SHORT).show()
         }
     }
 }
