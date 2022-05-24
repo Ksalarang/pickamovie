@@ -194,6 +194,11 @@ class MovieDetailsFragment : Fragment() {
         )
         layoutParams.setMargins(convertDpToPixels(6, requireContext()))
 
+        if (videos.isNotEmpty()) {
+            binding.trailersLabel.visibility = View.VISIBLE
+            binding.videosScrollview.visibility = View.VISIBLE
+        }
+
         videos.forEach { video ->
             val imageView = ImageView(context)
             imageView.layoutParams = layoutParams
