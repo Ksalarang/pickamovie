@@ -162,12 +162,19 @@ class MovieDetailsFragment : Fragment() {
                 // Wait for the TextView to draw the text,
                 // then perform the line count related operations.
                 overview.post {
+                    // Display 'Show more' button if there are too many lines of text
                     if (overview.lineCount > SHORT_OVERVIEW_MAX_LINES) {
                         buttonShowMore.visibility = View.VISIBLE
 
                         buttonShowMore.setOnClickListener {
-                            overview.maxLines = Integer.MAX_VALUE
-                            buttonShowMore.visibility = View.INVISIBLE
+                            // Expand or shrink text
+                            if (buttonShowMore.text == getString(R.string.show_more)) {
+                                overview.maxLines = Integer.MAX_VALUE
+                                buttonShowMore.text = getString(R.string.show_less)
+                            } else {
+                                overview.maxLines = SHORT_OVERVIEW_MAX_LINES
+                                buttonShowMore.text = getString(R.string.show_more)
+                            }
                         }
                     }
                 }

@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@string/button_show_more"
+                android:text="@string/show_more"
                 android:textColor="?attr/colorSecondary"
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
