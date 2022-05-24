@@ -214,6 +214,9 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    /**
+     * Start activity with implicit intent constructed with [Intent.ACTION_VIEW] and a [uri] string.
+     */
     private fun viewUri(uri: String) {
         val intent = Intent(
             Intent.ACTION_VIEW,
