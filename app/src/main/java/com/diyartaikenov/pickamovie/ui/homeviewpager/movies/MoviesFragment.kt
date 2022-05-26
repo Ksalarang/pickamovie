@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.*
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
@@ -29,6 +30,7 @@ class MoviesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val moviesViewModel: MoviesViewModel by viewModels()
+    private var adapter: MovieListAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,29 +45,23 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MovieListAdapter(moviesViewModel) { movie ->
-            findNavController().navigate(
-                HomeViewPagerFragmentDirections.actionNavHomeToNavMovieDetails(movie.id)
-            )
-        }
-
-        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                if (positionStart == 0) {
-                    binding.recyclerView.scrollToPosition(0)
-                }
+        if (adapter == null) {
+            adapter = MovieListAdapter(moviesViewModel) { movie ->
+                findNavController().navigate(
+                    HomeViewPagerFragmentDirections.actionNavHomeToNavMovieDetails(movie.id)
+                )
             }
-        })
+        }
 
         binding.apply {
             recyclerView.adapter = adapter
-            retryButton.setOnClickListener { adapter.retry() }
+            retryButton.setOnClickListener { adapter!!.retry() }
         }
 
         lifecycleScope.launch {
-            adapter.loadStateFlow.collect { loadStates ->
+            adapter!!.loadStateFlow.collect { loadStates ->
                 val isListEmpty = loadStates.refresh is LoadState.NotLoading
-                        && adapter.itemCount == 0
+                        && adapter!!.itemCount == 0
 
                 binding.apply {
                     tvNoResults.isVisible = isListEmpty
@@ -79,7 +75,7 @@ class MoviesFragment : Fragment() {
 
         moviesViewModel.movies.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
-                adapter.submitData(it)
+                adapter!!.submitData(it)
             }
         }
 
@@ -91,6 +87,8 @@ class MoviesFragment : Fragment() {
             }
         }
     }
+
+    //region Options menu
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.options_menu, menu)
@@ -148,4 +146,5 @@ class MoviesFragment : Fragment() {
 
         return false
     }
+    //endregion
 }
