@@ -13,7 +13,7 @@
     <!-- Home Fragment views -->
     <string name="loading_error">Loading error</string>
     <string name="no_results">No results</string>
-    <string name="button_retry">Retry</string>
+    <string name="retry">Retry</string>
     <string name="no_internet">No Internet</string>
 
     <!-- MoviesFragment options menu -->

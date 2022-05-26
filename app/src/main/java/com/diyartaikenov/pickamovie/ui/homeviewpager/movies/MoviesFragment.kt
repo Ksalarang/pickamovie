@@ -9,8 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.*
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
@@ -18,6 +16,7 @@ import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.ui.homeviewpager.HomeViewPagerFragmentDirections
+import com.diyartaikenov.pickamovie.ui.homeviewpager.loadstateadapter.MoviesLoadStateAdapter
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -54,10 +53,30 @@ class MoviesFragment : Fragment() {
         }
 
         binding.apply {
-            recyclerView.adapter = adapter
+            val errorMessage = getString(R.string.no_internet)
+            recyclerView.adapter = adapter!!.withLoadStateHeaderAndFooter(
+                header = MoviesLoadStateAdapter(errorMessage) { adapter!!.retry() },
+                footer = MoviesLoadStateAdapter(errorMessage) { adapter!!.retry() }
+            )
             retryButton.setOnClickListener { adapter!!.retry() }
         }
 
+        moviesViewModel.movies.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                adapter!!.submitData(it)
+            }
+        }
+
+        // Show a toast when a network error occurs.
+        moviesViewModel.networkError.observe(viewLifecycleOwner) { isError ->
+            if (isError && !moviesViewModel.isNetworkErrorShown.value!!) {
+                Toast.makeText(context, getString(R.string.network_error), Toast.LENGTH_SHORT)
+                    .show()
+                moviesViewModel.onNetworkErrorShown()
+            }
+        }
+
+        // Collect load states and show views corresponding to the states
         lifecycleScope.launch {
             adapter!!.loadStateFlow.collect { loadStates ->
                 val isListEmpty = loadStates.refresh is LoadState.NotLoading
@@ -70,20 +89,6 @@ class MoviesFragment : Fragment() {
                     retryButton.isVisible = loadStates.refresh is LoadState.Error
                     tvNoInternet.isVisible = loadStates.refresh is LoadState.Error
                 }
-            }
-        }
-
-        moviesViewModel.movies.observe(viewLifecycleOwner) {
-            lifecycleScope.launch {
-                adapter!!.submitData(it)
-            }
-        }
-
-        // Show a message when a network error occurs.
-        moviesViewModel.networkError.observe(viewLifecycleOwner) { isError ->
-            if (isError && !moviesViewModel.isNetworkErrorShown.value!!) {
-                Toast.makeText(context, getString(R.string.network_error), Toast.LENGTH_SHORT).show()
-                moviesViewModel.onNetworkErrorShown()
             }
         }
     }
@@ -117,7 +122,8 @@ class MoviesFragment : Fragment() {
                 return true
             }
             R.id.sort_by_date_desc -> {
-                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_DESC)
+                moviesViewModel.getMoviesWithQuery(
+                    QueryParams(SortBy.RELEASE_DATE_DESC)
                 )
                 item.isChecked = true
                 return true
