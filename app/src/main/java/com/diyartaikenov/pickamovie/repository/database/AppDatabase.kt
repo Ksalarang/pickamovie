@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    version = 3,
+    version = 4,
     exportSchema = false,
     entities = [DbMovie::class, Genre::class]
 )

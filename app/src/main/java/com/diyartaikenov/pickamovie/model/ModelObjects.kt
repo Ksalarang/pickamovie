@@ -21,6 +21,7 @@ data class Movie(
     val popularity: Double,
     val voteAverage: Double,
     val voteCount: Int,
+    val originalTitle: String,
 )
 
 /**

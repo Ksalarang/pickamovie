@@ -139,6 +139,10 @@ class MovieDetailsFragment : Fragment() {
                 val query = "${getString(R.string.watch)} ${movie.title}"
                 viewUri("https://www.google.com/search?q=$query")
             }
+            if (movie.title != movie.originalTitle) {
+                originalTitle.visibility = View.VISIBLE
+                originalTitle.text = movie.originalTitle.ifEmpty { BLANK_SIGN }
+            }
             overview.text = if (movie.overview.isNullOrBlank()) {
                 getString(R.string.movie_has_no_overview)
             } else { movie.overview }
@@ -154,10 +158,6 @@ class MovieDetailsFragment : Fragment() {
 
     private fun bindDetailedMovie(movie: DetailedMovie) {
         binding.apply {
-            if (movie.title != movie.originalTitle) {
-                originalTitle.visibility = View.VISIBLE
-                originalTitle.text = movie.originalTitle.ifEmpty { BLANK_SIGN }
-            }
             genres.text = movie.genres.map { it.name }
                 .join(4, true, BLANK_SIGN)
             releaseDate.text = movie.releaseDate

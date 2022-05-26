@@ -44,6 +44,8 @@ data class NetworkMovie(
     val voteAverage: Double,
     @Json(name = "vote_count")
     val voteCount: Int,
+    @Json(name = "original_title")
+    val originalTitle: String
 )
 
 fun NetworkMovieContainer.asDomainModel(): List<Movie> {
@@ -58,7 +60,8 @@ fun NetworkMovieContainer.asDomainModel(): List<Movie> {
             backdropPath = it.backdropPath,
             popularity = it.popularity,
             voteAverage = it.voteAverage,
-            voteCount = it.voteCount
+            voteCount = it.voteCount,
+            originalTitle = it.originalTitle,
         )
     }
 }
@@ -75,7 +78,8 @@ fun NetworkMovieContainer.asDatabaseModel(): List<DbMovie> {
             backdropPath = it.backdropPath,
             popularity = it.popularity,
             voteAverage = it.voteAverage,
-            voteCount = it.voteCount
+            voteCount = it.voteCount,
+            originalTitle = it.originalTitle,
         )
     }
 }

@@ -18,17 +18,17 @@ data class DbMovie(
     val releaseDate: String,
     @ColumnInfo(name = "genre_ids")
     val genreIds: List<Int>,
-
     @ColumnInfo(name = "poster_path")
     val posterPath: String?,
     @ColumnInfo(name = "backdrop_path")
     val backdropPath: String?,
-
     val popularity: Double,
     @ColumnInfo(name = "vote_average")
     val voteAverage: Double,
     @ColumnInfo(name = "vote_count")
     val voteCount: Int,
+    @ColumnInfo(name = "original_title")
+    val originalTitle: String,
 )
 
 fun DbMovie.asDomainModel(): Movie {
@@ -42,6 +42,7 @@ fun DbMovie.asDomainModel(): Movie {
         backdropPath = this.backdropPath,
         popularity = this.popularity,
         voteAverage = this.voteAverage,
-        voteCount = this.voteCount
+        voteCount = this.voteCount,
+        originalTitle = this.originalTitle,
     )
 }
