@@ -22,12 +22,14 @@ class MovieRepository @Inject constructor(
     private val moviesApi: MoviesApi
 ) {
 
+    private val pagingConfig = PagingConfig(
+        pageSize =  NETWORK_PAGE_SIZE,
+        enablePlaceholders = false,
+    )
+
     fun getMovies(queryParams: QueryParams): Flow<PagingData<Movie>> {
         return Pager(
-            config = PagingConfig(
-                pageSize = NETWORK_PAGE_SIZE,
-                enablePlaceholders = false
-            ),
+            config = pagingConfig,
             pagingSourceFactory = { MoviesPagingSource(moviesApi, queryParams, movieDao) }
         ).flow
     }
