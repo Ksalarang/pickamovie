@@ -2,6 +2,7 @@ package com.diyartaikenov.pickamovie.util
 
 import android.content.Context
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -45,4 +46,14 @@ fun convertDpToPixels(dp: Int, context: Context): Int {
                 items.substring(1).lowercase()
     }
     return items.ifEmpty { defaultReturnValue }
+}
+
+fun getAttributeResource(attributeResId: Int, context: Context): Int {
+    val typedValue = TypedValue()
+    context.theme.resolveAttribute(
+        attributeResId,
+        typedValue,
+        true
+    )
+    return typedValue.data
 }

@@ -22,11 +22,9 @@ import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.model.MovieVideo
 import com.diyartaikenov.pickamovie.ui.MainActivity
-import com.diyartaikenov.pickamovie.util.IMAGE_BASE_URL
-import com.diyartaikenov.pickamovie.util.convertDpToPixels
-import com.diyartaikenov.pickamovie.util.join
-import com.diyartaikenov.pickamovie.util.setVoteAverageAndColor
+import com.diyartaikenov.pickamovie.util.*
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -58,6 +56,33 @@ class MovieDetailsFragment : Fragment() {
         moviesViewModel.refreshMovieDetails(navArgs.movieId)
         moviesViewModel.addObservers()
 
+        binding.apply {
+            swipeRefreshLayout.apply {
+                setOnRefreshListener {
+                    moviesViewModel.refreshMovieDetails(navArgs.movieId)
+                }
+                setProgressViewOffset(
+                    true,
+                    convertDpToPixels(30, requireContext()),
+                    convertDpToPixels(90, requireContext())
+                )
+
+                setProgressBackgroundColorSchemeColor(
+                    getAttributeResource(R.attr.colorPrimary, requireContext())
+                )
+                setColorSchemeColors(
+                    getAttributeResource(R.attr.colorSecondary, requireContext())
+                )
+            }
+
+            // allow swipe-to-refresh only when the toolbar is collapsed
+            appbarLayout.addOnOffsetChangedListener(
+                AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+                    swipeRefreshLayout.isEnabled = verticalOffset == 0
+                }
+            )
+        }
+
         setupShowMoreButton()
     }
 
@@ -86,16 +111,21 @@ class MovieDetailsFragment : Fragment() {
 
         detailedMovie.observe(viewLifecycleOwner) { movie ->
             bindDetailedMovie(movie)
+            binding.swipeRefreshLayout.isRefreshing = false
         }
 
         networkError.observe(viewLifecycleOwner) { isError ->
-            if (isError && !isNetworkErrorShown.value!!) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.network_error),
-                    Toast.LENGTH_SHORT
-                ).show()
-                onNetworkErrorShown()
+            if (isError) {
+                binding.swipeRefreshLayout.isRefreshing = false
+
+                if (!isNetworkErrorShown.value!!) {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.network_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onNetworkErrorShown()
+                }
             }
         }
     }
