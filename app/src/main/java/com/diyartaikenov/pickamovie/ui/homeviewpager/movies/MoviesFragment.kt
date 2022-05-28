@@ -30,6 +30,7 @@ class MoviesFragment : Fragment() {
 
     private val moviesViewModel: MoviesViewModel by viewModels()
     private var adapter: MovieListAdapter? = null
+    private lateinit var movieFiltersDialogFragment: MovieFiltersDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,6 +92,8 @@ class MoviesFragment : Fragment() {
                 }
             }
         }
+
+        movieFiltersDialogFragment = MovieFiltersDialogFragment()
     }
 
     //region Options menu
@@ -132,6 +135,13 @@ class MoviesFragment : Fragment() {
                 moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_ASC))
                 item.isChecked = true
                 return true
+            }
+
+            R.id.option_filter_by -> {
+                movieFiltersDialogFragment.show(
+                    requireActivity().supportFragmentManager,
+                    "movieFiltersDialogFragment"
+                )
             }
 
             R.id.option_show_popular -> {

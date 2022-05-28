@@ -22,6 +22,7 @@
     <string name="sort_by_rating_desc">Rating</string>
     <string name="sort_by_date_desc">Date (newest)</string>
     <string name="sort_by_date_asc">Date (oldest)</string>
+    <string name="option_filter_by">Filter by</string>
     <string name="option_show_popular">Popular Movies</string>
     <string name="option_show_top_rated">Top Rated Movies</string>
 
@@ -69,4 +70,8 @@
     <string name="trailers_label">Trailers</string>
     <string name="countries_label">Production countries:</string>
     <string name="watch">watch</string>
+
+    <!-- Movie filters -->
+    <string name="genres_label">Genres</string>
+    <string name="apply">Apply</string>
 </resources>
