@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -15,16 +14,12 @@ import androidx.core.view.allViews
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.DialogFragmentMovieFiltersBinding
-import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
-import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class MovieFiltersDialogFragment(
@@ -60,13 +55,16 @@ class MovieFiltersDialogFragment(
             // Create a TextView for each genre and display it in this Dialog
             genres.forEach { genre ->
                 val genreView = TextView(context).apply {
-                    setupAttributes()
+                    setupAttributes(this)
                     text = genre.name
                     tag = genre.id
-                    isSelected = false
-
+                    // Set this genre textView selected by performing
+                    // a click on it, if it was selected before.
+                    if (moviesViewModel.queryParams.withGenres.contains(genre.id)) {
+                        onGenreViewClick(this)
+                    }
                     setOnClickListener {
-                        genreViewOnClick(this)
+                        onGenreViewClick(this)
                     }
                 }
                 binding.flexboxLayout.post {
@@ -75,22 +73,32 @@ class MovieFiltersDialogFragment(
             }
         }
         binding.buttonApplyFilters.setOnClickListener {
-            val genresIds = StringJoiner(",")
-            binding.flexboxLayout.allViews.filter { it.isSelected }.forEach {
-                genresIds.add(it.tag.toString())
-            }
-            val queryParams = QueryParams(
-                sortBy = moviesViewModel.queryParams.sortBy,
-                withGenres = if (genresIds.length() == 0) null else genresIds.toString(),
-            )
-            moviesViewModel.getMoviesWithQuery(queryParams)
-            dismiss()
+            onApplyingFilters()
         }
 
         return binding.root
     }
 
-    private fun genreViewOnClick(textView: TextView) {
+    /**
+     * Get movie data from network according to the applied filters.
+     */
+    private fun onApplyingFilters() {
+        val genresIds = mutableListOf<Int>()
+        binding.flexboxLayout.allViews.filter { it.isSelected }.forEach {
+            genresIds.add(it.tag as Int)
+        }
+        val queryParams = QueryParams(
+            sortBy = moviesViewModel.queryParams.sortBy,
+            withGenres = genresIds,
+        )
+        moviesViewModel.getMoviesWithQuery(queryParams)
+        dismiss()
+    }
+
+    /**
+     * Change the [textView]'s selection state and its background color accordingly.
+     */
+    private fun onGenreViewClick(textView: TextView) {
         textView.apply {
             isSelected = !isSelected
             background = if (isSelected) {
@@ -109,20 +117,25 @@ class MovieFiltersDialogFragment(
         }
     }
 
-    private fun TextView.setupAttributes() {
-        layoutParams = genreViewLayoutParams
-        setPadding(resources.getDimensionPixelSize(R.dimen.filter_genres_padding))
-        background = ResourcesCompat.getDrawable(
-            resources,
-            R.drawable.shape_rounded_corners,
-            context.theme
-        )
-        isClickable = true
-        isFocusable = true
-        setTextSize(
-            TypedValue.COMPLEX_UNIT_PX,
-            resources.getDimension(R.dimen.filter_genres_text_size)
-        )
+    /**
+     * Set up attributes common for all genre textViews.
+     */
+    private fun setupAttributes(textView: TextView) {
+        textView.apply {
+            layoutParams = genreViewLayoutParams
+            setPadding(resources.getDimensionPixelSize(R.dimen.filter_genres_padding))
+            background = ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.shape_rounded_corners,
+                context.theme
+            )
+            isClickable = true
+            isFocusable = true
+            setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                resources.getDimension(R.dimen.filter_genres_text_size)
+            )
+        }
     }
 
     override fun onDestroyView() {

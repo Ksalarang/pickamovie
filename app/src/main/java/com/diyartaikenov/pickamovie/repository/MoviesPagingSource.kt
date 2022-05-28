@@ -30,24 +30,16 @@ class MoviesPagingSource(
                 else -> {
                     // If withGenres value is null,
                     // query movie results without filtering by genres
-                    if (queryParams.withGenres == null) {
-                        moviesApi.getMovies(
-                            page = pageKey,
-                            sortBy = queryParams.sortBy.value,
-                            releaseDateLte = queryParams.releaseDateLte.toString(),
-                        )
-                    } else {
-                        moviesApi.getMovies(
-                            page = pageKey,
-                            sortBy = queryParams.sortBy.value,
-                            releaseDateLte = queryParams.releaseDateLte.toString(),
-                            withGenres = queryParams.withGenres,
-                            withoutGenres = queryParams.withoutGenres,
-                        )
-                    }
+                    moviesApi.getMovies(
+                        page = pageKey,
+                        sortBy = queryParams.sortBy.value,
+                        releaseDateLte = queryParams.releaseDateLte.toString(),
+                        withGenres = queryParams.withGenresAsString(),
+                        withoutGenres = queryParams.withoutGenres,
+                    )
                 }
             }
-
+            // Persist the movie data in the db to retrieve it later when getting movie details.
             moviesDao.insertAll(networkResponse.asDatabaseModel())
 
             val prevKey = if (pageKey == STARTING_PAGE_INDEX) null else pageKey - 1

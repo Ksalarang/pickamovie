@@ -6,12 +6,13 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.time.LocalDate
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val BASE_URL = "https://api.themoviedb.org/3/"
 private const val API_KEY = "ae79897238ffe8dff6aae654a4a07455"
-private const val DEFAULT_LANGUAGE = "ru"
+private const val DEFAULT_LANGUAGE = "en"
 private const val DEFAULT_REGION = "US"
 
 @Singleton
@@ -36,15 +37,6 @@ interface MoviesApi {
     /**
      * Get a list of sorted and filtered movies.
      */
-    @GET("discover/movie?api_key=$API_KEY")
-    suspend fun getMovies(
-        @Query("language") language: String = DEFAULT_LANGUAGE,
-        @Query("region") region: String = DEFAULT_REGION,
-        @Query("page") page: Int,
-        @Query("sort_by") sortBy: String,
-        @Query("release_date.lte") releaseDateLte: String,
-    ): NetworkMovieContainer
-
     @GET("discover/movie?api_key=$API_KEY")
     suspend fun getMovies(
         @Query("language") language: String = DEFAULT_LANGUAGE,
@@ -105,7 +97,7 @@ interface MoviesApi {
 }
 
 /**
- * Query parameters for network queries.
+ * Query parameters to sort and filter data through network requests.
  */
 class QueryParams(
     val sortBy: SortBy = SortBy.POPULARITY_DESC,
@@ -114,9 +106,27 @@ class QueryParams(
      * (looking at all release dates) that is less than or equal to the specified value.
      */
     val releaseDateLte: LocalDate = LocalDate.now(),
-    val withGenres: String? = null,
+    /**
+     * Genre ids to include in the results.
+     */
+    val withGenres: List<Int> = listOf(),
+    /**
+     * Genre ids to exclude from the results.
+     */
     val withoutGenres: String = "",
-)
+) {
+
+    /**
+     * Represent genre ids as a string with values separated by a comma.
+     */
+    fun withGenresAsString(): String {
+        val genreIdsJoiner = StringJoiner(",")
+        withGenres.forEach { genreId ->
+            genreIdsJoiner.add(genreId.toString())
+        }
+        return genreIdsJoiner.toString()
+    }
+}
 
 /**
  * Sort options for network queries.

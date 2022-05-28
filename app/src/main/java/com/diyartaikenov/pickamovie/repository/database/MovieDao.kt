@@ -47,7 +47,7 @@ interface MovieDao {
     @Query("select * from genres where id in (:ids)")
     fun getGenresById(ids: List<Int>): Flow<List<Genre>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGenres(genres: List<Genre>)
 
     //endregion
