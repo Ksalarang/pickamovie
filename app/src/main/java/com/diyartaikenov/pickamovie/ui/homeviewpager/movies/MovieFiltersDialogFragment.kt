@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,6 +100,10 @@ class MovieFiltersDialogFragment: DialogFragment() {
         )
         isClickable = true
         isFocusable = true
+        setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            resources.getDimension(R.dimen.filter_genres_text_size)
+        )
     }
 
     override fun onDestroyView() {
