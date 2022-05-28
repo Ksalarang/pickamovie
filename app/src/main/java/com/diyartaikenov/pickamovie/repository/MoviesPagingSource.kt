@@ -28,11 +28,23 @@ class MoviesPagingSource(
                     moviesApi.getTopRatedMovies(page = pageKey)
                 }
                 else -> {
-                    moviesApi.getMovies(
-                        page = pageKey,
-                        sortBy = queryParams.sortBy.value,
-                        releaseDateLte = queryParams.releaseDateLte.toString()
-                    )
+                    // If withGenres value is null,
+                    // query movie results without filtering by genres
+                    if (queryParams.withGenres == null) {
+                        moviesApi.getMovies(
+                            page = pageKey,
+                            sortBy = queryParams.sortBy.value,
+                            releaseDateLte = queryParams.releaseDateLte.toString(),
+                        )
+                    } else {
+                        moviesApi.getMovies(
+                            page = pageKey,
+                            sortBy = queryParams.sortBy.value,
+                            releaseDateLte = queryParams.releaseDateLte.toString(),
+                            withGenres = queryParams.withGenres,
+                            withoutGenres = queryParams.withoutGenres,
+                        )
+                    }
                 }
             }
 

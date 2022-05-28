@@ -1,6 +1,7 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -93,7 +94,7 @@ class MoviesFragment : Fragment() {
             }
         }
 
-        movieFiltersDialogFragment = MovieFiltersDialogFragment()
+        movieFiltersDialogFragment = MovieFiltersDialogFragment(moviesViewModel)
     }
 
     //region Options menu
@@ -125,9 +126,7 @@ class MoviesFragment : Fragment() {
                 return true
             }
             R.id.sort_by_date_desc -> {
-                moviesViewModel.getMoviesWithQuery(
-                    QueryParams(SortBy.RELEASE_DATE_DESC)
-                )
+                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_DESC))
                 item.isChecked = true
                 return true
             }
@@ -142,6 +141,7 @@ class MoviesFragment : Fragment() {
                     requireActivity().supportFragmentManager,
                     "movieFiltersDialogFragment"
                 )
+                return true
             }
 
             R.id.option_show_popular -> {

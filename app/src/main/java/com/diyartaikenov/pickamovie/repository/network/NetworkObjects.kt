@@ -45,6 +45,17 @@ interface MoviesApi {
         @Query("release_date.lte") releaseDateLte: String,
     ): NetworkMovieContainer
 
+    @GET("discover/movie?api_key=$API_KEY")
+    suspend fun getMovies(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("region") region: String = DEFAULT_REGION,
+        @Query("page") page: Int,
+        @Query("sort_by") sortBy: String,
+        @Query("release_date.lte") releaseDateLte: String,
+        @Query("with_genres") withGenres: String,
+        @Query("without_genres") withoutGenres: String,
+    ): NetworkMovieContainer
+
     /**
      * Get a predefined list of movies that are popular now.
      */
@@ -103,6 +114,8 @@ class QueryParams(
      * (looking at all release dates) that is less than or equal to the specified value.
      */
     val releaseDateLte: LocalDate = LocalDate.now(),
+    val withGenres: String? = null,
+    val withoutGenres: String = "",
 )
 
 /**
