@@ -95,6 +95,11 @@ class MoviesFragment : Fragment() {
         movieFiltersDialogFragment = MovieFiltersDialogFragment(moviesViewModel)
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
     //region Options menu
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
