@@ -5,7 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -27,7 +27,7 @@ class MoviesFragment : Fragment() {
     private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!
 
-    private val moviesViewModel: MoviesViewModel by viewModels()
+    private val moviesViewModel: MoviesViewModel by activityViewModels()
     private var adapter: MovieListAdapter? = null
     private lateinit var movieFiltersDialogFragment: MovieFiltersDialogFragment
 
@@ -92,7 +92,7 @@ class MoviesFragment : Fragment() {
             }
         }
 
-        movieFiltersDialogFragment = MovieFiltersDialogFragment(moviesViewModel)
+        movieFiltersDialogFragment = MovieFiltersDialogFragment()
     }
 
     override fun onDestroyView() {

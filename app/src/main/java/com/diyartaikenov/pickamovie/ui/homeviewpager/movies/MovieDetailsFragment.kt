@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import android.widget.Toast
 import androidx.core.view.setMargins
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.diyartaikenov.pickamovie.R
@@ -40,7 +39,7 @@ class MovieDetailsFragment : Fragment() {
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val moviesViewModel: MoviesViewModel by viewModels()
+    private val moviesViewModel: MoviesViewModel by activityViewModels()
     private val navArgs: MovieDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
