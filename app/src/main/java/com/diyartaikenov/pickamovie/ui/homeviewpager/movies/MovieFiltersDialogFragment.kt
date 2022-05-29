@@ -87,11 +87,9 @@ class MovieFiltersDialogFragment(
         binding.flexboxLayout.allViews.filter { it.isSelected }.forEach {
             genresIds.add(it.tag as Int)
         }
-        val queryParams = QueryParams(
-            sortBy = moviesViewModel.queryParams.sortBy,
+        moviesViewModel.getMoviesWithQueryParams(
             withGenres = genresIds,
         )
-        moviesViewModel.getMoviesWithQuery(queryParams)
         dismiss()
     }
 

@@ -1,7 +1,6 @@
 package com.diyartaikenov.pickamovie.ui.homeviewpager.movies
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -12,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
-import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
@@ -116,22 +114,30 @@ class MoviesFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sort_by_popularity_desc -> {
-                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.POPULARITY_DESC))
+                moviesViewModel.getMoviesWithQueryParams(
+                    sortBy = SortBy.POPULARITY_DESC,
+                )
                 item.isChecked = true
                 return true
             }
             R.id.sort_by_rating_desc -> {
-                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.VOTE_AVERAGE_DESC))
+                moviesViewModel.getMoviesWithQueryParams(
+                    sortBy = SortBy.VOTE_AVERAGE_DESC,
+                )
                 item.isChecked = true
                 return true
             }
             R.id.sort_by_date_desc -> {
-                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_DESC))
+                moviesViewModel.getMoviesWithQueryParams(
+                    sortBy = SortBy.RELEASE_DATE_DESC,
+                )
                 item.isChecked = true
                 return true
             }
             R.id.sort_by_date_asc -> {
-                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.RELEASE_DATE_ASC))
+                moviesViewModel.getMoviesWithQueryParams(
+                    sortBy = SortBy.RELEASE_DATE_ASC,
+                )
                 item.isChecked = true
                 return true
             }
@@ -145,14 +151,23 @@ class MoviesFragment : Fragment() {
             }
 
             R.id.option_show_popular -> {
-                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.POPULAR))
+                moviesViewModel.getMoviesWithQueryParams(
+                    sortBy = SortBy.POPULAR,
+                    withGenres = listOf(),
+                    withoutGenres = listOf(),
+                )
                 (requireActivity() as MainActivity)
                     .supportActionBar?.title = getString(R.string.option_show_popular)
 
                 return true
             }
             R.id.option_show_top_rated -> {
-                moviesViewModel.getMoviesWithQuery(QueryParams(SortBy.TOP_RATED))
+                moviesViewModel.getMoviesWithQueryParams(
+                    sortBy = SortBy.TOP_RATED,
+                    withGenres = listOf(),
+                    withoutGenres = listOf(),
+                )
+                // FIXME: set the title to default when the predefined list is unselected
                 (requireActivity() as MainActivity)
                     .supportActionBar?.title = getString(R.string.option_show_top_rated)
 

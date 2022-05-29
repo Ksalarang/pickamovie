@@ -14,11 +14,13 @@ import com.diyartaikenov.pickamovie.repository.MovieRepository
 import com.diyartaikenov.pickamovie.repository.database.DbMovie
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
+import com.diyartaikenov.pickamovie.repository.network.SortBy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -73,9 +75,18 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun getMoviesWithQuery(queryParams: QueryParams) {
-        this.queryParams = queryParams
-
+    fun getMoviesWithQueryParams(
+        sortBy: SortBy = queryParams.sortBy,
+        releaseDateLte: LocalDate = queryParams.releaseDateLte,
+        withGenres: List<Int> = queryParams.withGenres,
+        withoutGenres: List<Int> = queryParams.withoutGenres,
+    ) {
+        queryParams = QueryParams(
+            sortBy,
+            releaseDateLte,
+            withGenres,
+            withoutGenres,
+        )
         viewModelScope.launch {
             movieRepository.getMovies(queryParams)
                 .cachedIn(viewModelScope).collect {

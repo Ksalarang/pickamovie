@@ -39,12 +39,45 @@ interface MoviesApi {
      */
     @GET("discover/movie?api_key=$API_KEY")
     suspend fun getMovies(
+        /**
+         * Specify a language to query translatable fields with.
+         *
+         * minLength: 2, pattern: ([a-z]{2})-([A-Z]{2}), default: en-US
+         */
         @Query("language") language: String = DEFAULT_LANGUAGE,
+        /**
+         * Specify a ISO 3166-1 code to filter release dates. Must be uppercase.
+         *
+         * pattern: ^[A-Z]{2}$
+         */
         @Query("region") region: String = DEFAULT_REGION,
+        /**
+         * Specify the page of results to query.
+         * Min: 1, max: 1000, default: 1.
+         */
         @Query("page") page: Int,
+        /**
+         * Choose from one of the many available sort options.
+         *
+         * Allowed Values: popularity.asc, popularity.desc, release_date.asc,
+         * release_date.desc, revenue.asc, revenue.desc, primary_release_date.asc,
+         * primary_release_date.desc, original_title.asc, original_title.desc,
+         * vote_average.asc, vote_average.desc, vote_count.asc, vote_count.desc.
+         * default: popularity.desc
+         */
         @Query("sort_by") sortBy: String,
+        /**
+         * Filter and only include movies that have a release date
+         * (looking at all release dates) that is less than or equal to the specified value.
+         */
         @Query("release_date.lte") releaseDateLte: String,
+        /**
+         * Comma separated string of genre ids to include in the results.
+         */
         @Query("with_genres") withGenres: String,
+        /**
+         * Comma separated string of genre ids to exclude from the results.
+         */
         @Query("without_genres") withoutGenres: String,
     ): NetworkMovieContainer
 
@@ -69,15 +102,6 @@ interface MoviesApi {
     ): NetworkMovieContainer
 
     /**
-     * Get movie details by id.
-     */
-    @GET("movie/{movie_id}?api_key=$API_KEY")
-    suspend fun getDetailedMovie(
-        @Path("movie_id") movieId: Int,
-        @Query("language") language: String = DEFAULT_LANGUAGE,
-    ): NetworkDetailedMovie
-
-    /**
      * Get movie details with videos included.
      */
     @GET("movie/{movie_id}?api_key=$API_KEY&append_to_response=videos")
@@ -98,40 +122,20 @@ interface MoviesApi {
 
 /**
  * Query parameters to sort and filter data through network requests.
+ * @see MoviesApi.getMovies
  */
 class QueryParams(
     val sortBy: SortBy = SortBy.POPULARITY_DESC,
-    /**
-     * Filter and only include movies that have a release date
-     * (looking at all release dates) that is less than or equal to the specified value.
-     */
     val releaseDateLte: LocalDate = LocalDate.now(),
-    /**
-     * Genre ids to include in the results.
-     */
     val withGenres: List<Int> = listOf(),
-    /**
-     * Genre ids to exclude from the results.
-     */
-    val withoutGenres: String = "",
-) {
-
-    /**
-     * Represent genre ids as a string with values separated by a comma.
-     */
-    fun withGenresAsString(): String {
-        val genreIdsJoiner = StringJoiner(",")
-        withGenres.forEach { genreId ->
-            genreIdsJoiner.add(genreId.toString())
-        }
-        return genreIdsJoiner.toString()
-    }
-}
+    val withoutGenres: List<Int> = listOf(),
+)
 
 /**
  * Sort options for network queries.
  *
  * Use [SortBy.value] for [MoviesApi.getMovies()]'s **sortBy** query parameter.
+ * @see MoviesApi
  */
 enum class SortBy(val value: String) {
     POPULARITY_DESC("popularity.desc"),
@@ -141,4 +145,15 @@ enum class SortBy(val value: String) {
 
     POPULAR(""),
     TOP_RATED("")
+}
+
+/**
+ * Represent a list of integers as a string with values separated by a comma.
+ */
+fun List<Int>.asString(): String {
+    val genreIdsJoiner = StringJoiner(",")
+    forEach { genreId ->
+        genreIdsJoiner.add(genreId.toString())
+    }
+    return genreIdsJoiner.toString()
 }

@@ -34,8 +34,8 @@ class MoviesPagingSource(
                         page = pageKey,
                         sortBy = queryParams.sortBy.value,
                         releaseDateLte = queryParams.releaseDateLte.toString(),
-                        withGenres = queryParams.withGenresAsString(),
-                        withoutGenres = queryParams.withoutGenres,
+                        withGenres = queryParams.withGenres.asString(),
+                        withoutGenres = queryParams.withoutGenres.asString(),
                     )
                 }
             }
