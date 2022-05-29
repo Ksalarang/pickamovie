@@ -16,7 +16,6 @@ import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.DialogFragmentMovieFiltersBinding
-import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MovieFiltersDialogFragment(
     private val moviesViewModel: MoviesViewModel
-): DialogFragment() {
+) : DialogFragment() {
 
     private var _binding: DialogFragmentMovieFiltersBinding? = null
     private val binding get() = _binding!!
