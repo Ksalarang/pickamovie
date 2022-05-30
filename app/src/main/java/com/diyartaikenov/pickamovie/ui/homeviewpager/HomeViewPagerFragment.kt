@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentViewPagerHomeBinding
+import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.ui.homeviewpager.movies.MoviesFragment
 import com.diyartaikenov.pickamovie.ui.homeviewpager.tvshows.TvShowsFragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -45,6 +46,11 @@ class HomeViewPagerFragment : Fragment() {
         }.attach()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).setSupportActionBar(binding.toolbar)
     }
 
     override fun onDestroyView() {

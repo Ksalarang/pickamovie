@@ -87,19 +87,13 @@ class MovieDetailsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        (requireActivity() as MainActivity).apply {
-            setBottomNavigationVisibility(View.GONE)
-            supportActionBar?.hide()
-        }
+        (requireActivity() as MainActivity).setBottomNavigationVisibility(View.GONE)
     }
 
     override fun onStop() {
         super.onStop()
 
-        (requireActivity() as MainActivity).apply {
-            setBottomNavigationVisibility(View.VISIBLE)
-            supportActionBar?.show()
-        }
+        (requireActivity() as MainActivity).setBottomNavigationVisibility(View.VISIBLE)
     }
 
     override fun onDestroyView() {
