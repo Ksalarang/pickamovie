@@ -17,6 +17,7 @@ import androidx.fragment.app.activityViewModels
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.DialogFragmentMovieFiltersBinding
 import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -125,7 +126,16 @@ class MovieFiltersDialogFragment : DialogFragment() {
         genreViews.filter { it.isSelected }.forEach {
             genresIds.add(it.tag as Int)
         }
-        moviesViewModel.getMoviesWithQueryParams(withGenres = genresIds)
+        var sortBy = moviesViewModel.queryParams.sortBy
+        // Fall back to default sort parameter if the predefined lists where selected before.
+        // The predefined lists are popular movies and top rated movies.
+        if (sortBy == SortBy.POPULAR || sortBy == SortBy.TOP_RATED) {
+            sortBy = SortBy.POPULARITY_DESC
+        }
+        moviesViewModel.getMoviesWithQueryParams(
+            sortBy = sortBy,
+            withGenres = genresIds,
+        )
         dismiss()
     }
 
