@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="600dp"
     android:background="?attr/colorPrimary"
@@ -12,8 +13,24 @@
         android:layout_height="wrap_content"
         android:text="@string/genres_label"
         android:textColor="@color/grey_170"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/button_clear_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:clickable="true"
+        android:textSize="18sp"
+        android:focusable="true"
+        android:text="@string/clear_selection"
+        android:background="?android:attr/selectableItemBackground"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.flexbox.FlexboxLayout
@@ -35,6 +52,5 @@
         android:layout_margin="18dp"
         android:text="@string/apply"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/flexbox_layout"
-        />
+        app:layout_constraintTop_toBottomOf="@id/flexbox_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

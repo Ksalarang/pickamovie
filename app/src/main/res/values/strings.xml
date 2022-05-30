@@ -74,4 +74,5 @@
     <!-- Movie filters -->
     <string name="genres_label">Genres</string>
     <string name="apply">Apply</string>
+    <string name="clear_selection">Clear selection</string>
 </resources>

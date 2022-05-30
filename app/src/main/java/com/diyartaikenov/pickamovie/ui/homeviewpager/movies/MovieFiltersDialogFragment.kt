@@ -10,13 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.allViews
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.DialogFragmentMovieFiltersBinding
+import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +33,12 @@ class MovieFiltersDialogFragment : DialogFragment() {
         FlexboxLayout.LayoutParams.WRAP_CONTENT,
         FlexboxLayout.LayoutParams.WRAP_CONTENT
     )
+
+    /**
+     * A list that contains all [Genre] views. It's filled when the genre list
+     * is received from the [moviesViewModel].
+     */
+    private val genreViews: MutableList<TextView> = mutableListOf()
 
     @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -55,16 +61,19 @@ class MovieFiltersDialogFragment : DialogFragment() {
             // Create a TextView for each genre and display it in this Dialog
             genres.forEach { genre ->
                 val genreView = TextView(context).apply {
+                    genreViews.add(this)
                     setupAttributes(this)
                     text = genre.name
                     tag = genre.id
-                    // Set this genre textView selected by performing
-                    // a click on it, if it was selected before.
+                    // Mark this genre view as selected if it was selected by the user before.
                     if (moviesViewModel.queryParams.withGenres.contains(genre.id)) {
-                        onGenreViewClick(this)
+                        setGenreViewSelection(this, true)
                     }
                     setOnClickListener {
-                        onGenreViewClick(this)
+                        // Toggle selection state of this genre view
+                        setGenreViewSelection(this, !this.isSelected)
+                        binding.buttonClearSelection.isEnabled =
+                            genreViews.any { it.isSelected }
                     }
                 }
                 binding.flexboxLayout.post {
@@ -72,11 +81,40 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 }
             }
         }
-        binding.buttonApplyFilters.setOnClickListener {
-            onApplyingFilters()
+        binding.apply {
+            buttonClearSelection.isEnabled = genreViews.any { it.isSelected }
+            buttonClearSelection.setOnClickListener { button ->
+                genreViews.filter { it.isSelected }.forEach {
+                    setGenreViewSelection(it, false)
+                }
+                button.isEnabled = genreViews.any { it.isSelected }
+            }
+            buttonApplyFilters.setOnClickListener {
+                onApplyingFilters()
+            }
         }
 
         return binding.root
+    }
+
+    /**
+     * Set this view's selection state and its background.
+     */
+    private fun setGenreViewSelection(view: View, isSelected: Boolean) {
+        view.isSelected = isSelected
+        view.background = if (isSelected) {
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.shape_rounded_corners_colored,
+                requireContext().theme
+            )
+        } else {
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.shape_rounded_corners,
+                requireContext().theme
+            )
+        }
     }
 
     /**
@@ -84,35 +122,11 @@ class MovieFiltersDialogFragment : DialogFragment() {
      */
     private fun onApplyingFilters() {
         val genresIds = mutableListOf<Int>()
-        binding.flexboxLayout.allViews.filter { it.isSelected }.forEach {
+        genreViews.filter { it.isSelected }.forEach {
             genresIds.add(it.tag as Int)
         }
-        moviesViewModel.getMoviesWithQueryParams(
-            withGenres = genresIds,
-        )
+        moviesViewModel.getMoviesWithQueryParams(withGenres = genresIds)
         dismiss()
-    }
-
-    /**
-     * Change the [textView]'s selection state and its background color accordingly.
-     */
-    private fun onGenreViewClick(textView: TextView) {
-        textView.apply {
-            isSelected = !isSelected
-            background = if (isSelected) {
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.shape_rounded_corners_colored,
-                    context.theme
-                )
-            } else {
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.shape_rounded_corners,
-                    context.theme
-                )
-            }
-        }
     }
 
     /**
@@ -137,7 +151,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }
