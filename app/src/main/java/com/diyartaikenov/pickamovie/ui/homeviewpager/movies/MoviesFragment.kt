@@ -161,9 +161,6 @@ class MoviesFragment : Fragment() {
                     withGenres = listOf(),
                     withoutGenres = listOf(),
                 )
-                (requireActivity() as MainActivity)
-                    .supportActionBar?.title = getString(R.string.option_show_popular)
-
                 return true
             }
             R.id.option_show_top_rated -> {
@@ -172,14 +169,9 @@ class MoviesFragment : Fragment() {
                     withGenres = listOf(),
                     withoutGenres = listOf(),
                 )
-                // FIXME: set the title to default when the predefined list is unselected
-                (requireActivity() as MainActivity)
-                    .supportActionBar?.title = getString(R.string.option_show_top_rated)
-
                 return true
             }
         }
-
         return false
     }
     //endregion
