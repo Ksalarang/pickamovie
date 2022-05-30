@@ -28,8 +28,6 @@ class MoviesPagingSource(
                     moviesApi.getTopRatedMovies(page = pageKey)
                 }
                 else -> {
-                    // If withGenres value is null,
-                    // query movie results without filtering by genres
                     moviesApi.getMovies(
                         page = pageKey,
                         sortBy = queryParams.sortBy.value,

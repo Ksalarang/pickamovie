@@ -1,5 +1,7 @@
 package com.diyartaikenov.pickamovie.repository.network
 
+import com.diyartaikenov.pickamovie.repository.network.SortBy.POPULAR
+import com.diyartaikenov.pickamovie.repository.network.SortBy.TOP_RATED
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -105,7 +107,7 @@ interface MoviesApi {
      * Get movie details with videos included.
      */
     @GET("movie/{movie_id}?api_key=$API_KEY&append_to_response=videos")
-    suspend fun getDetailedMovieWithVideos(
+    suspend fun getDetailedMovie(
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = DEFAULT_LANGUAGE,
         @Query("include_video_language") videoLanguages: String = "$DEFAULT_LANGUAGE,en"
@@ -115,7 +117,7 @@ interface MoviesApi {
      * Get a list of all movie genres.
      */
     @GET("genre/movie/list?api_key=$API_KEY")
-    suspend fun getGenres(
+    suspend fun getAllGenres(
         @Query("language") language: String = DEFAULT_LANGUAGE,
     ): GenresNetworkResponse
 }
@@ -135,7 +137,12 @@ class QueryParams(
  * Sort options for network queries.
  *
  * Use [SortBy.value] for [MoviesApi.getMovies()]'s **sortBy** query parameter.
- * @see MoviesApi
+ *
+ * [POPULAR] and [TOP_RATED] are used for predefined lists of movies
+ * and call their own functions in [MoviesApi].
+ * @see MoviesApi.getMovies
+ * @see MoviesApi.getPopularMovies
+ * @see MoviesApi.getTopRatedMovies
  */
 enum class SortBy(val value: String) {
     POPULARITY_DESC("popularity.desc"),
