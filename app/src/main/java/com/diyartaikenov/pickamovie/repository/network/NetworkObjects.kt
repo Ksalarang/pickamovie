@@ -110,7 +110,7 @@ interface MoviesApi {
     suspend fun getDetailedMovie(
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = DEFAULT_LANGUAGE,
-        @Query("include_video_language") videoLanguages: String = "$DEFAULT_LANGUAGE,en"
+        @Query("include_video_language") videoLanguages: String = "$DEFAULT_LANGUAGE,null"
     ): NetworkDetailedMovie
 
     /**

@@ -14,6 +14,7 @@ import androidx.core.view.setMargins
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.diyartaikenov.pickamovie.R
@@ -26,6 +27,7 @@ import com.diyartaikenov.pickamovie.util.*
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -53,20 +55,17 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        moviesViewModel.refreshMovieDetails(navArgs.movieId)
-        moviesViewModel.addObservers()
+        refreshMovieDetails()
 
         binding.apply {
+            // setup swipe refresh layout
             swipeRefreshLayout.apply {
-                setOnRefreshListener {
-                    moviesViewModel.refreshMovieDetails(navArgs.movieId)
-                }
+                setOnRefreshListener { refreshMovieDetails() }
                 setProgressViewOffset(
                     true,
                     convertDpToPixels(30, requireContext()),
                     convertDpToPixels(90, requireContext())
                 )
-
                 setProgressBackgroundColorSchemeColor(
                     getAttributeResource(R.attr.colorPrimary, requireContext())
                 )
@@ -74,7 +73,6 @@ class MovieDetailsFragment : Fragment() {
                     getAttributeResource(R.attr.colorSecondary, requireContext())
                 )
             }
-
             // allow swipe-to-refresh only when the toolbar is collapsed
             appbarLayout.addOnOffsetChangedListener(
                 AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -109,29 +107,24 @@ class MovieDetailsFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun MoviesViewModel.addObservers() {
-        movie.observe(viewLifecycleOwner) { movie ->
-            bindMovie(movie)
-        }
-
-        detailedMovie.observe(viewLifecycleOwner) { movie ->
-            bindDetailedMovie(movie)
+    private fun refreshMovieDetails() {
+        lifecycleScope.launch {
+            val movie = moviesViewModel.getMovie(navArgs.movieId)
+            if (movie != null) {
+                bindMovie(movie)
+            } else {
+                Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
+            }
             binding.swipeRefreshLayout.isRefreshing = false
         }
-
-        networkError.observe(viewLifecycleOwner) { isError ->
-            if (isError) {
-                binding.swipeRefreshLayout.isRefreshing = false
-
-                if (!isNetworkErrorShown.value!!) {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.network_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    onNetworkErrorShown()
-                }
+        lifecycleScope.launch {
+            val movie = moviesViewModel.getDetailedMovie(navArgs.movieId)
+            if (movie != null) {
+                bindDetailedMovie(movie)
+            } else {
+                Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
             }
+            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -218,7 +211,7 @@ class MovieDetailsFragment : Fragment() {
      * Each view display a video thumbnail. Tapping a view will open the link to the video.
      */
     private fun addVideoViews(videos: List<MovieVideo>) {
-        // Layout params for image views for each movie trailer
+        // Layout params for movie trailer image views
         val layoutParams = LinearLayout.LayoutParams(
             convertDpToPixels(160, requireContext()),
             LinearLayout.LayoutParams.MATCH_PARENT
