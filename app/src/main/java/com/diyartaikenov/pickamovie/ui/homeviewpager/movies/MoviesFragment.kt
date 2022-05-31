@@ -12,6 +12,7 @@ import androidx.paging.LoadState
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 import com.diyartaikenov.pickamovie.repository.network.MovieList
+import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.ui.homeviewpager.HomeViewPagerFragmentDirections
 import com.diyartaikenov.pickamovie.ui.homeviewpager.loadstateadapter.MoviesLoadStateAdapter
@@ -121,6 +122,8 @@ class MoviesFragment : Fragment() {
                     withGenres = listOf(),
                     withoutGenres = listOf(),
                 )
+                (requireActivity() as MainActivity)
+                    .supportActionBar?.title = getString(R.string.option_popular)
                 return true
             }
             R.id.option_show_top_rated -> {
@@ -129,6 +132,8 @@ class MoviesFragment : Fragment() {
                     withGenres = listOf(),
                     withoutGenres = listOf(),
                 )
+                (requireActivity() as MainActivity)
+                    .supportActionBar?.title = getString(R.string.option_top_rated)
                 return true
             }
         }

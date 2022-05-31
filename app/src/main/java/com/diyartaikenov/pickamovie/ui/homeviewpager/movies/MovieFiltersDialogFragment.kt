@@ -19,6 +19,7 @@ import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.DialogFragmentMovieFiltersBinding
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.repository.network.SortBy
+import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -141,6 +142,8 @@ class MovieFiltersDialogFragment : DialogFragment() {
             sortBy = sortBy,
             withGenres = genresIds,
         )
+        (requireActivity() as MainActivity)
+            .supportActionBar?.title = getString(R.string.app_name)
         dismiss()
     }
 
