@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="600dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorPrimary"
     android:padding="12dp">
 
@@ -26,7 +27,7 @@
         android:id="@+id/genres_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/between_filters_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sort_label">
 
@@ -52,6 +53,24 @@
             app:layout_constraintTop_toBottomOf="@id/genres_label" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/vote_count_seekbar_label"
+        style="@style/Widget.PickAMovie.TextView.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/between_filters_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/genres_constraint_layout"
+        tools:text="Vote count - 0" />
+
+    <SeekBar
+        android:id="@+id/vote_count_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vote_count_seekbar_label" />
+
     <Button
         android:id="@+id/button_reset_filters"
         android:layout_width="wrap_content"
@@ -73,5 +92,5 @@
         android:text="@string/apply"
         android:textColor="?attr/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/genres_constraint_layout" />
+        app:layout_constraintTop_toBottomOf="@id/vote_count_seekbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

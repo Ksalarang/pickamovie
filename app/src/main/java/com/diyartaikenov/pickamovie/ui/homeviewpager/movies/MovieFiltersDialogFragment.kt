@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setMargins
@@ -103,6 +104,23 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 sortSpinner.adapter = adapter
             }
             sortSpinner.setSelection(moviesViewModel.queryParams.sortBy.ordinal)
+
+            val voteCountRange = arrayListOf(0, 50, 100, 500, 1000)
+            voteCountSeekbar.max = voteCountRange.size - 1
+
+            voteCountSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    voteCountSeekbarLabel.text =
+                        getString(R.string.vote_count_label, voteCountRange[progress])
+                }
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
+            voteCountSeekbar.progress = 1
         }
 
         return binding.root
