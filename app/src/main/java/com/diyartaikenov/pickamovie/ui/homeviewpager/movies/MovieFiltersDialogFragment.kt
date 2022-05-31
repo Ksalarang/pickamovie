@@ -78,8 +78,6 @@ class MovieFiltersDialogFragment : DialogFragment() {
                     setOnClickListener {
                         // Toggle selection state of this genre view
                         setGenreViewSelection(this, !this.isSelected)
-                        binding.buttonClearSelection.isEnabled =
-                            genreViews.any { it.isSelected }
                     }
                 }
                 binding.flexboxLayout.post {
@@ -88,15 +86,11 @@ class MovieFiltersDialogFragment : DialogFragment() {
             }
         }
         binding.apply {
-            buttonClearSelection.isEnabled = genreViews.any { it.isSelected }
-            buttonClearSelection.setOnClickListener { button ->
-                genreViews.filter { it.isSelected }.forEach {
-                    setGenreViewSelection(it, false)
-                }
-                button.isEnabled = genreViews.any { it.isSelected }
-            }
             buttonApplyFilters.setOnClickListener {
                 onApplyingFilters()
+            }
+            buttonResetFilters.setOnClickListener {
+                onResettingFilters()
             }
 
             ArrayAdapter.createFromResource(
@@ -148,6 +142,18 @@ class MovieFiltersDialogFragment : DialogFragment() {
             withGenres = genresIds,
         )
         dismiss()
+    }
+
+    /**
+     * Reset all filters to default.
+     */
+    private fun onResettingFilters() {
+        binding.apply {
+            sortSpinner.setSelection(0)
+            genreViews.filter { it.isSelected }.forEach {
+                setGenreViewSelection(it, false)
+            }
+        }
     }
 
     /**

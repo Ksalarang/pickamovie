@@ -52,8 +52,8 @@
     <!-- Movie filters dialog fragment -->
     <string name="genres_label">Genres</string>
     <string name="apply">Apply</string>
-    <string name="clear_selection">Clear selection</string>
     <string name="sort_by">Sort by:</string>
+    <string name="reset">Reset</string>
 
     <!-- Sort options should be synced with the SortBy enum class -->
     <string-array name="sort_options">
