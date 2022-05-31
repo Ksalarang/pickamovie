@@ -66,6 +66,7 @@ interface MoviesApi {
          * default: popularity.desc
          */
         @Query("sort_by") sortBy: String,
+        // FIXME: rename variable
         /**
          * Filter and only include movies that have a release date
          * (looking at all release dates) that is less than or equal to the specified value.
@@ -79,6 +80,11 @@ interface MoviesApi {
          * Comma separated string of genre ids to exclude from the results.
          */
         @Query("without_genres") withoutGenres: String,
+        /**
+         * Filter and only include movies that have a vote count that is greater
+         * or equal to the specified value.
+         */
+        @Query("vote_count.gte") minimalVoteCount: Int,
     ): NetworkMovieContainer
 
     /**
@@ -129,6 +135,7 @@ class QueryParams(
     val releaseDateLte: LocalDate = LocalDate.now(),
     val withGenres: List<Int> = listOf(),
     val withoutGenres: List<Int> = listOf(),
+    val minimalVoteCount: Int = 0,
     val movieList: MovieList? = null,
 )
 

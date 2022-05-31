@@ -25,6 +25,11 @@ import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Set to 1 so movies would have at least some votes when applying the filters.
+ */
+private const val VOTE_COUNT_SEEKBAR_DEFAULT_PROGRESS = 1
+
 @AndroidEntryPoint
 class MovieFiltersDialogFragment : DialogFragment() {
 
@@ -43,6 +48,10 @@ class MovieFiltersDialogFragment : DialogFragment() {
      * is received from the [moviesViewModel].
      */
     private val genreViews: MutableList<TextView> = mutableListOf()
+    /**
+     * A range of vote count numbers to filter movies with.
+     */
+    private val voteCountRange = arrayListOf(0, 50, 100, 500, 1000, 5000, 10000)
 
     @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -105,9 +114,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
             }
             sortSpinner.setSelection(moviesViewModel.queryParams.sortBy.ordinal)
 
-            val voteCountRange = arrayListOf(0, 50, 100, 500, 1000)
             voteCountSeekbar.max = voteCountRange.size - 1
-
             voteCountSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
@@ -120,7 +127,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             })
-            voteCountSeekbar.progress = 1
+            voteCountSeekbar.progress = VOTE_COUNT_SEEKBAR_DEFAULT_PROGRESS
         }
 
         return binding.root
@@ -152,6 +159,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
     private fun onApplyingFilters() {
         val sortBy = SortBy.values()[binding.sortSpinner.selectedItemPosition]
         val genresIds = mutableListOf<Int>()
+        val voteCount = voteCountRange[binding.voteCountSeekbar.progress]
         genreViews.filter { it.isSelected }.forEach {
             // movie id is stored in textView's tag
             genresIds.add(it.tag as Int)
@@ -159,6 +167,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
         moviesViewModel.getMoviesWithQueryParams(
             sortBy = sortBy,
             withGenres = genresIds,
+            minimalVoteCount = voteCount,
         )
         (requireActivity() as MainActivity)
             .supportActionBar?.title = getString(R.string.app_name)
@@ -174,6 +183,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
             genreViews.filter { it.isSelected }.forEach {
                 setGenreViewSelection(it, false)
             }
+            voteCountSeekbar.progress = VOTE_COUNT_SEEKBAR_DEFAULT_PROGRESS
         }
     }
 

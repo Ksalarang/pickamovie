@@ -34,6 +34,7 @@ class MoviesPagingSource(
                         releaseDateLte = queryParams.releaseDateLte.toString(),
                         withGenres = queryParams.withGenres.asString(),
                         withoutGenres = queryParams.withoutGenres.asString(),
+                        minimalVoteCount = queryParams.minimalVoteCount,
                     )
                 }
             }

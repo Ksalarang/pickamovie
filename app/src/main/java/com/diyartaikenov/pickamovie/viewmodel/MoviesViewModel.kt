@@ -1,6 +1,5 @@
 package com.diyartaikenov.pickamovie.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,6 +47,7 @@ class MoviesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            // FIXME: get popular movies for quick load
             movieRepository.getMovies(queryParams)
                 .cachedIn(viewModelScope).collect {
                     _movies.value = it
@@ -76,6 +76,7 @@ class MoviesViewModel @Inject constructor(
         releaseDateLte: LocalDate = queryParams.releaseDateLte,
         withGenres: List<Int> = queryParams.withGenres,
         withoutGenres: List<Int> = queryParams.withoutGenres,
+        minimalVoteCount: Int = queryParams.minimalVoteCount,
         // If movieList wasn't assigned a value, it should be nulled here,
         // so that callers of this function which request a custom query
         // don't have to know about this and do nulling themselves.
@@ -86,6 +87,7 @@ class MoviesViewModel @Inject constructor(
             releaseDateLte = releaseDateLte,
             withGenres = withGenres,
             withoutGenres = withoutGenres,
+            minimalVoteCount = minimalVoteCount,
             movieList = movieList,
         )
         viewModelScope.launch {
