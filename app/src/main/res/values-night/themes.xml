@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+    <!-- TODO: COPY CHANGES TO NIGHT/THEMES.XML! -->
     <style name="Theme.PickAMovie" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#16232E</item>
@@ -31,6 +32,12 @@
     <style name="Widget.PickAMovie.TextView.Minor" parent="Widget.PickAMovie.TextView">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/color_minor_text</item>
+    </style>
+
+    <!-- Labels in Movie filters -->
+    <style name="Widget.PickAMovie.TextView.Label" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/grey_170</item>
     </style>
 
     <style name="Widget.PickAMovie.TabLayout" parent="Widget.MaterialComponents.TabLayout">

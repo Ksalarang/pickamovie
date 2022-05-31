@@ -8,11 +8,10 @@
 
     <TextView
         android:id="@+id/sort_label"
+        style="@style/Widget.PickAMovie.TextView.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sort_by"
-        android:textColor="@color/grey_170"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,11 +32,10 @@
 
         <TextView
             android:id="@+id/genres_label"
+            style="@style/Widget.PickAMovie.TextView.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/genres_label"
-            android:textColor="@color/grey_170"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

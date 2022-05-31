@@ -34,6 +34,12 @@
         <item name="android:textColor">@color/color_minor_text</item>
     </style>
 
+    <!-- Labels in Movie filters -->
+    <style name="Widget.PickAMovie.TextView.Label" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/grey_170</item>
+    </style>
+
     <style name="Widget.PickAMovie.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabSelectedTextColor">?attr/colorSecondary</item>
         <item name="tabIndicatorColor">?attr/colorSecondary</item>
