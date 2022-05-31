@@ -1,5 +1,6 @@
 package com.diyartaikenov.pickamovie.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.model.MovieVideo
 import com.diyartaikenov.pickamovie.repository.MovieRepository
 import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.repository.network.MovieList
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.SortBy
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -74,12 +76,17 @@ class MoviesViewModel @Inject constructor(
         releaseDateLte: LocalDate = queryParams.releaseDateLte,
         withGenres: List<Int> = queryParams.withGenres,
         withoutGenres: List<Int> = queryParams.withoutGenres,
+        // If movieList wasn't assigned a value, it should be nulled here,
+        // so that callers of this function which request a custom query
+        // don't have to know about this and do nulling themselves.
+        movieList: MovieList? = null,
     ) {
         queryParams = QueryParams(
-            sortBy,
-            releaseDateLte,
-            withGenres,
-            withoutGenres,
+            sortBy = sortBy,
+            releaseDateLte = releaseDateLte,
+            withGenres = withGenres,
+            withoutGenres = withoutGenres,
+            movieList = movieList,
         )
         viewModelScope.launch {
             movieRepository.getMovies(queryParams)

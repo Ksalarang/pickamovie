@@ -1,7 +1,5 @@
 package com.diyartaikenov.pickamovie.repository.network
 
-import com.diyartaikenov.pickamovie.repository.network.SortBy.POPULAR
-import com.diyartaikenov.pickamovie.repository.network.SortBy.TOP_RATED
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -131,27 +129,30 @@ class QueryParams(
     val releaseDateLte: LocalDate = LocalDate.now(),
     val withGenres: List<Int> = listOf(),
     val withoutGenres: List<Int> = listOf(),
+    val movieList: MovieList? = null,
 )
 
 /**
  * Sort options for network queries.
  *
  * Use [SortBy.value] for [MoviesApi.getMovies()]'s **sortBy** query parameter.
- *
- * [POPULAR] and [TOP_RATED] are used for predefined lists of movies
- * and call their own functions in [MoviesApi].
  * @see MoviesApi.getMovies
- * @see MoviesApi.getPopularMovies
- * @see MoviesApi.getTopRatedMovies
  */
 enum class SortBy(val value: String) {
     POPULARITY_DESC("popularity.desc"),
     VOTE_AVERAGE_DESC("vote_average.desc"),
     RELEASE_DATE_DESC("release_date.desc"),
     RELEASE_DATE_ASC("release_date.asc"),
+}
 
-    POPULAR(""),
-    TOP_RATED("")
+/**
+ * Enumeration of predefined movie lists, fetched from [MoviesApi].
+ * @see MoviesApi.getPopularMovies
+ * @see MoviesApi.getTopRatedMovies
+ */
+enum class MovieList {
+    POPULAR,
+    TOP_RATED,
 }
 
 /**

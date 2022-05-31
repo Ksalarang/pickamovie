@@ -2,29 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/option_sort_by"
-        android:title="@string/option_sort_by"
-        android:icon="@drawable/ic_sort"
-        app:iconTint="?attr/colorOnPrimary"
-        app:showAsAction="ifRoom" >
-
-        <menu><group android:id="@+id/group_sort_movies"
-            android:checkableBehavior="single">
-
-            <item android:id="@+id/sort_by_popularity_desc"
-                android:title="@string/sort_by_popularity_desc" />
-
-            <item android:id="@+id/sort_by_rating_desc"
-                android:title="@string/sort_by_rating_desc" />
-
-            <item android:id="@+id/sort_by_date_desc"
-                android:title="@string/sort_by_date_desc" />
-
-            <item android:id="@+id/sort_by_date_asc"
-                android:title="@string/sort_by_date_asc" />
-        </group></menu>
-    </item>
-
     <item android:id="@+id/option_filter_by"
         android:title="@string/option_filter_by"
         android:icon="@drawable/ic_filter"

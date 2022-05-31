@@ -11,8 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
-import com.diyartaikenov.pickamovie.repository.network.SortBy
-import com.diyartaikenov.pickamovie.ui.MainActivity
+import com.diyartaikenov.pickamovie.repository.network.MovieList
 import com.diyartaikenov.pickamovie.ui.adapter.MovieListAdapter
 import com.diyartaikenov.pickamovie.ui.homeviewpager.HomeViewPagerFragmentDirections
 import com.diyartaikenov.pickamovie.ui.homeviewpager.loadstateadapter.MoviesLoadStateAdapter
@@ -104,49 +103,10 @@ class MoviesFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.options_menu, menu)
-
-        val itemId = when (moviesViewModel.queryParams.sortBy) {
-            SortBy.POPULARITY_DESC -> R.id.sort_by_popularity_desc
-            SortBy.VOTE_AVERAGE_DESC -> R.id.sort_by_rating_desc
-            SortBy.RELEASE_DATE_DESC -> R.id.sort_by_date_desc
-            SortBy.RELEASE_DATE_ASC -> R.id.sort_by_date_asc
-            SortBy.POPULAR -> R.id.option_show_popular
-            SortBy.TOP_RATED -> R.id.option_show_top_rated
-        }
-        menu.findItem(itemId).isChecked = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.sort_by_popularity_desc -> {
-                moviesViewModel.getMoviesWithQueryParams(
-                    sortBy = SortBy.POPULARITY_DESC,
-                )
-                item.isChecked = true
-                return true
-            }
-            R.id.sort_by_rating_desc -> {
-                moviesViewModel.getMoviesWithQueryParams(
-                    sortBy = SortBy.VOTE_AVERAGE_DESC,
-                )
-                item.isChecked = true
-                return true
-            }
-            R.id.sort_by_date_desc -> {
-                moviesViewModel.getMoviesWithQueryParams(
-                    sortBy = SortBy.RELEASE_DATE_DESC,
-                )
-                item.isChecked = true
-                return true
-            }
-            R.id.sort_by_date_asc -> {
-                moviesViewModel.getMoviesWithQueryParams(
-                    sortBy = SortBy.RELEASE_DATE_ASC,
-                )
-                item.isChecked = true
-                return true
-            }
-
             R.id.option_filter_by -> {
                 movieFiltersDialogFragment.show(
                     requireActivity().supportFragmentManager,
@@ -157,7 +117,7 @@ class MoviesFragment : Fragment() {
 
             R.id.option_show_popular -> {
                 moviesViewModel.getMoviesWithQueryParams(
-                    sortBy = SortBy.POPULAR,
+                    movieList = MovieList.POPULAR,
                     withGenres = listOf(),
                     withoutGenres = listOf(),
                 )
@@ -165,7 +125,7 @@ class MoviesFragment : Fragment() {
             }
             R.id.option_show_top_rated -> {
                 moviesViewModel.getMoviesWithQueryParams(
-                    sortBy = SortBy.TOP_RATED,
+                    movieList = MovieList.TOP_RATED,
                     withGenres = listOf(),
                     withoutGenres = listOf(),
                 )

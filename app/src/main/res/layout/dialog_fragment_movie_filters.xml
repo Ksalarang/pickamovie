@@ -1,56 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="600dp"
     android:background="?attr/colorPrimary"
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/genres_label"
+        android:id="@+id/sort_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/genres_label"
+        android:text="@string/sort_by"
         android:textColor="@color/grey_170"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/button_clear_selection"
+    <Spinner
+        android:id="@+id/sort_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
-        android:clickable="true"
-        android:textSize="18sp"
-        android:focusable="true"
-        android:text="@string/clear_selection"
-        android:background="?android:attr/selectableItemBackground"
-        android:textColor="?attr/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/flexbox_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/genres_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        app:alignContent="flex_start"
-        app:alignItems="flex_start"
-        app:flexDirection="row"
-        app:flexWrap="wrap"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/genres_label" />
+        app:layout_constraintTop_toBottomOf="@id/sort_label">
+
+        <TextView
+            android:id="@+id/genres_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/genres_label"
+            android:textColor="@color/grey_170"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/button_clear_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2dp"
+            android:text="@string/clear_selection"
+            android:textColor="?attr/colorSecondary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexbox_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            app:alignContent="flex_start"
+            app:alignItems="flex_start"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/genres_label" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/button_apply_filters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="18dp"
         android:text="@string/apply"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/flexbox_layout" />
+        app:layout_constraintTop_toBottomOf="@id/genres_constraint_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

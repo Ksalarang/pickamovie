@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Pick a Movie</string>
     <string name="title_home">Home</string>
-
     <string name="title_my_lists">My Lists</string>
     <string name="title_profile">Profile</string>
 
@@ -10,55 +9,24 @@
     <string name="description_movie_backdrop">Movie backdrop</string>
     <string name="the_movie_db_logo_description">The Movie Db logo</string>
 
-    <!-- Home Fragment views -->
+    <!-- Movies fragment -->
     <string name="loading_error">Loading error</string>
     <string name="no_results">No results</string>
     <string name="retry">Retry</string>
     <string name="no_internet">No Internet</string>
-
-    <!-- MoviesFragment options menu -->
-    <string name="option_sort_by">Sort by</string>
-    <string name="sort_by_popularity_desc">Popularity</string>
-    <string name="sort_by_rating_desc">Rating</string>
-    <string name="sort_by_date_desc">Date (newest)</string>
-    <string name="sort_by_date_asc">Date (oldest)</string>
+    <string name="network_error">Network error</string>
     <string name="option_filter_by">Filter by</string>
     <string name="option_show_popular">Popular Movies</string>
     <string name="option_show_top_rated">Top Rated Movies</string>
 
     <string name="blank_tv_shows">TV Shows</string>
 
-    <string name="network_error">Network error</string>
-
     <!-- Tabs -->
     <string name="tab_label_movies">Movies</string>
     <string name="tab_label_tv_shows">TV shows</string>
     <string name="tab_label_new">New tab</string>
 
-    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-        anim id est laborum.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-        anim id est laborum.</string>
-
-    <string-array name="movie_statuses">
-        <item>Rumored</item>
-        <item>Planned</item>
-        <item>In production</item>
-        <item>Post production</item>
-        <item>Released</item>
-        <item>Canceled</item>
-        <item>Unknown</item>
-    </string-array>
-
-    <!-- MovieDetailsFragment -->
+    <!-- Movie details fragment -->
     <string name="movie_has_no_overview">This movie has no overview</string>
     <string name="bullet_separator" translatable="false">•</string>
     <string name="runtime_mins">%d min</string>
@@ -71,8 +39,27 @@
     <string name="countries_label">Production countries:</string>
     <string name="watch">watch</string>
 
-    <!-- Movie filters -->
+    <string-array name="movie_statuses">
+        <item>Rumored</item>
+        <item>Planned</item>
+        <item>In production</item>
+        <item>Post production</item>
+        <item>Released</item>
+        <item>Canceled</item>
+        <item>Unknown</item>
+    </string-array>
+
+    <!-- Movie filters dialog fragment -->
     <string name="genres_label">Genres</string>
     <string name="apply">Apply</string>
     <string name="clear_selection">Clear selection</string>
+    <string name="sort_by">Sort by:</string>
+
+    <!-- Sort options should be synced with the SortBy enum class -->
+    <string-array name="sort_options">
+        <item>Popularity</item>
+        <item>Rating</item>
+        <item>Date (newest)</item>
+        <item>Date (oldest)</item>
+    </string-array>
 </resources>

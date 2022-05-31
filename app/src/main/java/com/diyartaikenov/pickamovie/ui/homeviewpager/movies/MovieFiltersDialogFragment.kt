@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setMargins
@@ -65,10 +66,14 @@ class MovieFiltersDialogFragment : DialogFragment() {
                     genreViews.add(this)
                     setupAttributes(this)
                     text = genre.name
+                    // Using a textView's tag to store the movie id.
                     tag = genre.id
-                    // Mark this genre view as selected if it was selected by the user before.
                     if (moviesViewModel.queryParams.withGenres.contains(genre.id)) {
+                        // Mark this genre view as selected if it was selected by the user before.
                         setGenreViewSelection(this, true)
+                    } else {
+                        // Unselect the genre view otherwise.
+                        setGenreViewSelection(this, false)
                     }
                     setOnClickListener {
                         // Toggle selection state of this genre view
@@ -93,6 +98,16 @@ class MovieFiltersDialogFragment : DialogFragment() {
             buttonApplyFilters.setOnClickListener {
                 onApplyingFilters()
             }
+
+            ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.sort_options,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                sortSpinner.adapter = adapter
+            }
+            sortSpinner.setSelection(moviesViewModel.queryParams.sortBy.ordinal)
         }
 
         return binding.root
@@ -122,15 +137,11 @@ class MovieFiltersDialogFragment : DialogFragment() {
      * Get movie data from network according to the applied filters.
      */
     private fun onApplyingFilters() {
+        val sortBy = SortBy.values()[binding.sortSpinner.selectedItemPosition]
         val genresIds = mutableListOf<Int>()
         genreViews.filter { it.isSelected }.forEach {
+            // movie id is stored in textView's tag
             genresIds.add(it.tag as Int)
-        }
-        var sortBy = moviesViewModel.queryParams.sortBy
-        // Fall back to default sort parameter if the predefined lists where selected before.
-        // The predefined lists are popular movies and top rated movies.
-        if (sortBy == SortBy.POPULAR || sortBy == SortBy.TOP_RATED) {
-            sortBy = SortBy.POPULARITY_DESC
         }
         moviesViewModel.getMoviesWithQueryParams(
             sortBy = sortBy,
@@ -162,6 +173,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
 
     override fun onDestroyView() {
         _binding = null
+        genreViews.clear()
         super.onDestroyView()
     }
 }

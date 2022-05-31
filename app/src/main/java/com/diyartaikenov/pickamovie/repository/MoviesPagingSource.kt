@@ -20,14 +20,14 @@ class MoviesPagingSource(
         val pageKey = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val networkResponse = when (queryParams.sortBy) {
-                SortBy.POPULAR -> {
+            val networkResponse = when (queryParams.movieList) {
+                MovieList.POPULAR -> {
                     moviesApi.getPopularMovies(page = pageKey)
                 }
-                SortBy.TOP_RATED -> {
+                MovieList.TOP_RATED -> {
                     moviesApi.getTopRatedMovies(page = pageKey)
                 }
-                else -> {
+                null -> {
                     moviesApi.getMovies(
                         page = pageKey,
                         sortBy = queryParams.sortBy.value,
