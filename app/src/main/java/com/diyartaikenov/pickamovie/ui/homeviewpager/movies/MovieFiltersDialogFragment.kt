@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -16,19 +17,18 @@ import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.DialogFragmentMovieFiltersBinding
 import com.diyartaikenov.pickamovie.repository.database.Genre
+import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.SortBy
 import com.diyartaikenov.pickamovie.ui.MainActivity
 import com.diyartaikenov.pickamovie.viewmodel.MoviesViewModel
 import com.google.android.flexbox.FlexboxLayout
 import dagger.hilt.android.AndroidEntryPoint
-
-/**
- * Set to 1 so movies would have at least some votes when applying the filters.
- */
-private const val VOTE_COUNT_SEEKBAR_DEFAULT_PROGRESS = 1
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MovieFiltersDialogFragment : DialogFragment() {
@@ -70,49 +70,28 @@ class MovieFiltersDialogFragment : DialogFragment() {
         genreViewLayoutParams
             .setMargins(resources.getDimensionPixelSize(R.dimen.filter_genres_margin))
 
-        moviesViewModel.genres.observe(viewLifecycleOwner) { genres ->
-            // Create a TextView for each genre and display it in this Dialog
-            genres.forEach { genre ->
-                val genreView = TextView(context).apply {
-                    genreViews.add(this)
-                    setupAttributes(this)
-                    text = genre.name
-                    // Using a textView's tag to store the movie id.
-                    tag = genre.id
-                    if (moviesViewModel.queryParams.withGenres.contains(genre.id)) {
-                        // Mark this genre view as selected if it was selected by the user before.
-                        setGenreViewSelection(this, true)
-                    } else {
-                        // Unselect the genre view otherwise.
-                        setGenreViewSelection(this, false)
+        lifecycleScope.launch {
+            val result = moviesViewModel.getGenres()
+            if (result.isSuccess) {
+                result.getOrNull()!!.collectLatest { genres ->
+                    genres.forEach { genre ->
+                        val genreView = createGenreTextView(genre)
+                        genreViews.add(genreView)
+                        binding.flexboxLayout.post {
+                            binding.flexboxLayout.addView(genreView)
+                        }
                     }
-                    setOnClickListener {
-                        // Toggle selection state of this genre view
-                        setGenreViewSelection(this, !this.isSelected)
-                    }
+                    updateFilters(moviesViewModel.queryParams)
                 }
-                binding.flexboxLayout.post {
-                    binding.flexboxLayout.addView(genreView)
-                }
+            } else {
+                Log.d("myTag", "onCreateView: error: " +
+                        "${result.exceptionOrNull()!!.message}")
+                // TODO: handle data query error
             }
         }
-        binding.apply {
-            buttonApplyFilters.setOnClickListener {
-                onApplyingFilters()
-            }
-            buttonResetFilters.setOnClickListener {
-                onResettingFilters()
-            }
 
-            ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.sort_options,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                sortSpinner.adapter = adapter
-            }
-            sortSpinner.setSelection(moviesViewModel.queryParams.sortBy.ordinal)
+        binding.apply {
+            sortSpinner.adapter = createSpinnerAdapter()
 
             voteCountSeekbar.max = voteCountRange.size - 1
             voteCountSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
@@ -127,10 +106,43 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             })
-            voteCountSeekbar.progress = VOTE_COUNT_SEEKBAR_DEFAULT_PROGRESS
+
+            buttonApplyFilters.setOnClickListener { onApplyingFilters() }
+            buttonResetFilters.setOnClickListener { onResettingFilters() }
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        genreViews.clear()
+        super.onDestroyView()
+    }
+
+    private fun createGenreTextView(genre: Genre): TextView {
+        return TextView(context).apply {
+            setupGenreViewAttributes(this)
+            text = genre.name
+            // Genre id is stored in the textView tag
+            tag = genre.id
+            setOnClickListener {
+                setGenreViewSelection(this, !this.isSelected)
+            }
+        }
+    }
+
+    private fun updateFilters(queryParams: QueryParams) {
+        binding.apply {
+            sortSpinner.setSelection(queryParams.sortBy.ordinal)
+            genreViews.forEach { genreView ->
+                val isSelected = queryParams.withGenres.contains(genreView.tag as Int)
+                setGenreViewSelection(genreView, isSelected)
+            }
+            voteCountSeekbarLabel.text =
+                getString(R.string.vote_count_label, queryParams.minimalVoteCount)
+            voteCountSeekbar.progress = voteCountRange.indexOf(queryParams.minimalVoteCount)
+        }
     }
 
     /**
@@ -175,22 +187,17 @@ class MovieFiltersDialogFragment : DialogFragment() {
     }
 
     /**
-     * Reset all filters to default.
+     * Reset filters by applying the [QueryParams] default options.
      */
     private fun onResettingFilters() {
-        binding.apply {
-            sortSpinner.setSelection(0)
-            genreViews.filter { it.isSelected }.forEach {
-                setGenreViewSelection(it, false)
-            }
-            voteCountSeekbar.progress = VOTE_COUNT_SEEKBAR_DEFAULT_PROGRESS
-        }
+        val queryParams = QueryParams()
+        updateFilters(queryParams)
     }
 
     /**
      * Set up attributes common for all genre textViews.
      */
-    private fun setupAttributes(textView: TextView) {
+    private fun setupGenreViewAttributes(textView: TextView) {
         textView.apply {
             layoutParams = genreViewLayoutParams
             setPadding(resources.getDimensionPixelSize(R.dimen.filter_genres_padding))
@@ -208,9 +215,13 @@ class MovieFiltersDialogFragment : DialogFragment() {
         }
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        genreViews.clear()
-        super.onDestroyView()
+    private fun createSpinnerAdapter(): ArrayAdapter<CharSequence> {
+        return ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.sort_options,
+            android.R.layout.simple_spinner_item
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
     }
 }

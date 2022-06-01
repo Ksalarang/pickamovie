@@ -16,6 +16,7 @@ import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.SortBy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -55,7 +56,7 @@ class MoviesViewModel @Inject constructor(
         }
         // Get the updated list of all movie genres
         viewModelScope.launch {
-            val result = movieRepository.getGenres()
+            val result = movieRepository.refreshGenres()
             if (result.isSuccess) {
                 result.getOrNull()!!.collectLatest {
                     _genres.value = it
@@ -104,6 +105,10 @@ class MoviesViewModel @Inject constructor(
 
     suspend fun getDetailedMovie(movieId: Int): DetailedMovie? {
         return movieRepository.getDetailedMovieById(movieId).getOrNull()
+    }
+
+    fun getGenres(): Result<Flow<List<Genre>>> {
+        return movieRepository.getGenres()
     }
 
     fun onNetworkErrorShown() {

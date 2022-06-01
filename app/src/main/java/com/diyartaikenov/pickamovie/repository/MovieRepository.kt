@@ -53,11 +53,21 @@ class MovieRepository @Inject constructor(
         }
     }
 
-    suspend fun getGenres(): Result<Flow<List<Genre>>> {
+    suspend fun refreshGenres(): Result<Flow<List<Genre>>> {
         return try {
             val genres = moviesApi.getAllGenres().genres
             movieDao.insertGenres(genres)
             Result.success(movieDao.getAllGenres())
+        } catch (e: Exception) {
+            Log.d("myTag", "getGenres: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    fun getGenres(): Result<Flow<List<Genre>>> {
+        return try {
+            val genres = movieDao.getAllGenres()
+            Result.success(genres)
         } catch (e: Exception) {
             Log.d("myTag", "getGenres: ${e.message}")
             Result.failure(e)
