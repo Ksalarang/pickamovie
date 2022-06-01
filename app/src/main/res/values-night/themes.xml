@@ -4,7 +4,7 @@
     <style name="Theme.PickAMovie" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#16232E</item>
-        <item name="colorPrimaryVariant">#2F4861</item>
+        <item name="colorPrimaryVariant">#1B2935</item>
         <item name="colorOnPrimary">#DCDCDC</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#D62763</item>
