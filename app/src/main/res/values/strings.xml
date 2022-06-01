@@ -54,7 +54,8 @@
     <string name="apply">Apply</string>
     <string name="sort_by">Sort by:</string>
     <string name="reset">Reset</string>
-    <string name="vote_count_label">Vote count: %d</string>
+    <string name="min_vote_count_label">Minimum vote count: %d</string>
+    <string name="max_vote_count_label">Maximum vote count: %d</string>
 
     <!-- Sort options should be synced with the SortBy enum class -->
     <string-array name="sort_options">

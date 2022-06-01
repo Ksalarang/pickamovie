@@ -81,10 +81,15 @@ interface MoviesApi {
          */
         @Query("without_genres") withoutGenres: String,
         /**
-         * Filter and only include movies that have a vote count that is greater
+         * Filter and only include movies that have a vote count that is greater than
          * or equal to the specified value.
          */
-        @Query("vote_count.gte") minimalVoteCount: Int,
+        @Query("vote_count.gte") minimumVoteCount: Int,
+        /**
+         * Filter and only include movies that have a vote count that is less than
+         * or equal to the specified value.
+         */
+        @Query("vote_count.lte") maximumVoteCount: Int,
     ): NetworkMovieContainer
 
     /**
@@ -135,7 +140,8 @@ class QueryParams(
     val releaseDateLte: LocalDate = LocalDate.now(),
     val withGenres: List<Int> = listOf(),
     val withoutGenres: List<Int> = listOf(),
-    val minimalVoteCount: Int = 0,
+    val minVoteCount: Int = 0,
+    val maxVoteCount: Int = Int.MAX_VALUE,
     val movieList: MovieList? = null,
 )
 

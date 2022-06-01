@@ -100,13 +100,23 @@ class MovieFiltersDialogFragment : DialogFragment() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    voteCountSeekbarLabel.text =
-                        getString(R.string.vote_count_label, voteCountRange[progress])
+                    voteCountSeekbarLabel.text = if (switchMaxMinVoteCount.isChecked) {
+                        getString(R.string.max_vote_count_label, voteCountRange[progress])
+                    } else {
+                        getString(R.string.min_vote_count_label, voteCountRange[progress])
+                    }
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             })
-
+            switchMaxMinVoteCount.setOnCheckedChangeListener { _, isChecked ->
+                val voteCount = voteCountRange[voteCountSeekbar.progress]
+                voteCountSeekbarLabel.text = if (isChecked) {
+                    getString(R.string.max_vote_count_label, voteCount)
+                } else {
+                    getString(R.string.min_vote_count_label, voteCount)
+                }
+            }
             buttonApplyFilters.setOnClickListener { onApplyingFilters() }
             buttonResetFilters.setOnClickListener { onResettingFilters() }
         }
@@ -139,9 +149,18 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 val isSelected = queryParams.withGenres.contains(genreView.tag as Int)
                 setGenreViewSelection(genreView, isSelected)
             }
-            voteCountSeekbarLabel.text =
-                getString(R.string.vote_count_label, queryParams.minimalVoteCount)
-            voteCountSeekbar.progress = voteCountRange.indexOf(queryParams.minimalVoteCount)
+            // If maxVoteCount differs from Int.MAX_VALUE then it's being used.
+            // So the vote count switch should be checked and unchecked otherwise.
+            switchMaxMinVoteCount.isChecked = queryParams.maxVoteCount != Int.MAX_VALUE
+            val progress: Int
+            voteCountSeekbarLabel.text = if (switchMaxMinVoteCount.isChecked) {
+                progress = voteCountRange.indexOf(queryParams.maxVoteCount)
+                getString(R.string.max_vote_count_label, queryParams.maxVoteCount)
+            } else {
+                progress = voteCountRange.indexOf(queryParams.minVoteCount)
+                getString(R.string.min_vote_count_label, queryParams.minVoteCount)
+            }
+            voteCountSeekbar.progress = progress
         }
     }
 
@@ -171,15 +190,27 @@ class MovieFiltersDialogFragment : DialogFragment() {
     private fun onApplyingFilters() {
         val sortBy = SortBy.values()[binding.sortSpinner.selectedItemPosition]
         val genresIds = mutableListOf<Int>()
-        val voteCount = voteCountRange[binding.voteCountSeekbar.progress]
         genreViews.filter { it.isSelected }.forEach {
             // movie id is stored in textView's tag
             genresIds.add(it.tag as Int)
         }
+        val selectedVoteCount = voteCountRange[binding.voteCountSeekbar.progress]
+        val minVoteCount: Int
+        val maxVoteCount: Int
+        if (binding.switchMaxMinVoteCount.isChecked) {
+            // Filter movies with vote count that is less than or equal to the selected value
+            minVoteCount = 0
+            maxVoteCount = selectedVoteCount
+        } else {
+            // Filter movies with vote count that is greater than or equal to the selected value
+            minVoteCount = selectedVoteCount
+            maxVoteCount = Int.MAX_VALUE
+        }
         moviesViewModel.getMoviesWithQueryParams(
             sortBy = sortBy,
             withGenres = genresIds,
-            minimalVoteCount = voteCount,
+            minVoteCount = minVoteCount,
+            maxVoteCount = maxVoteCount,
         )
         (requireActivity() as MainActivity)
             .supportActionBar?.title = getString(R.string.app_name)
@@ -190,8 +221,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
      * Reset filters by applying the [QueryParams] default options.
      */
     private fun onResettingFilters() {
-        val queryParams = QueryParams()
-        updateFilters(queryParams)
+        updateFilters(QueryParams())
     }
 
     /**

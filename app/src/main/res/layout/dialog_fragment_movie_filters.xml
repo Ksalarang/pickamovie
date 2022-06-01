@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="600dp"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorPrimary"
     android:padding="12dp">
 
@@ -61,7 +61,16 @@
         android:layout_marginTop="@dimen/between_filters_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/genres_constraint_layout"
-        tools:text="Vote count - 0" />
+        tools:text="Minimum vote count - 0" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_max_min_vote_count"
+        style="@style/Widget.PickAMovie.TextView.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/vote_count_seekbar_label" />
 
     <SeekBar
         android:id="@+id/vote_count_seekbar"
