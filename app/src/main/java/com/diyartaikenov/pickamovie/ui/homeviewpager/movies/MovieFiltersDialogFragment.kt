@@ -153,13 +153,13 @@ class MovieFiltersDialogFragment : DialogFragment() {
         view.background = if (isSelected) {
             ResourcesCompat.getDrawable(
                 resources,
-                R.drawable.shape_rounded_corners_colored,
+                R.drawable.shape_rounded_corners_selected,
                 requireContext().theme
             )
         } else {
             ResourcesCompat.getDrawable(
                 resources,
-                R.drawable.shape_rounded_corners,
+                R.drawable.shape_rounded_corners_unselected,
                 requireContext().theme
             )
         }
@@ -203,7 +203,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
             setPadding(resources.getDimensionPixelSize(R.dimen.filter_genres_padding))
             background = ResourcesCompat.getDrawable(
                 resources,
-                R.drawable.shape_rounded_corners,
+                R.drawable.shape_rounded_corners_unselected,
                 context.theme
             )
             isClickable = true
