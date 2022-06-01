@@ -48,8 +48,8 @@ class MoviesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            // FIXME: get popular movies for quick load
-            movieRepository.getMovies(queryParams)
+            val popularMoviesQuery = QueryParams(movieList = MovieList.POPULAR)
+            movieRepository.getMovies(popularMoviesQuery)
                 .cachedIn(viewModelScope).collect {
                     _movies.value = it
                 }
