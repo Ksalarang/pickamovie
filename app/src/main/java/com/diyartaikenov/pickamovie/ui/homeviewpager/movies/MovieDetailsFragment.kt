@@ -32,6 +32,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 private const val BACKDROP_SIZE = "/w780"
+private const val POSTER_SIZE = "/w780"
 private const val SHORT_OVERVIEW_MAX_LINES = 5
 private const val BLANK_SIGN = "-"
 
@@ -142,8 +143,14 @@ class MovieDetailsFragment : Fragment() {
             setVoteAverageAndColor(voteAverage, movie.voteAverage)
             voteCount.text = String.format("(%d)", movie.voteCount)
 
+            val url = if (movie.backdropPath != null) {
+                IMAGE_BASE_URL + BACKDROP_SIZE + movie.backdropPath
+            } else if (movie.posterPath != null) {
+                IMAGE_BASE_URL + POSTER_SIZE + movie.posterPath
+            } else null
+
             Glide.with(this@MovieDetailsFragment)
-                .load(IMAGE_BASE_URL + BACKDROP_SIZE + movie.backdropPath)
+                .load(url)
                 .into(backdrop)
         }
     }
