@@ -18,7 +18,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -41,9 +40,6 @@ class MoviesViewModel @Inject constructor(
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>> = _movies
 
-    private var _genres = MutableLiveData<List<Genre>>()
-    val genres: LiveData<List<Genre>> = _genres
-
     private var _networkError = MutableLiveData(false)
     val networkError: LiveData<Boolean> = _networkError
 
@@ -57,19 +53,6 @@ class MoviesViewModel @Inject constructor(
                 .cachedIn(viewModelScope).collect {
                     _movies.value = it
                 }
-        }
-        // Get the updated list of all movie genres
-        viewModelScope.launch {
-            val result = movieRepository.refreshGenres()
-            if (result.isSuccess) {
-                result.getOrNull()!!.collectLatest {
-                    _genres.value = it
-                }
-                _networkError.value = false
-                _isNetworkErrorShown.value = false
-            } else {
-                _networkError.value = true
-            }
         }
     }
 

@@ -12,7 +12,11 @@ import com.diyartaikenov.pickamovie.repository.database.asDomainModel
 import com.diyartaikenov.pickamovie.repository.network.MoviesApi
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.asDomainModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,6 +30,12 @@ class MovieRepository @Inject constructor(
         pageSize = NETWORK_PAGE_SIZE,
         enablePlaceholders = false,
     )
+
+    private var refreshGenresJob: Job? = null
+
+    init {
+        refreshGenres()
+    }
 
     fun getMovies(queryParams: QueryParams): Flow<PagingData<Movie>> {
         return Pager(
@@ -53,17 +63,6 @@ class MovieRepository @Inject constructor(
         }
     }
 
-    suspend fun refreshGenres(): Result<Flow<List<Genre>>> {
-        return try {
-            val genres = moviesApi.getAllGenres().genres
-            movieDao.insertGenres(genres)
-            Result.success(movieDao.getAllGenres())
-        } catch (e: Exception) {
-            Log.d("myTag", "getGenres: ${e.message}")
-            Result.failure(e)
-        }
-    }
-
     fun getGenres(): Result<Flow<List<Genre>>> {
         return try {
             val genres = movieDao.getAllGenres()
@@ -76,6 +75,18 @@ class MovieRepository @Inject constructor(
 
     fun getGenresById(ids: List<Int>): Flow<List<Genre>> {
         return movieDao.getGenresById(ids)
+    }
+
+    private fun refreshGenres() {
+        refreshGenresJob?.cancel()
+        refreshGenresJob = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val genres = moviesApi.getAllGenres().genres
+                movieDao.insertGenres(genres)
+            } catch (e: Exception) {
+                Log.d("myTag", "refreshGenres: ${e.message}")
+            }
+        }
     }
 
     companion object {
