@@ -28,6 +28,10 @@ class MoviesViewModel @Inject constructor(
     val movieRepository: MovieRepository
 ): ViewModel() {
 
+    /**
+     * Any time this viewModel fetches movies with [QueryParams] it saves them in this field
+     * to retrieve later when needed.
+     */
     var queryParams = QueryParams()
         private set
 
@@ -70,7 +74,8 @@ class MoviesViewModel @Inject constructor(
     }
 
     /**
-     * todo
+     * Update [_movies] paging data with data fetched from network.
+     * Also store the given parameters in the [queryParams] field.
      */
     fun getMoviesWithQueryParams(
         sortBy: SortBy = queryParams.sortBy,
@@ -113,6 +118,9 @@ class MoviesViewModel @Inject constructor(
         return movieRepository.getGenres()
     }
 
+    /**
+     * Change this flag when a network error is shown.
+     */
     fun onNetworkErrorShown() {
         _isNetworkErrorShown.value = true
     }
