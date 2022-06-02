@@ -31,6 +31,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
+/**
+ * This fragment offers sorting and filtering options for getting movies from network.
+ */
 class MovieFiltersDialogFragment : DialogFragment() {
 
     private var _binding: DialogFragmentMovieFiltersBinding? = null
@@ -42,7 +45,6 @@ class MovieFiltersDialogFragment : DialogFragment() {
         FlexboxLayout.LayoutParams.WRAP_CONTENT,
         FlexboxLayout.LayoutParams.WRAP_CONTENT
     )
-
     /**
      * A list that contains all [Genre] views. It's filled when the genre list
      * is received from the [moviesViewModel].
@@ -89,7 +91,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 // TODO: handle data query error
             }
         }
-
+        // Initialize all widgets
         binding.apply {
             sortSpinner.adapter = createSpinnerAdapter()
             voteCountSeekbar.max = voteCountRange.size - 1
@@ -129,6 +131,9 @@ class MovieFiltersDialogFragment : DialogFragment() {
         super.onDestroyView()
     }
 
+    /**
+     * Create a genre [TextView] and fill it with data from [genre].
+     */
     private fun createGenreTextView(genre: Genre): TextView {
         return TextView(context).apply {
             setupGenreViewAttributes(this)
@@ -141,6 +146,9 @@ class MovieFiltersDialogFragment : DialogFragment() {
         }
     }
 
+    /**
+     * Update all filter views by the given [queryParams].
+     */
     private fun updateFilters(queryParams: QueryParams) {
         binding.apply {
             sortSpinner.setSelection(queryParams.sortBy.ordinal)
