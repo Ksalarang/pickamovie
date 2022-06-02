@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.diyartaikenov.pickamovie.model.Movie
-import com.diyartaikenov.pickamovie.repository.MovieRepository.Companion.NETWORK_PAGE_SIZE
 import com.diyartaikenov.pickamovie.repository.database.MovieDao
 import com.diyartaikenov.pickamovie.repository.network.*
 

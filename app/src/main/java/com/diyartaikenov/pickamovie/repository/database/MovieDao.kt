@@ -44,6 +44,9 @@ interface MovieDao {
     @Query("select * from genres")
     fun getAllGenres(): Flow<List<Genre>>
 
+    @Query("select count(*) from genres")
+    fun countGenres(): Flow<Int>
+
     @Query("select * from genres where id in (:ids)")
     fun getGenresById(ids: List<Int>): Flow<List<Genre>>
 

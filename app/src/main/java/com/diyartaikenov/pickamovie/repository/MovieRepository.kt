@@ -14,11 +14,14 @@ import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.asDomainModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
+
+// The Movie Db API appears to return 24 items with each page
+const val NETWORK_PAGE_SIZE = 24
 
 @Singleton
 class MovieRepository @Inject constructor(
@@ -31,10 +34,19 @@ class MovieRepository @Inject constructor(
         enablePlaceholders = false,
     )
 
-    private var refreshGenresJob: Job? = null
-
     init {
-        refreshGenres()
+        CoroutineScope(Dispatchers.IO).launch {
+            // Ensure that this repository can always provide movie genres
+            movieDao.countGenres().collectLatest { genresCount ->
+                if (genresCount == 0) {
+                    try {
+                        refreshGenres()
+                    } catch (e: Exception) {
+                        Log.d("myTag", "init: refreshing genres: ${e.message}")
+                    }
+                }
+            }
+        }
     }
 
     fun getMovies(queryParams: QueryParams): Flow<PagingData<Movie>> {
@@ -77,20 +89,12 @@ class MovieRepository @Inject constructor(
         return movieDao.getGenresById(ids)
     }
 
-    private fun refreshGenres() {
-        refreshGenresJob?.cancel()
-        refreshGenresJob = CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val genres = moviesApi.getAllGenres().genres
-                movieDao.insertGenres(genres)
-            } catch (e: Exception) {
-                Log.d("myTag", "refreshGenres: ${e.message}")
-            }
-        }
-    }
-
-    companion object {
-        // The Movie Db API appears to return 24 items with each page
-        const val NETWORK_PAGE_SIZE = 24
+    /**
+     * Fetch latest genre data from network and store it in the database.
+     * @throws Exception
+     */
+    suspend fun refreshGenres() {
+        val genres = moviesApi.getAllGenres().genres
+        movieDao.insertGenres(genres)
     }
 }
