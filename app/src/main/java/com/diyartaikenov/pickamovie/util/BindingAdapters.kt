@@ -22,13 +22,11 @@ private const val BACKDROP_SIZE = "/w300"
  * Loads a poster for a movie or a backdrop if the poster is absent.
  */
 fun loadPoster(imageView: ImageView, posterPath: String?, backdropPath: String?) {
-    var url: String? = null
-
-    if (posterPath != null) {
-        url = IMAGE_BASE_URL + POSTER_SIZE + posterPath
+    val url = if (posterPath != null) {
+        IMAGE_BASE_URL + POSTER_SIZE + posterPath
     } else if (backdropPath != null) {
-        url = IMAGE_BASE_URL + BACKDROP_SIZE + backdropPath
-    }
+        IMAGE_BASE_URL + BACKDROP_SIZE + backdropPath
+    } else null
 
     Glide.with(imageView.context)
         .load(url)
