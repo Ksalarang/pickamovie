@@ -19,11 +19,11 @@ import javax.inject.Singleton
 @Singleton
 class MovieRepository @Inject constructor(
     private val movieDao: MovieDao,
-    private val moviesApi: MoviesApi
+    private val moviesApi: MoviesApi,
 ) {
 
     private val pagingConfig = PagingConfig(
-        pageSize =  NETWORK_PAGE_SIZE,
+        pageSize = NETWORK_PAGE_SIZE,
         enablePlaceholders = false,
     )
 
