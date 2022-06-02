@@ -56,6 +56,7 @@
     <string name="reset">Reset</string>
     <string name="min_vote_count_label">Minimum vote count: %d</string>
     <string name="max_vote_count_label">Maximum vote count: %d</string>
+    <string name="switch_genres_exclusive">Exclusive</string>
 
     <!-- Sort options should be synced with the SortBy enum class -->
     <string-array name="sort_options">

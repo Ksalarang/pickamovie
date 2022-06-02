@@ -92,7 +92,6 @@ class MovieFiltersDialogFragment : DialogFragment() {
 
         binding.apply {
             sortSpinner.adapter = createSpinnerAdapter()
-
             voteCountSeekbar.max = voteCountRange.size - 1
             voteCountSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -149,6 +148,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 val isSelected = queryParams.withGenres.contains(genreView.tag as Int)
                 setGenreViewSelection(genreView, isSelected)
             }
+            switchIsGenresExclusive.isChecked = queryParams.withoutGenres.isNotEmpty()
             // If maxVoteCount differs from Int.MAX_VALUE then it's being used.
             // So the vote count switch should be checked and unchecked otherwise.
             switchMaxMinVoteCount.isChecked = queryParams.maxVoteCount != Int.MAX_VALUE
@@ -189,11 +189,10 @@ class MovieFiltersDialogFragment : DialogFragment() {
      */
     private fun onApplyingFilters() {
         val sortBy = SortBy.values()[binding.sortSpinner.selectedItemPosition]
-        val genresIds = mutableListOf<Int>()
-        genreViews.filter { it.isSelected }.forEach {
-            // movie id is stored in textView's tag
-            genresIds.add(it.tag as Int)
-        }
+        val withGenresIds = genreViews.filter { it.isSelected }.map { it.tag as Int }
+        val withoutGenresIds: List<Int> = if (binding.switchIsGenresExclusive.isChecked) {
+            genreViews.filter { !it.isSelected }.map { it.tag as Int }
+        } else { listOf() }
         val selectedVoteCount = voteCountRange[binding.voteCountSeekbar.progress]
         val minVoteCount: Int
         val maxVoteCount: Int
@@ -208,7 +207,8 @@ class MovieFiltersDialogFragment : DialogFragment() {
         }
         moviesViewModel.getMoviesWithQueryParams(
             sortBy = sortBy,
-            withGenres = genresIds,
+            withGenres = withGenresIds,
+            withoutGenres = withoutGenresIds,
             minVoteCount = minVoteCount,
             maxVoteCount = maxVoteCount,
         )

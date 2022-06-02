@@ -40,6 +40,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_is_genres_exclusive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_genres_exclusive"
+            android:textColor="@color/grey_170"
+
+            android:minHeight="@dimen/switch_min_height"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flexbox_layout"
             android:layout_width="match_parent"
@@ -68,7 +79,7 @@
         style="@style/Widget.PickAMovie.TextView.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="26dp"
+        android:minHeight="@dimen/switch_min_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/vote_count_seekbar_label" />
 
