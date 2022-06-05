@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_FLING
+import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -110,10 +112,20 @@ class MovieFiltersDialogFragment : DialogFragment() {
             minVotePicker.apply {
                 minValue = defaultQueryParams.minVoteAverage.toInt()
                 maxValue = defaultQueryParams.maxVoteAverage.toInt()
+                setOnScrollListener { _, scrollState ->
+                    if (scrollState == SCROLL_STATE_IDLE && value > maxVotePicker.value) {
+                        value = maxVotePicker.value
+                    }
+                }
             }
             maxVotePicker.apply {
                 minValue = defaultQueryParams.minVoteAverage.toInt()
                 maxValue = defaultQueryParams.maxVoteAverage.toInt()
+                setOnScrollListener { _, scrollState ->
+                    if (scrollState == SCROLL_STATE_IDLE && value < minVotePicker.value) {
+                        value = minVotePicker.value
+                    }
+                }
             }
             voteCountSeekbar.max = voteCountRange.size - 1
             voteCountSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
@@ -251,11 +263,14 @@ class MovieFiltersDialogFragment : DialogFragment() {
             maxVoteCount = Int.MAX_VALUE
         }
 
-        val minVoteAverage: Float
+        var minVoteAverage: Float
         val maxVoteAverage: Float
         if (binding.showVotePickersSwitch.isChecked) {
             minVoteAverage = binding.minVotePicker.value.toFloat()
             maxVoteAverage = binding.maxVotePicker.value.toFloat()
+            if (minVoteAverage > maxVoteAverage) {
+                minVoteAverage = maxVoteAverage
+            }
         } else {
             minVoteAverage = defaultQueryParams.minVoteAverage
             maxVoteAverage = defaultQueryParams.maxVoteAverage
