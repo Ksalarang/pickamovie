@@ -90,6 +90,16 @@ interface MoviesApi {
          * or equal to the specified value.
          */
         @Query("vote_count.lte") maximumVoteCount: Int,
+        /**
+         * Filter and only include movies that have a rating that is greater
+         * or equal to the specified value.
+         */
+        @Query("vote_average.gte") minimumVoteAverage: Float,
+        /**
+         * Filter and only include movies that have a rating that is less than
+         * or equal to the specified value.
+         */
+        @Query("vote_average.lte") maximumVoteAverage: Float,
     ): NetworkMovieContainer
 
     /**
@@ -142,6 +152,8 @@ class QueryParams(
     val withoutGenres: List<Int> = listOf(),
     val minVoteCount: Int = 0,
     val maxVoteCount: Int = Int.MAX_VALUE,
+    val minVoteAverage: Float = 0f,
+    val maxVoteAverage: Float = 10f,
     val movieList: MovieList? = null,
 )
 

@@ -7,6 +7,7 @@
     android:background="?attr/colorPrimary"
     android:padding="12dp">
 
+    <!-- region Sorting -->
     <TextView
         android:id="@+id/sort_label"
         style="@style/Widget.PickAMovie.TextView.Label"
@@ -22,7 +23,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <!-- endregion -->
 
+    <!-- Genres layout -->
+    <!-- The genre views are added in runtime. -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/genres_constraint_layout"
         android:layout_width="match_parent"
@@ -41,13 +45,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switch_is_genres_exclusive"
+            android:id="@+id/is_genres_exclusive_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="@dimen/switch_min_height"
             android:text="@string/switch_genres_exclusive"
             android:textColor="@color/grey_170"
-
-            android:minHeight="@dimen/switch_min_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,6 +67,60 @@
             app:layout_constraintTop_toBottomOf="@id/genres_label" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- region Vote average -->
+    <TextView
+        android:id="@+id/vote_average_range_label"
+        style="@style/Widget.PickAMovie.TextView.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/between_filters_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/genres_constraint_layout"
+        tools:text="Vote average - any" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/show_vote_pickers_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/switch_min_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/vote_average_range_label" />
+
+    <!-- Min vote picker -->
+    <NumberPicker
+        android:id="@+id/min_vote_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/vote_picker_height"
+        android:layout_marginTop="@dimen/default_margin"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/max_vote_picker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vote_average_range_label" />
+
+    <TextView
+        android:id="@+id/label_between_vote_pickers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_between_vote_pickers"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/min_vote_picker"
+        app:layout_constraintEnd_toStartOf="@id/max_vote_picker"
+        app:layout_constraintStart_toEndOf="@id/min_vote_picker"
+        app:layout_constraintTop_toTopOf="@id/min_vote_picker" />
+
+    <!-- Max vote picker -->
+    <NumberPicker
+        android:id="@+id/max_vote_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/vote_picker_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/min_vote_picker"
+        app:layout_constraintTop_toTopOf="@id/min_vote_picker" />
+    <!-- endregion -->
+
+    <!-- region Vote count -->
     <TextView
         android:id="@+id/vote_count_seekbar_label"
         style="@style/Widget.PickAMovie.TextView.Label"
@@ -71,12 +128,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/between_filters_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/genres_constraint_layout"
+        app:layout_constraintTop_toBottomOf="@id/min_vote_picker"
         tools:text="Minimum vote count - 0" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_max_min_vote_count"
-        style="@style/Widget.PickAMovie.TextView.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/switch_min_height"
@@ -90,7 +146,9 @@
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vote_count_seekbar_label" />
+    <!-- endregion -->
 
+    <!-- region Buttons -->
     <Button
         android:id="@+id/button_reset_filters"
         android:layout_width="wrap_content"
@@ -113,4 +171,5 @@
         android:textColor="?attr/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vote_count_seekbar" />
+    <!-- endregion -->
 </androidx.constraintlayout.widget.ConstraintLayout>

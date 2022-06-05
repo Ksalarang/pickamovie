@@ -35,6 +35,8 @@ class MoviesPagingSource(
                         withoutGenres = queryParams.withoutGenres.asString(),
                         minimumVoteCount = queryParams.minVoteCount,
                         maximumVoteCount = queryParams.maxVoteCount,
+                        minimumVoteAverage = queryParams.minVoteAverage,
+                        maximumVoteAverage = queryParams.maxVoteAverage,
                     )
                 }
             }

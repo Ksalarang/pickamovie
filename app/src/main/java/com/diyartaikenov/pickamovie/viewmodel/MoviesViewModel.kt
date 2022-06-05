@@ -67,6 +67,8 @@ class MoviesViewModel @Inject constructor(
         withoutGenres: List<Int> = queryParams.withoutGenres,
         minVoteCount: Int = queryParams.minVoteCount,
         maxVoteCount: Int = queryParams.maxVoteCount,
+        minVoteAverage: Float = queryParams.minVoteAverage,
+        maxVoteAverage: Float = queryParams.maxVoteAverage,
         // If movieList wasn't assigned a value, it should be nulled here,
         // so that callers of this function which request a custom query
         // don't have to know about this and do nulling themselves.
@@ -80,6 +82,8 @@ class MoviesViewModel @Inject constructor(
             minVoteCount = minVoteCount,
             maxVoteCount = maxVoteCount,
             movieList = movieList,
+            minVoteAverage = minVoteAverage,
+            maxVoteAverage = maxVoteAverage,
         )
         viewModelScope.launch {
             movieRepository.getMovies(queryParams)

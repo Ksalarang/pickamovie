@@ -54,6 +54,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
      * A range of vote count numbers to filter movies with.
      */
     private val voteCountRange = arrayListOf(0, 50, 100, 500, 1000, 5000, 10000)
+    private val defaultQueryParams = QueryParams()
 
     @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -86,14 +87,34 @@ class MovieFiltersDialogFragment : DialogFragment() {
                     updateFilters(moviesViewModel.queryParams)
                 }
             } else {
-                Log.d("myTag", "onCreateView: error: " +
-                        "${result.exceptionOrNull()!!.message}")
+                Log.d("myTag", "onCreateView: ${result.exceptionOrNull()!!.message}")
                 // TODO: handle data query error
             }
         }
         // Initialize all widgets
         binding.apply {
             sortSpinner.adapter = createSpinnerAdapter()
+            showVotePickersSwitch.setOnCheckedChangeListener { _, isChecked ->
+                voteAverageRangeLabel.text = if (isChecked) {
+                    minVotePicker.visibility = View.VISIBLE
+                    maxVotePicker.visibility = View.VISIBLE
+                    labelBetweenVotePickers.visibility = View.VISIBLE
+                    getString(R.string.vote_average, getString(R.string.vote_average_range))
+                } else {
+                    minVotePicker.visibility = View.GONE
+                    maxVotePicker.visibility = View.GONE
+                    labelBetweenVotePickers.visibility = View.GONE
+                    getString(R.string.vote_average, getString(R.string.vote_average_any))
+                }
+            }
+            minVotePicker.apply {
+                minValue = defaultQueryParams.minVoteAverage.toInt()
+                maxValue = defaultQueryParams.maxVoteAverage.toInt()
+            }
+            maxVotePicker.apply {
+                minValue = defaultQueryParams.minVoteAverage.toInt()
+                maxValue = defaultQueryParams.maxVoteAverage.toInt()
+            }
             voteCountSeekbar.max = voteCountRange.size - 1
             voteCountSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -156,9 +177,25 @@ class MovieFiltersDialogFragment : DialogFragment() {
                 val isSelected = queryParams.withGenres.contains(genreView.tag as Int)
                 setGenreViewSelection(genreView, isSelected)
             }
-            switchIsGenresExclusive.isChecked = queryParams.withoutGenres.isNotEmpty()
+            isGenresExclusiveSwitch.isChecked = queryParams.withoutGenres.isNotEmpty()
+
+            showVotePickersSwitch.isChecked =
+                queryParams.minVoteAverage != defaultQueryParams.minVoteAverage
+                        || queryParams.maxVoteAverage != defaultQueryParams.maxVoteAverage
+
+            Log.d("myTag", "updateFilters: show vote pickers: " +
+                    "${showVotePickersSwitch.isChecked}")
+
+            voteAverageRangeLabel.text = if (showVotePickersSwitch.isChecked) {
+                getString(R.string.vote_average, getString(R.string.vote_average_range))
+            } else {
+                getString(R.string.vote_average, getString(R.string.vote_average_any))
+            }
+            minVotePicker.value = queryParams.minVoteAverage.toInt()
+            maxVotePicker.value = queryParams.maxVoteAverage.toInt()
+
             // If maxVoteCount differs from Int.MAX_VALUE then it's being used.
-            // So the vote count switch should be checked and unchecked otherwise.
+            // So the vote count switch should be checked, and unchecked otherwise.
             switchMaxMinVoteCount.isChecked = queryParams.maxVoteCount != Int.MAX_VALUE
             val progress: Int
             voteCountSeekbarLabel.text = if (switchMaxMinVoteCount.isChecked) {
@@ -198,7 +235,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
     private fun onApplyingFilters() {
         val sortBy = SortBy.values()[binding.sortSpinner.selectedItemPosition]
         val withGenresIds = genreViews.filter { it.isSelected }.map { it.tag as Int }
-        val withoutGenresIds: List<Int> = if (binding.switchIsGenresExclusive.isChecked) {
+        val withoutGenresIds: List<Int> = if (binding.isGenresExclusiveSwitch.isChecked) {
             genreViews.filter { !it.isSelected }.map { it.tag as Int }
         } else { listOf() }
         val selectedVoteCount = voteCountRange[binding.voteCountSeekbar.progress]
@@ -213,12 +250,25 @@ class MovieFiltersDialogFragment : DialogFragment() {
             minVoteCount = selectedVoteCount
             maxVoteCount = Int.MAX_VALUE
         }
+
+        val minVoteAverage: Float
+        val maxVoteAverage: Float
+        if (binding.showVotePickersSwitch.isChecked) {
+            minVoteAverage = binding.minVotePicker.value.toFloat()
+            maxVoteAverage = binding.maxVotePicker.value.toFloat()
+        } else {
+            minVoteAverage = defaultQueryParams.minVoteAverage
+            maxVoteAverage = defaultQueryParams.maxVoteAverage
+        }
+
         moviesViewModel.getMoviesWithQueryParams(
             sortBy = sortBy,
             withGenres = withGenresIds,
             withoutGenres = withoutGenresIds,
             minVoteCount = minVoteCount,
             maxVoteCount = maxVoteCount,
+            minVoteAverage = minVoteAverage,
+            maxVoteAverage = maxVoteAverage,
         )
         (requireActivity() as MainActivity)
             .supportActionBar?.title = getString(R.string.app_name)
@@ -229,7 +279,7 @@ class MovieFiltersDialogFragment : DialogFragment() {
      * Reset filters by applying the [QueryParams] default options.
      */
     private fun onResettingFilters() {
-        updateFilters(QueryParams())
+        updateFilters(defaultQueryParams)
     }
 
     /**
