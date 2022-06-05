@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import com.diyartaikenov.pickamovie.R
 import com.diyartaikenov.pickamovie.databinding.FragmentMoviesBinding
 import com.diyartaikenov.pickamovie.repository.network.MovieList
@@ -51,7 +52,14 @@ class MoviesFragment : Fragment() {
                 )
             }
         }
-
+        // Scroll to top of list on inserting items
+        adapter!!.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    binding.recyclerView.scrollToPosition(0)
+                }
+            }
+        })
         binding.apply {
             val errorMessage = getString(R.string.no_internet)
             recyclerView.adapter = adapter!!.withLoadStateHeaderAndFooter(
@@ -66,7 +74,6 @@ class MoviesFragment : Fragment() {
                 adapter!!.submitData(it)
             }
         }
-
         // Show a toast when a network error occurs.
         moviesViewModel.networkError.observe(viewLifecycleOwner) { isError ->
             if (isError && !moviesViewModel.isNetworkErrorShown.value!!) {
@@ -75,7 +82,6 @@ class MoviesFragment : Fragment() {
                 moviesViewModel.onNetworkErrorShown()
             }
         }
-
         // Collect load states and show views corresponding to the states
         lifecycleScope.launch {
             adapter!!.loadStateFlow.collect { loadStates ->
@@ -91,7 +97,6 @@ class MoviesFragment : Fragment() {
                 }
             }
         }
-
         movieFiltersDialogFragment = MovieFiltersDialogFragment()
     }
 
