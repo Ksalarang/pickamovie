@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_FLING
 import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE
 import android.widget.SeekBar
 import android.widget.TextView
@@ -194,9 +193,6 @@ class MovieFiltersDialogFragment : DialogFragment() {
             showVotePickersSwitch.isChecked =
                 queryParams.minVoteAverage != defaultQueryParams.minVoteAverage
                         || queryParams.maxVoteAverage != defaultQueryParams.maxVoteAverage
-
-            Log.d("myTag", "updateFilters: show vote pickers: " +
-                    "${showVotePickersSwitch.isChecked}")
 
             voteAverageRangeLabel.text = if (showVotePickersSwitch.isChecked) {
                 getString(R.string.vote_average, getString(R.string.vote_average_range))

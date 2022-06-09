@@ -54,4 +54,13 @@ interface MovieDao {
     suspend fun insertGenres(genres: List<Genre>)
 
     //endregion
+
+    @Query("select * from movie_certifications where country = 'US'")
+    fun getUsCertifications(): Flow<List<Certification>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCertifications(certifications: List<Certification>)
+
+    @Query("select count(*) from movie_certifications")
+    fun countCertifications(): Flow<Int>
 }

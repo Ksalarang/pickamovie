@@ -10,6 +10,7 @@ import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
 import com.diyartaikenov.pickamovie.model.MovieVideo
 import com.diyartaikenov.pickamovie.repository.MovieRepository
+import com.diyartaikenov.pickamovie.repository.database.Certification
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.repository.network.MovieList
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
@@ -103,6 +104,10 @@ class MoviesViewModel @Inject constructor(
 
     fun getGenres(): Result<Flow<List<Genre>>> {
         return movieRepository.getGenres()
+    }
+
+    fun getCertifications(): Result<Flow<List<Certification>>> {
+        return movieRepository.getCertifications()
     }
 
     /**

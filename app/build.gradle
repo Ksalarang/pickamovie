@@ -79,12 +79,11 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation "androidx.hilt:hilt-work:1.0.0"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // WorkManager dependency
-    def work_version = "1.0.1"
-    implementation "android.arch.work:work-runtime-ktx:$work_version"
+    def work_version = "2.7.1"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

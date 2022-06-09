@@ -139,10 +139,13 @@ interface MoviesApi {
     suspend fun getAllGenres(
         @Query("language") language: String = DEFAULT_LANGUAGE,
     ): GenresNetworkResponse
+
+    @GET("certification/movie/list?api_key=$API_KEY")
+    suspend fun getCertifications(): CertificationsNetworkResponse
 }
 
 /**
- * Query parameters to sort and filter data through network requests.
+ * Query parameters for sorting and filtering data through network requests.
  * @see MoviesApi.getMovies
  */
 class QueryParams(

@@ -6,12 +6,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.diyartaikenov.pickamovie.model.DetailedMovie
 import com.diyartaikenov.pickamovie.model.Movie
+import com.diyartaikenov.pickamovie.repository.database.Certification
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.diyartaikenov.pickamovie.repository.database.MovieDao
 import com.diyartaikenov.pickamovie.repository.database.asDomainModel
 import com.diyartaikenov.pickamovie.repository.network.MoviesApi
 import com.diyartaikenov.pickamovie.repository.network.QueryParams
 import com.diyartaikenov.pickamovie.repository.network.asDomainModel
+import com.diyartaikenov.pickamovie.repository.network.asUsCertifications
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -34,15 +36,29 @@ class MovieRepository @Inject constructor(
         enablePlaceholders = false,
     )
 
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
     init {
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScope.launch {
             // Ensure that this repository can always provide movie genres
-            movieDao.countGenres().collectLatest { genresCount ->
-                if (genresCount == 0) {
+            movieDao.countGenres().collectLatest {
+                if (it == 0) {
                     try {
                         refreshGenres()
                     } catch (e: Exception) {
                         Log.d("myTag", "init: refreshing genres: ${e.message}")
+                    }
+                }
+            }
+        }
+        coroutineScope.launch {
+            // Ensure that this repository can always provide movie certifications
+            movieDao.countCertifications().collectLatest {
+                if (it == 0) {
+                    try {
+                        refreshCertifications()
+                    } catch (e: Exception) {
+                        Log.d("myTag", "init: refreshing certifications: ${e.message}")
                     }
                 }
             }
@@ -91,10 +107,26 @@ class MovieRepository @Inject constructor(
 
     /**
      * Fetch latest genre data from network and store it in the database.
-     * @throws Exception
      */
     suspend fun refreshGenres() {
         val genres = moviesApi.getAllGenres().genres
         movieDao.insertGenres(genres)
+    }
+
+    fun getCertifications(): Result<Flow<List<Certification>>> {
+        return try {
+            val certifications = movieDao.getUsCertifications()
+            Result.success(certifications)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Fetch latest US certifications and store them in the database.
+     */
+    suspend fun refreshCertifications() {
+        val certifications = moviesApi.getCertifications().certifications.list.asUsCertifications()
+        movieDao.insertCertifications(certifications)
     }
 }

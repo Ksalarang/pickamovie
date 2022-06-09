@@ -10,7 +10,6 @@ import com.diyartaikenov.pickamovie.repository.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.util.*
 
 const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p"

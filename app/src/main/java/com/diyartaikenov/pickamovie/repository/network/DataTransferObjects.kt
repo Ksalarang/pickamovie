@@ -1,6 +1,7 @@
 package com.diyartaikenov.pickamovie.repository.network
 
 import com.diyartaikenov.pickamovie.model.Movie
+import com.diyartaikenov.pickamovie.repository.database.Certification
 import com.diyartaikenov.pickamovie.repository.database.DbMovie
 import com.diyartaikenov.pickamovie.repository.database.Genre
 import com.squareup.moshi.Json
@@ -88,3 +89,33 @@ fun NetworkMovieContainer.asDatabaseModel(): List<DbMovie> {
 data class GenresNetworkResponse(
     val genres: List<Genre>
 )
+
+@JsonClass(generateAdapter = true)
+data class CertificationsNetworkResponse(
+    val certifications: NetworkCertifications
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkCertifications(
+    @Json(name = "US")
+    val list: List<NetworkCertification>,
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkCertification(
+    @Json(name = "certification")
+    val value: String,
+    val meaning: String,
+    val order: Int,
+)
+
+fun List<NetworkCertification>.asUsCertifications(): List<Certification> {
+    return map {
+        Certification(
+            value = it.value,
+            meaning = it.meaning,
+            order = it.order,
+            country = "US",
+        )
+    }
+}
