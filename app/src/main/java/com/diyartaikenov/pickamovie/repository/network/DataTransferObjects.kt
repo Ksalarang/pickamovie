@@ -114,7 +114,7 @@ fun List<NetworkCertification>.asUsCertifications(): List<Certification> {
         Certification(
             value = it.value,
             meaning = it.meaning,
-            order = it.order,
+            ordinal = it.order,
             country = "US",
         )
     }

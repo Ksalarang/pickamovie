@@ -108,7 +108,7 @@ class MovieRepository @Inject constructor(
     /**
      * Fetch latest genre data from network and store it in the database.
      */
-    suspend fun refreshGenres() {
+    private suspend fun refreshGenres() {
         val genres = moviesApi.getAllGenres().genres
         movieDao.insertGenres(genres)
     }
@@ -125,7 +125,7 @@ class MovieRepository @Inject constructor(
     /**
      * Fetch latest US certifications and store them in the database.
      */
-    suspend fun refreshCertifications() {
+    private suspend fun refreshCertifications() {
         val certifications = moviesApi.getCertifications().certifications.list.asUsCertifications()
         movieDao.insertCertifications(certifications)
     }

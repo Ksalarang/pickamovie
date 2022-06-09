@@ -58,9 +58,10 @@
     <string name="max_vote_count_label">Maximum vote count: %d</string>
     <string name="switch_genres_exclusive">Exclusive</string>
     <string name="vote_average">Vote average - %s</string>
-    <string name="vote_average_any">any</string>
-    <string name="vote_average_range">range</string>
+    <string name="any">any</string>
+    <string name="range">range</string>
     <string name="label_between_vote_pickers">to</string>
+    <string name="certification_label">US Certificates - %s</string>
 
     <!-- Sort options should be synced with the SortBy enum class -->
     <string-array name="sort_options">

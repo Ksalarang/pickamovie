@@ -75,9 +75,9 @@ class MovieFiltersDialogFragment : DialogFragment() {
             .setMargins(resources.getDimensionPixelSize(R.dimen.filter_genres_margin))
 
         lifecycleScope.launch {
-            val result = moviesViewModel.getGenres()
-            if (result.isSuccess) {
-                result.getOrNull()!!.collectLatest { genres ->
+            val genresResult = moviesViewModel.getGenres()
+            if (genresResult.isSuccess) {
+                genresResult.getOrNull()!!.collectLatest { genres ->
                     genres.forEach { genre ->
                         val genreView = createGenreTextView(genre)
                         genreViews.add(genreView)
@@ -88,24 +88,38 @@ class MovieFiltersDialogFragment : DialogFragment() {
                     updateFilters(moviesViewModel.queryParams)
                 }
             } else {
-                Log.d("myTag", "onCreateView: ${result.exceptionOrNull()!!.message}")
+                Log.d("myTagMovieFilters", "onCreateView: " +
+                        "${genresResult.exceptionOrNull()!!.message}")
                 // TODO: handle data query error
+            }
+        }
+        lifecycleScope.launch {
+            val certsResult = moviesViewModel.getCertifications()
+            if (certsResult.isSuccess) {
+                certsResult.getOrNull()!!.collectLatest { certs ->
+                    val list = certs.map { it.value }
+                    binding.minCertificationSpinner.adapter = createSpinnerAdapterFromList(list)
+                    binding.maxCertificationSpinner.adapter = createSpinnerAdapterFromList(list)
+                }
+            } else {
+                Log.d("myTagMovieFilters", "onCreateView: " +
+                        "${certsResult.exceptionOrNull()!!.message}")
             }
         }
         // Initialize all widgets
         binding.apply {
-            sortSpinner.adapter = createSpinnerAdapter()
+            sortSpinner.adapter = createSpinnerAdapterFromResource(R.array.sort_options)
             showVotePickersSwitch.setOnCheckedChangeListener { _, isChecked ->
                 voteAverageRangeLabel.text = if (isChecked) {
                     minVotePicker.visibility = View.VISIBLE
                     maxVotePicker.visibility = View.VISIBLE
                     labelBetweenVotePickers.visibility = View.VISIBLE
-                    getString(R.string.vote_average, getString(R.string.vote_average_range))
+                    getString(R.string.vote_average, getString(R.string.range))
                 } else {
                     minVotePicker.visibility = View.GONE
                     maxVotePicker.visibility = View.GONE
                     labelBetweenVotePickers.visibility = View.GONE
-                    getString(R.string.vote_average, getString(R.string.vote_average_any))
+                    getString(R.string.vote_average, getString(R.string.any))
                 }
             }
             minVotePicker.apply {
@@ -150,10 +164,20 @@ class MovieFiltersDialogFragment : DialogFragment() {
                     getString(R.string.min_vote_count_label, voteCount)
                 }
             }
+            showCertificateSpinnersSwitch.setOnCheckedChangeListener { _, isChecked ->
+                certificationLabel.text = if (isChecked) {
+                    minCertificationSpinner.visibility = View.VISIBLE
+                    maxCertificationSpinner.visibility = View.VISIBLE
+                    getString(R.string.certification_label, getString(R.string.range))
+                } else {
+                    minCertificationSpinner.visibility = View.GONE
+                    maxCertificationSpinner.visibility = View.GONE
+                    getString(R.string.certification_label, getString(R.string.any))
+                }
+            }
             buttonApplyFilters.setOnClickListener { onApplyingFilters() }
             buttonResetFilters.setOnClickListener { onResettingFilters() }
         }
-
         return binding.root
     }
 
@@ -195,9 +219,9 @@ class MovieFiltersDialogFragment : DialogFragment() {
                         || queryParams.maxVoteAverage != defaultQueryParams.maxVoteAverage
 
             voteAverageRangeLabel.text = if (showVotePickersSwitch.isChecked) {
-                getString(R.string.vote_average, getString(R.string.vote_average_range))
+                getString(R.string.vote_average, getString(R.string.range))
             } else {
-                getString(R.string.vote_average, getString(R.string.vote_average_any))
+                getString(R.string.vote_average, getString(R.string.any))
             }
             minVotePicker.value = queryParams.minVoteAverage.toInt()
             maxVotePicker.value = queryParams.maxVoteAverage.toInt()
@@ -314,11 +338,23 @@ class MovieFiltersDialogFragment : DialogFragment() {
         }
     }
 
-    private fun createSpinnerAdapter(): ArrayAdapter<CharSequence> {
+    private fun createSpinnerAdapterFromResource(textArrayResId: Int): ArrayAdapter<CharSequence> {
         return ArrayAdapter.createFromResource(
             requireContext(),
-            R.array.sort_options,
+            textArrayResId,
             android.R.layout.simple_spinner_item
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+
+    private fun createSpinnerAdapterFromList(
+        items: List<String>
+    ): ArrayAdapter<String> {
+        return ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            items,
         ).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }

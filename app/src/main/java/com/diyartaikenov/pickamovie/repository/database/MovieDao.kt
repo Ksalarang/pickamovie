@@ -55,7 +55,7 @@ interface MovieDao {
 
     //endregion
 
-    @Query("select * from movie_certifications where country = 'US'")
+    @Query("select * from movie_certifications where country = 'US' order by ordinal asc")
     fun getUsCertifications(): Flow<List<Certification>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

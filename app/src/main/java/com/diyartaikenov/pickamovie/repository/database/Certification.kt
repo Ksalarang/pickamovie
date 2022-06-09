@@ -6,6 +6,6 @@ import androidx.room.Entity
 data class Certification(
     val value: String,
     val meaning: String,
-    val order: Int,
+    val ordinal: Int,
     val country: String,
 )

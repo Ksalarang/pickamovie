@@ -114,8 +114,8 @@
         android:id="@+id/max_vote_picker"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/vote_picker_height"
-        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/min_vote_picker"
         app:layout_constraintTop_toTopOf="@id/min_vote_picker" />
     <!-- endregion -->
@@ -148,6 +148,45 @@
         app:layout_constraintTop_toBottomOf="@id/vote_count_seekbar_label" />
     <!-- endregion -->
 
+    <!-- region Certifications -->
+    <TextView
+        android:id="@+id/certification_label"
+        style="@style/Widget.PickAMovie.TextView.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/between_filters_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vote_count_seekbar"
+        tools:text="US Certificates - any" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/show_certificate_spinners_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/switch_min_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/certification_label" />
+
+    <Spinner
+        android:id="@+id/min_certification_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/max_certification_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/certification_label" />
+
+    <Spinner
+        android:id="@+id/max_certification_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/min_certification_spinner"
+        app:layout_constraintTop_toTopOf="@id/min_certification_spinner" />
+    <!-- endregion -->
+
     <!-- region Buttons -->
     <Button
         android:id="@+id/button_reset_filters"
@@ -170,6 +209,6 @@
         android:text="@string/apply"
         android:textColor="?attr/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vote_count_seekbar" />
+        app:layout_constraintTop_toBottomOf="@id/min_certification_spinner" />
     <!-- endregion -->
 </androidx.constraintlayout.widget.ConstraintLayout>
